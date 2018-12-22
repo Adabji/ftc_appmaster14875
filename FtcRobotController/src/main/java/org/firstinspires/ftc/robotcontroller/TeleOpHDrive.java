@@ -97,7 +97,7 @@ public class TeleOpHDrive extends LinearOpMode {
 
             //up position of flipper
             if (gamepad2.y) {
-                leftIntakeFlipper.setPosition(0.2);
+                leftIntakeFlipper.setPosition(0.3);
                 rightIntakeFlipper.setPosition(0.8);
             }
 
