@@ -24,10 +24,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample", group = "Autonomous")
+@Autonomous(name = "AutoSample Depot", group = "Autonomous")
 
 //Declare motors
-public class AutoSample extends LinearOpMode {
+public class AutoSampleDepot extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
