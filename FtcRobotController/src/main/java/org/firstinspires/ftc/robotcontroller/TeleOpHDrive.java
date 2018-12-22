@@ -177,6 +177,6 @@ public class TeleOpHDrive extends LinearOpMode {
     private void stopLift () throws InterruptedException{
         lift1.setPower(0);
         lift2.setPower(0);
-        Thread.sleep(300);
+        Thread.sleep(500);
     }
 }
