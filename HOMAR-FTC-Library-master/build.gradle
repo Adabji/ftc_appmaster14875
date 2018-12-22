@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs rootProject.file('libs')
+    }
+}
+
+dependencies {
+    implementation(name: 'RobotCore-release', ext: 'aar')
+    implementation(name: 'Hardware-release', ext: 'aar')
+}
+
+task HOMARJavadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("doc/javadoc")
+    failOnError false
+    options.overview = "src/main/overview.html"
+    inputs.file options.overview    //Add the overview file as an input so Javadoc is re-run if the overview file changes
+}
