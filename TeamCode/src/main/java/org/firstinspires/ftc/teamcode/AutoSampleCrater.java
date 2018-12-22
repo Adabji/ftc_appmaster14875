@@ -76,12 +76,12 @@ public class AutoSampleCrater extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        //leftIntakeFlipper.setPosition(0.4);
-        //rightIntakeFlipper.setPosition(0.6);
+        leftIntakeFlipper.setPosition(0.4);
+        rightIntakeFlipper.setPosition(0.6);
         //Thread.sleep(1000);
-        //lowerRobot();
+        lowerRobot();
         //turnRight(250, 0.3);
-        //Thread.sleep(100);
+        Thread.sleep(100);
         moveToSample(1200);
         leftSampleArm.setPosition(0.9);
         Thread.sleep(1000);

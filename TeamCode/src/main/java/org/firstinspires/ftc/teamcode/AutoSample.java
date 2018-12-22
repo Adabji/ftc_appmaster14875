@@ -1,3 +1,11 @@
+//Adham don't touch anything besides:
+//1. lines 164/165 for lift
+//2. lines 129-133 for center sample (this one should be good though)
+//3. lines 141 & 144 for sample left (only change values labeled distance:)
+//4. lines 151 & 154 for sample right (only change values labeled distance:)
+//5. For left sample path = 252-256
+//6. For right sample path = 248-252
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -116,15 +124,15 @@ public class AutoSample extends LinearOpMode {
         detector.disable();
         phoneMount.setPosition(0.43);
         Thread.sleep(500);
+
         lowerRobot();
-        turnRight(300, 0.3);
+        //turnRight(300, 0.3);
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
-            moveForwards(400);
-            turnLeft(270, 0.3);
-            moveForwards(1300);
+            moveForwards(1700);
+            //turnLeft(270, 0.3);
             teamMarker();
             moveForwards(-100);
            /* rotateLeft(500);
@@ -156,6 +164,8 @@ public class AutoSample extends LinearOpMode {
         lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Adham you can change these encoder values if you need the lift to go lower or higher
+        //JUST MAKE SURE THEY ARE BOTH NEGATIVE OR ELSE THE LIFT WILL BREAK
         lift1.setTargetPosition(-4560);
         lift2.setTargetPosition(-4560);
 
@@ -298,7 +308,9 @@ public class AutoSample extends LinearOpMode {
         rotateLeft(-distance);
     }
     public void parkInCrater() throws InterruptedException{
-        leftSampleArm.setPosition(0.8);
+        //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)
+        //left arm down
+        leftSampleArm.setPosition(0.9);
         Thread.sleep(100);
     }
 
