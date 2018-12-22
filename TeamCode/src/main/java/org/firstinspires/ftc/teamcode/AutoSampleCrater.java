@@ -133,8 +133,8 @@ public class AutoSampleCrater extends LinearOpMode {
         if(center == true){
             moveForwards(1700);
             //turnLeft(270, 0.3);
-            teamMarker();
-            moveForwards(-100);
+            //teamMarker();
+            moveBackwards(100);
            /* rotateLeft(500);
             moveForwards(400);
             rotateLeft(350);
@@ -144,8 +144,8 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == true){
             moveForwards(300);
             sampleLeft();
-            teamMarker();
-            moveForwards(-100);
+            //teamMarker();
+            moveBackwards(100);
 
 
         }
@@ -154,7 +154,7 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == false && center == false){
             moveForwards(300);
             sampleRight();
-            teamMarker();
+            //teamMarker();
             Thread.sleep(1000);
         }
     }
@@ -248,14 +248,11 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleRight() throws InterruptedException {
         rotateRight(350);
         moveForwards(1300);
-        rotateLeft(550);
-        moveForwards(1100);
+
     }
     public void sampleLeft() throws InterruptedException {
         rotateLeft(200);
         moveForwards(1100);
-        rotateRight(400);
-        moveForwards(800);
 
 
     }
@@ -306,6 +303,9 @@ public class AutoSampleCrater extends LinearOpMode {
     }
     public void rotateRight(int distance){
         rotateLeft(-distance);
+    }
+    public void moveBackwards(int distance){
+        moveForwards(-distance);
     }
     public void parkInCrater() throws InterruptedException{
         //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)

@@ -134,7 +134,7 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(1700);
             //turnLeft(270, 0.3);
             teamMarker();
-            moveForwards(-100);
+            moveBackwards(100);
            /* rotateLeft(500);
             moveForwards(400);
             rotateLeft(350);
@@ -145,7 +145,7 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(300);
             sampleLeft();
             teamMarker();
-            moveForwards(-100);
+            moveBackwards(100);
 
 
         }
@@ -306,6 +306,9 @@ public class AutoSampleDepot extends LinearOpMode {
     }
     public void rotateRight(int distance){
         rotateLeft(-distance);
+    }
+    public void moveBackwards(int distance){
+        moveForwards(-distance);
     }
     public void parkInCrater() throws InterruptedException{
         //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)
