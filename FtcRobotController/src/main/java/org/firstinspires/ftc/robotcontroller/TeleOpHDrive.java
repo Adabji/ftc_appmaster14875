@@ -156,7 +156,7 @@ public class TeleOpHDrive extends LinearOpMode {
                 lift1.setPower(1);
                 lift2.setPower(1);
                 Thread.sleep(50);
-                stopAll();
+                stopLift();
                 lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                 lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
             } else {
@@ -164,7 +164,7 @@ public class TeleOpHDrive extends LinearOpMode {
                     lift1.setPower(-1);
                     lift2.setPower(-1);
                     Thread.sleep(50);
-                    stopAll();
+                    stopLift();
                     lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                     lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                 } else {
@@ -174,7 +174,7 @@ public class TeleOpHDrive extends LinearOpMode {
             }
         }
     }
-    private void stopAll () throws InterruptedException{
+    private void stopLift () throws InterruptedException{
         lift1.setPower(0);
         lift2.setPower(0);
         Thread.sleep(500);
