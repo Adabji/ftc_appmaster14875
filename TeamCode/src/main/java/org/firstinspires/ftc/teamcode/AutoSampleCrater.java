@@ -251,7 +251,7 @@ public class AutoSampleCrater extends LinearOpMode {
 
     }
     public void sampleLeft() throws InterruptedException {
-        rotateLeft(200);
+        rotateLeft(250);
         moveForwards(1100);
 
 

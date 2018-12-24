@@ -99,9 +99,9 @@ public class AutoSampleDepot extends LinearOpMode {
         rightIntakeFlipper.setPosition(0.6);
         leftSampleArm.setPosition(0.3);
         phoneMount.setPosition(0.8);
-        Thread.sleep(500);
+        Thread.sleep(1000);
         detector.enable();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //Telemetry returned X-Value for when block is seen in center position
         if (detector.getXPosition() >= 400 && detector.getXPosition() <= 550){
@@ -146,13 +146,15 @@ public class AutoSampleDepot extends LinearOpMode {
             sampleLeft();
             teamMarker();
             moveBackwards(100);
+            rotateLeft(800);
+
 
 
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
         if(left == false && center == false){
-            moveForwards(300);
+            moveForwards(500);
             sampleRight();
             teamMarker();
             Thread.sleep(1000);
@@ -252,10 +254,10 @@ public class AutoSampleDepot extends LinearOpMode {
         moveForwards(1100);
     }
     public void sampleLeft() throws InterruptedException {
-        rotateLeft(200);
-        moveForwards(1100);
-        rotateRight(400);
-        moveForwards(800);
+        rotateLeft(250);
+        moveForwards(1150);
+        rotateRight(250);
+        moveForwards(900);
 
 
     }
