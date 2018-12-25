@@ -131,10 +131,14 @@ public class AutoSampleDepot extends LinearOpMode {
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
-            moveForwards(1700);
+            moveForwards(1650);
             //turnLeft(270, 0.3);
             teamMarker();
-            moveBackwards(100);
+            rotateLeft(700);
+            Thread.sleep(300);
+            moveForwards(400);
+            Thread.sleep(300);
+            rotateLeft(200);
            /* rotateLeft(500);
             moveForwards(400);
             rotateLeft(350);
@@ -147,6 +151,8 @@ public class AutoSampleDepot extends LinearOpMode {
             teamMarker();
             moveBackwards(100);
             rotateLeft(800);
+            moveForwards(1900);
+            teamMarker();
 
 
 
