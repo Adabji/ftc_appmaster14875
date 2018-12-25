@@ -37,7 +37,7 @@ public class LimitLiftAuto extends LinearOpMode {
     private DcMotor extension;
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
-    private TouchSensor bottomLimit;
+    private TouchSensor topLimit;
 
 
     @Override
@@ -79,7 +79,7 @@ public class LimitLiftAuto extends LinearOpMode {
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
+        topLimit = hardwareMap.touchSensor.get("topLimit");
 
 
         //waitForStart();
@@ -97,10 +97,10 @@ public class LimitLiftAuto extends LinearOpMode {
 
 
     public void lowerRobot() {
-        while (!bottomLimit.isPressed()) {
+        while (!topLimit.isPressed()) {
             lift1.setPower(-1);
             lift2.setPower(-1);
-            if (bottomLimit.isPressed()) {
+            if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);
             }
