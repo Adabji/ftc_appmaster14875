@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample Depot", group = "Autonomous")
+@Autonomous(name = "Limit Lift Auto", group = "Autonomous")
 
 //Declare motors
 public class LimitLiftAuto extends LinearOpMode {
