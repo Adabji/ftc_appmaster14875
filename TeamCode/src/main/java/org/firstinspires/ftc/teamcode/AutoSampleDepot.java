@@ -20,6 +20,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,6 +45,7 @@ public class AutoSampleDepot extends LinearOpMode {
     private DcMotor extension;
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
+    private TouchSensor bottomLimit;
 
 
 
@@ -86,6 +88,7 @@ public class AutoSampleDepot extends LinearOpMode {
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
 
 
         //waitForStart();
@@ -169,7 +172,7 @@ public class AutoSampleDepot extends LinearOpMode {
 
 
     public void lowerRobot() {
-        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       /* lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Adham you can change these encoder values if you need the lift to go lower or higher
@@ -187,7 +190,15 @@ public class AutoSampleDepot extends LinearOpMode {
         }
 
         lift1.setPower(0);
-        lift2.setPower(0);
+        lift2.setPower(0); */
+       while (!bottomLimit.isPressed()){
+           lift1.setPower(-1);
+           lift2.setPower(-1);
+           if (bottomLimit.isPressed()){
+           lift1.setPower(0);
+           lift2.setPower(0);
+           }
+       }
     }
 
     public void turnRight(int distance, double power) {
