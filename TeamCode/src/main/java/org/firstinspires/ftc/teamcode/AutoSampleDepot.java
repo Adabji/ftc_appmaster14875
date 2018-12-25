@@ -172,7 +172,7 @@ public class AutoSampleDepot extends LinearOpMode {
 
 
     public void lowerRobot() {
-       /* lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Adham you can change these encoder values if you need the lift to go lower or higher
@@ -190,15 +190,7 @@ public class AutoSampleDepot extends LinearOpMode {
         }
 
         lift1.setPower(0);
-        lift2.setPower(0); */
-       while (!bottomLimit.isPressed()){
-           lift1.setPower(-1);
-           lift2.setPower(-1);
-           if (bottomLimit.isPressed()){
-           lift1.setPower(0);
-           lift2.setPower(0);
-           }
-       }
+        lift2.setPower(0);
     }
 
     public void turnRight(int distance, double power) {
