@@ -8,6 +8,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.camera2.CameraDevice;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -47,7 +49,6 @@ public class AutoSampleDepot extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
     private TouchSensor bottomLimit;
-
 
 
     @Override
@@ -90,7 +91,6 @@ public class AutoSampleDepot extends LinearOpMode {
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
-
 
 
         //waitForStart();
@@ -139,7 +139,7 @@ public class AutoSampleDepot extends LinearOpMode {
         if (center == true) {
 
             moveForwards(1500, 1);
-            rotateLeft(150,1);
+            rotateLeft(150, 1);
             moveForwards(100, 1);
             //turnLeft(270, 0.3);
 
@@ -147,25 +147,25 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(900, 1);
             moveForwards(900, 1);
             //Angling towards depot
-            rotateLeft(150,1);
+            rotateLeft(150, 1);
             Thread.sleep(300);
 
             teamMarker();
-            rotateRight(150,1);
+            rotateRight(150, 1);
             moveBackwards(350, 1);
             moveBackwards(350, 1);
             moveBackwards(350, 1);
             Thread.sleep(400);
-            rotateLeft(550,1);
+            rotateLeft(550, 1);
             Thread.sleep(300);
             moveForwards(1600, 1);
             Thread.sleep(200);
-            rotateLeft(300,1);
+            rotateLeft(300, 1);
 
             Thread.sleep(600);
             moveForwards(400, 1);
             Thread.sleep(300);
-            rotateLeft(400,1);
+            rotateLeft(400, 1);
 
             Thread.sleep(200);
             turnLeft(1000, .5);
@@ -175,10 +175,10 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(1000);
 
 
-            rotateLeft(500,1);
-            moveForwards(400,1);
-            rotateLeft(350,1);
-            moveForwards(2000,1);
+            rotateLeft(500, 1);
+            moveForwards(400, 1);
+            rotateLeft(350, 1);
+            moveForwards(2000, 1);
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if (left == true) {
@@ -186,10 +186,10 @@ public class AutoSampleDepot extends LinearOpMode {
             sampleLeft();
             teamMarker();
             moveBackwards(200, 1);
-            rotateLeft(810,1);
+            rotateLeft(810, 1);
             Thread.sleep(200);
-            turnLeft(850,0.5);
-            turnRight(50,0.5);
+            turnLeft(850, 0.5);
+            turnRight(50, 0.5);
             moveForwards(1500, 1);
             teamMarker();
 
@@ -203,11 +203,11 @@ public class AutoSampleDepot extends LinearOpMode {
             teamMarker();
             moveBackwards(100, 1);
             Thread.sleep(300);
-            rotateLeft(300,1);
+            rotateLeft(300, 1);
             Thread.sleep(300);
             moveForwards(1000, 1);
             Thread.sleep(300);
-            rotateLeft(300,1);
+            rotateLeft(300, 1);
             Thread.sleep(300);
             turnLeft(1000, .5);
             turnRight(50, 1);
@@ -216,7 +216,6 @@ public class AutoSampleDepot extends LinearOpMode {
             teamMarker();
         }
     }
-
 
 
     public void lowerRobot() {
@@ -249,7 +248,7 @@ public class AutoSampleDepot extends LinearOpMode {
         }
     }
 
-    public void turnRight(int distance, double power) throws InterruptedException{
+    public void turnRight(int distance, double power) throws InterruptedException {
         strafingRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -262,16 +261,17 @@ public class AutoSampleDepot extends LinearOpMode {
         strafingRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         strafingLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (strafingLeft.isBusy() && strafingRight.isBusy()){
+        while (strafingLeft.isBusy() && strafingRight.isBusy()) {
         }
 
         strafingRight.setPower(0);
         strafingLeft.setPower(0);
     }
 
-    public void turnLeft(int distance, double power) throws InterruptedException{
+    public void turnLeft(int distance, double power) throws InterruptedException {
         turnRight(-distance, power);
     }
+
     //Moves the robot to the position where it can rotate to either left/right samples
     //Move to Sample function takes distance values that are altered for center, right
     //and left conditions of the mineral
@@ -313,40 +313,43 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleRight() throws InterruptedException {
-        rotateRight(350,1);
-        moveForwards(1300,1);
+        rotateRight(350, 1);
+        moveForwards(1300, 1);
         Thread.sleep(200);
-        rotateLeft(550,1);
+        rotateLeft(550, 1);
         Thread.sleep(200);
-        moveForwards(1100,1);
-        rotateRight(300,1);
+        moveForwards(1100, 1);
+        rotateRight(300, 1);
         Thread.sleep(200);
-        moveForwards(1300,1);
+        moveForwards(1300, 1);
         Thread.sleep(200);
-        rotateLeft(600,1);
+        rotateLeft(600, 1);
         Thread.sleep(200);
-        moveForwards(900,1);
+        moveForwards(900, 1);
         Thread.sleep(200);
     }
+
     public void sampleLeft() throws InterruptedException {
-        rotateLeft(250,1);
+        rotateLeft(250, 1);
         Thread.sleep(300);
-        moveForwards(1150,0.5);
+        moveForwards(1150, 0.5);
         Thread.sleep(300);
-        rotateRight(350,1);
+        rotateRight(350, 1);
         Thread.sleep(1000);
-        moveForwards(900,0.5);
+        moveForwards(900, 0.5);
 
 
     }
-    public void teamMarker() throws InterruptedException{
+
+    public void teamMarker() throws InterruptedException {
         leftSampleArm.setPosition(0.9);
         Thread.sleep(1000);
         leftSampleArm.setPosition(0.3);
         leftIntakeFlipper.setPosition(0.3);
         rightIntakeFlipper.setPosition(0.7);
     }
-    public void rotateLeft(int distance, double power) throws InterruptedException{
+
+    public void rotateLeft(int distance, double power) throws InterruptedException {
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -359,14 +362,14 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
 
-        while (motorBackRight.isBusy() && motorBackLeft.isBusy()){
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy()) {
         }
 
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
-
     }
-    public void moveForwards(int distance, double power) throws InterruptedException{
+
+    public void moveForwards(int distance, double power) throws InterruptedException {
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -379,29 +382,28 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
 
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy()){
+        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
         }
 
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
     }
-    public void rotateRight(int distance, double power) throws InterruptedException{
+
+    public void rotateRight(int distance, double power) throws InterruptedException {
         rotateLeft(-distance, power);
     }
-    public void moveBackwards(int distance, double power) throws InterruptedException{
+
+    public void moveBackwards(int distance, double power) throws InterruptedException {
         moveForwards(-distance, power);
     }
-    public void parkInCrater() throws InterruptedException{
+
+    public void parkInCrater() throws InterruptedException {
         //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)
         //left arm down
         leftSampleArm.setPosition(0.9);
         Thread.sleep(100);
+
     }
 }
-
-
-
-
-
   //  turnLeft(500,1);
   //  parkInCrater();
