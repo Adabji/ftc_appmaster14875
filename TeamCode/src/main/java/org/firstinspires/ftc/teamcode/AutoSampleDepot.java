@@ -138,6 +138,7 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
 
+<<<<<<< HEAD
             moveForwards(1500, 1);
             rotateLeft(150, 1);
             moveForwards(100, 1);
@@ -157,9 +158,24 @@ public class AutoSampleDepot extends LinearOpMode {
             moveBackwards(350, 1);
             Thread.sleep(400);
             rotateLeft(550, 1);
-            Thread.sleep(300);
-            moveForwards(1600, 1);
+=======
+            moveForwards(1700, .5);
             Thread.sleep(200);
+            rotateLeft(150,.5);
+            Thread.sleep(200);
+            moveForwards(100, .5);
+
+            teamMarker();
+            rotateRight(150,.5);
+            Thread.sleep(200);
+            moveBackwards(800, .5);
+            Thread.sleep(400);
+            rotateLeft(450,1);
+>>>>>>> 0ec5e96bc449be697bb3934b215958eeddc4fb20
+            Thread.sleep(300);
+            moveForwards(1700, .5);
+            Thread.sleep(200);
+<<<<<<< HEAD
             rotateLeft(300, 1);
 
             Thread.sleep(600);
@@ -167,11 +183,13 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(300);
             rotateLeft(400, 1);
 
+=======
+            rotateLeft(300,1);
+>>>>>>> 0ec5e96bc449be697bb3934b215958eeddc4fb20
             Thread.sleep(200);
-            turnLeft(1000, .5);
-            turnRight(100, 1);
             moveForwards(400, 1);
             teamMarker();
+<<<<<<< HEAD
             Thread.sleep(1000);
 
 
@@ -179,6 +197,8 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(400, 1);
             rotateLeft(350, 1);
             moveForwards(2000, 1);
+=======
+>>>>>>> 0ec5e96bc449be697bb3934b215958eeddc4fb20
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if (left == true) {
@@ -186,10 +206,18 @@ public class AutoSampleDepot extends LinearOpMode {
             sampleLeft();
             teamMarker();
             moveBackwards(200, 1);
+<<<<<<< HEAD
             rotateLeft(810, 1);
             Thread.sleep(200);
             turnLeft(850, 0.5);
             turnRight(50, 0.5);
+=======
+            Thread.sleep(200);
+            rotateLeft(900,.5);
+            Thread.sleep(200);
+            turnLeft(600,0.5);
+            turnRight(100,0.5);
+>>>>>>> 0ec5e96bc449be697bb3934b215958eeddc4fb20
             moveForwards(1500, 1);
             teamMarker();
 
