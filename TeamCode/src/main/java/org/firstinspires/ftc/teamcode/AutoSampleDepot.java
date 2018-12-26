@@ -92,11 +92,13 @@ public class AutoSampleDepot extends LinearOpMode {
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
 
 
+
         //waitForStart();
-        while (!opModeIsActive() && !isStopRequested()){
-            telemetry.addData("Status", "waiting for start command...");
+        while (!opModeIsActive() && !isStopRequested()) {
             telemetry.update();
+            telemetry.addData("Status", "waiting for start command...");
         }
+        telemetry.setAutoClear(false);
 
         detector.disable();
         leftIntakeFlipper.setPosition(0.4);
@@ -108,7 +110,7 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(1000);
 
         //Telemetry returned X-Value for when block is seen in center position
-        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 550){
+        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 550) {
             center = true;
         }
 
@@ -118,10 +120,10 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(100);
 
         //Telemetry returned X-Value for when block is seen in left position
-        if (detector.getXPosition() < 300 && detector.getXPosition() > 10){
+        if (detector.getXPosition() < 300 && detector.getXPosition() > 10) {
             left = true;
         }
-        telemetry.addData("left",left);
+        telemetry.addData("left", left);
         telemetry.update();
         Thread.sleep(100);
 
@@ -134,92 +136,91 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
-        if(center == true){
+        if (center == true) {
 
-            moveForwards(1500,1);
+            moveForwards(1500, 1);
             rotateLeft(150);
-            moveForwards(100,1);
+            moveForwards(100, 1);
             //turnLeft(270, 0.3);
 
             // Knocking off sample
-            moveForwards(900,1);
-            moveForwards(900,1);
+            moveForwards(900, 1);
+            moveForwards(900, 1);
             //Angling towards depot
             rotateLeft(150);
             Thread.sleep(300);
 
             teamMarker();
             rotateRight(150);
-            moveBackwards(350,1);
-            moveBackwards(350,1);
-            moveBackwards(350,1);
+            moveBackwards(350, 1);
+            moveBackwards(350, 1);
+            moveBackwards(350, 1);
             Thread.sleep(400);
             rotateLeft(550);
             Thread.sleep(300);
-            moveForwards(1600,1);
+            moveForwards(1600, 1);
             Thread.sleep(200);
             rotateLeft(300);
 
             Thread.sleep(600);
-            moveForwards(400,1);
+            moveForwards(400, 1);
             Thread.sleep(300);
             rotateLeft(400);
 
             Thread.sleep(200);
-            turnLeft(1000,.5);
-            turnRight(100,1);
-            moveForwards(400,1);
+            turnLeft(1000, .5);
+            turnRight(100, 1);
+            moveForwards(400, 1);
             teamMarker();
             Thread.sleep(1000);
 
 
-           /* rotateLeft(500);
-            moveForwards(400);
+            rotateLeft(500);
+            moveForwards(400,1);
             rotateLeft(350);
-            moveForwards(2000); */
+            moveForwards(2000,1);
         }
         //Code to run if block is seen in left position, if variable left is returned as true
-        if(left == true){
-            moveForwards(300,1);
+        if (left == true) {
+            moveForwards(300, 1);
             sampleLeft();
             teamMarker();
-            moveBackwards(100,1);
-            rotateLeft(800);
-
-            moveForwards(1900,1);
-
-            moveForwards(2200,1);
-
+            moveBackwards(200, 1);
+            rotateLeft(810);
+            Thread.sleep(200);
+            turnLeft(850,0.5);
+            turnRight(50,0.5);
+            moveForwards(1500, 1);
             teamMarker();
-
 
 
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
-        if(left == false && center == false){
-            moveForwards(500,1);
+        if (left == false && center == false) {
+            moveForwards(500, 1);
             sampleRight();
             teamMarker();
-            moveBackwards(100,1);
+            moveBackwards(100, 1);
             Thread.sleep(300);
             rotateLeft(300);
             Thread.sleep(300);
-            moveForwards(1000,1);
+            moveForwards(1000, 1);
             Thread.sleep(300);
             rotateLeft(300);
             Thread.sleep(300);
-            turnLeft(1000,.5);
-            turnRight(50,1);
+            turnLeft(1000, .5);
+            turnRight(50, 1);
             Thread.sleep(300);
-            moveForwards(1600,1);
+            moveForwards(1600, 1);
             teamMarker();
         }
-   }
+    }
+
 
 
     public void lowerRobot() {
-      /*  lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+     /*   lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Adham you can change these encoder values if you need the lift to go lower or higher
@@ -261,14 +262,7 @@ public class AutoSampleDepot extends LinearOpMode {
         strafingRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         strafingLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (strafingRight.isBusy() || strafingLeft.isBusy()) {
-            //Thread.sleep(500);
-           /* if (!strafingRight.isBusy()){
-                if (!strafingLeft.isBusy()){
-                    strafingRight.setPower(0);
-                    strafingLeft.setPower(0);
-                }
-            }*/
+        while (strafingLeft.isBusy() && strafingRight.isBusy()){
         }
 
         strafingRight.setPower(0);
@@ -321,7 +315,9 @@ public class AutoSampleDepot extends LinearOpMode {
     public void sampleRight() throws InterruptedException {
         rotateRight(350);
         moveForwards(1300,1);
+        Thread.sleep(200);
         rotateLeft(550);
+        Thread.sleep(200);
         moveForwards(1100,1);
         rotateRight(300);
         Thread.sleep(200);
@@ -334,9 +330,12 @@ public class AutoSampleDepot extends LinearOpMode {
     }
     public void sampleLeft() throws InterruptedException {
         rotateLeft(250);
-        moveForwards(1150,1);
-        rotateRight(250);
-        moveForwards(900,1);
+        Thread.sleep(300);
+        moveForwards(1150,0.5);
+        Thread.sleep(300);
+        rotateRight(350);
+        Thread.sleep(1000);
+        moveForwards(900,0.5);
 
 
     }
@@ -359,14 +358,8 @@ public class AutoSampleDepot extends LinearOpMode {
 
         motorBackRight.setPower(1);
         motorBackLeft.setPower(1);
-        while (motorBackRight.isBusy() || motorBackLeft.isBusy()){
-           // Thread.sleep(500);
-            /*if (!motorBackRight.isBusy()){
-                if (!motorBackLeft.isBusy()){
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                }
-            }*/
+
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy()){
         }
 
         motorBackLeft.setPower(0);
@@ -386,14 +379,7 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
 
-        while (motorBackRight.isBusy() || motorBackLeft.isBusy()){
-           // Thread.sleep(500);
-            /*if (!motorBackRight.isBusy()){
-                if (!motorBackLeft.isBusy()){
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                }
-            }*/
+        while (motorBackLeft.isBusy() && motorBackRight.isBusy()){
         }
 
         motorBackRight.setPower(0);
@@ -411,13 +397,9 @@ public class AutoSampleDepot extends LinearOpMode {
         leftSampleArm.setPosition(0.9);
         Thread.sleep(100);
     }
-
-
-
-
 }
 
-/* */
+
 
 
 
