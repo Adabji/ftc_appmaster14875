@@ -98,8 +98,8 @@ public class LimitLiftAuto extends LinearOpMode {
 
     public void lowerRobot() {
         while (!topLimit.isPressed()) {
-            lift1.setPower(-1);
-            lift2.setPower(-1);
+            lift1.setPower(1);
+            lift2.setPower(1);
             if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);

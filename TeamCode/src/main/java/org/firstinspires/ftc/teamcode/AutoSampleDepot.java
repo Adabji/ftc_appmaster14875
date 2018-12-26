@@ -134,16 +134,29 @@ public class AutoSampleDepot extends LinearOpMode {
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
-            moveForwards(1500);
+            // Knocking off sample
+            moveForwards(900);
+            moveForwards(900);
+            //Angling towards depot
             rotateLeft(150);
-            moveForwards(100);
-            //turnLeft(270, 0.3);
-            teamMarker();
-            rotateLeft(300);
-            Thread.sleep(600);
-            moveForwards(400);
             Thread.sleep(300);
-            rotateLeft(400);
+            teamMarker();
+            rotateRight(150);
+            moveBackwards(350);
+            moveBackwards(350);
+            moveBackwards(350);
+            Thread.sleep(400);
+            rotateLeft(550);
+            Thread.sleep(300);
+            moveForwards(1600);
+            Thread.sleep(200);
+            rotateLeft(300);
+            Thread.sleep(200);
+            turnLeft(1000,.5);
+            turnRight(100,1);
+            moveForwards(400);
+            teamMarker();
+
            /* rotateLeft(500);
             moveForwards(400);
             rotateLeft(350);
@@ -156,7 +169,7 @@ public class AutoSampleDepot extends LinearOpMode {
             teamMarker();
             moveBackwards(100);
             rotateLeft(800);
-            moveForwards(1900);
+            moveForwards(2200);
             teamMarker();
 
 
@@ -168,7 +181,19 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(500);
             sampleRight();
             teamMarker();
-            Thread.sleep(1000);
+            moveBackwards(100);
+            Thread.sleep(300);
+            rotateLeft(300);
+            Thread.sleep(300);
+            moveForwards(1000);
+            Thread.sleep(300);
+            rotateLeft(300);
+            Thread.sleep(300);
+            turnLeft(1000,.5);
+            turnRight(50,1);
+            Thread.sleep(300);
+            moveForwards(1600);
+            teamMarker();
         }
    }
 
@@ -267,10 +292,14 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleRight() throws InterruptedException {
-        rotateRight(350);
+        rotateRight(300);
+        Thread.sleep(200);
         moveForwards(1300);
-        rotateLeft(550);
-        moveForwards(1100);
+        Thread.sleep(200);
+        rotateLeft(600);
+        Thread.sleep(200);
+        moveForwards(900);
+        Thread.sleep(200);
     }
     public void sampleLeft() throws InterruptedException {
         rotateLeft(250);
