@@ -139,64 +139,26 @@ public class AutoSampleDepot extends LinearOpMode {
         if (center == true) {
 
 
-            moveForwards(1500, 1);
-            rotateLeft(150, 1);
-            moveForwards(100, 1);
+            moveForwards(1900, .5);
+            rotateLeft(150, .5);
+            moveForwards(100, .5);
             //turnLeft(270, 0.3);
-
-            // Knocking off sample
-            moveForwards(900, 1);
-            moveForwards(900, 1);
-            //Angling towards depot
-            rotateLeft(150, 1);
-            Thread.sleep(300);
 
             teamMarker();
             rotateRight(150, 1);
-            moveBackwards(350, 1);
-            moveBackwards(350, 1);
-            moveBackwards(350, 1);
+            moveBackwards(1000, .5);
             Thread.sleep(400);
-            rotateLeft(550, 1);
+            rotateLeft(500, 1);
 
             moveForwards(1700, .5);
             Thread.sleep(200);
-            rotateLeft(150,.5);
+            rotateLeftSlow(300,.5);
             Thread.sleep(200);
+            turnRight(500,.7);
+            turnLeft(20,1);
             moveForwards(100, .5);
 
             teamMarker();
-            rotateRight(150,.5);
-            Thread.sleep(200);
-            moveBackwards(800, .5);
-            Thread.sleep(400);
-            rotateLeft(450,1);
-
-            Thread.sleep(300);
-            moveForwards(1700, .5);
-            Thread.sleep(200);
-
-            rotateLeft(300, 1);
-
-            Thread.sleep(600);
-            moveForwards(400, 1);
-            Thread.sleep(300);
-            rotateLeft(400, 1);
-
-
-            rotateLeft(300,1);
-
-            Thread.sleep(200);
-            moveForwards(400, 1);
-            teamMarker();
-
-            Thread.sleep(1000);
-
-
-            rotateLeft(500, 1);
-            moveForwards(400, 1);
-            rotateLeft(350, 1);
-            moveForwards(2000, 1);
 
         }
         //Code to run if block is seen in left position, if variable left is returned as true
