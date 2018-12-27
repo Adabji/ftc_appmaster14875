@@ -186,16 +186,17 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
         if (left == false && center == false) {
-            moveForwards(500, 1);
+            moveForwards(350, 0.5);
+            Thread.sleep(500);
             sampleRight();
             teamMarker();
-            moveBackwards(100, 1);
+            moveBackwards(250, 1);
             Thread.sleep(300);
-            rotateLeft(300, 1);
+            rotateLeft(250, 0.5);
             Thread.sleep(300);
-            moveForwards(1000, 1);
-            Thread.sleep(300);
-            rotateLeft(300, 1);
+            moveForwards(550, 1);
+            Thread.sleep(1000);
+            rotateLeftSlow(500, 0.5);
             Thread.sleep(300);
             turnLeft(1000, .5);
             turnRight(50, 1);
@@ -301,20 +302,21 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleRight() throws InterruptedException {
-        rotateRight(350, 1);
-        moveForwards(1300, 1);
+        rotateRight(230, 0.5);
+        Thread.sleep(500);
+        moveForwards(900, 0.5);
+        Thread.sleep(500);
+        rotateLeftSlow(1200, 0.5);
         Thread.sleep(200);
-        rotateLeft(550, 1);
-        Thread.sleep(200);
-        moveForwards(1100, 1);
-        rotateRight(300, 1);
+        moveForwards(470, 0.5);
+        /*rotateRight(300, 1);
         Thread.sleep(200);
         moveForwards(1300, 1);
         Thread.sleep(200);
         rotateLeft(600, 1);
         Thread.sleep(200);
         moveForwards(900, 1);
-        Thread.sleep(200);
+        Thread.sleep(200); */
     }
 
     public void sampleLeft() throws InterruptedException {
@@ -357,7 +359,7 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setPower(0);
     }
 
-    public void rotateRightSlow(int distance, double power){
+    public void rotateLeftSlow(int distance, double power){
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setTargetPosition(distance);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -367,9 +369,9 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackLeft.setPower(0);
     }
 
-    public void rotateLeftSlow(int distance, double power){
+    public void rotateRightSlow(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(-distance);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setPower(power);
         while (motorBackRight.isBusy()){
