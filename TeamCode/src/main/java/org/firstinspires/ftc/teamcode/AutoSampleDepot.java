@@ -50,7 +50,6 @@ public class AutoSampleDepot extends LinearOpMode {
     double startTime = timer.time();
     private TouchSensor bottomLimit;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
