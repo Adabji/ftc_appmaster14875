@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -106,7 +107,7 @@ public class AutoSampleDepot extends LinearOpMode {
         detector.disable();
         leftIntakeFlipper.setPosition(0.4);
         rightIntakeFlipper.setPosition(0.6);
-        leftSampleArm.setPosition(0.3);
+        leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(1000);
         detector.enable();
@@ -140,50 +141,47 @@ public class AutoSampleDepot extends LinearOpMode {
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
-
-
-            moveForwards(1900, .5);
-            rotateLeft(150, .5);
-            moveForwards(100, .5);
-            //turnLeft(270, 0.3);
-
+            moveForwards(2000, .5);
+            telemetry.addData("1","moveForwards");
+            telemetry.update();
             teamMarker();
-            rotateRight(150, 1);
-            moveBackwards(1000, .5);
+            telemetry.addData("2","teamMarker");
+            telemetry.update();
+            moveBackwards(1550, .5);
+            telemetry.addData("3","moveBackwards");
+            telemetry.update();
             Thread.sleep(400);
-            rotateLeft(500, 1);
+            rotateLeft(400, 0.5);
+            telemetry.addData("4","rotateLeft");
+            telemetry.update();
+            Thread.sleep(500);
 
-            moveForwards(1700, .5);
+            moveForwards(1400, .5);
+            telemetry.addData("5","moveForwards");
+            telemetry.update();
             Thread.sleep(200);
-            rotateLeftSlow(300,.5);
+            rotateLeftSlow(800,.5);
+            telemetry.addData("6","rotateLeftSlow");
+            telemetry.update();
             Thread.sleep(200);
-            turnRight(500,.7);
-            turnLeft(20,1);
             moveForwards(100, .5);
-
-            teamMarker();
 
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if (left == true) {
-            moveForwards(300, 1);
+            moveForwards(300, 0.5);
+            Thread.sleep(200);
             sampleLeft();
             teamMarker();
-            moveBackwards(200, 1);
-
-            rotateLeft(810, 1);
+            moveBackwards(400, 1);
             Thread.sleep(200);
-            turnLeft(850, 0.5);
-            turnRight(50, 0.5);
 
+            rotateLeft(700, 1);
             Thread.sleep(200);
-            rotateLeft(900,.5);
+            rotateLeftSlow(300,0.5);
             Thread.sleep(200);
-            turnLeft(600,0.5);
-            turnRight(100,0.5);
 
-            moveForwards(1500, 1);
-            teamMarker();
+            moveForwards(1200, 1);
 
 
         }
@@ -257,8 +255,8 @@ public class AutoSampleDepot extends LinearOpMode {
         while (strafingLeft.isBusy() && strafingRight.isBusy()) {
         }
 
-        strafingRight.setPower(0);
-        strafingLeft.setPower(0);
+        strafingRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        strafingLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void turnLeft(int distance, double power) throws InterruptedException {
@@ -324,13 +322,14 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleLeft() throws InterruptedException {
-        rotateLeft(250, 1);
+        rotateLeft(250, 0.5);
         Thread.sleep(300);
         moveForwards(1150, 0.5);
         Thread.sleep(300);
-        rotateRight(350, 1);
+        rotateRightSlow(800, 0.5);
         Thread.sleep(1000);
         moveForwards(900, 0.5);
+        rotateLeftSlow(300,0.5);
 
 
     }
@@ -361,6 +360,8 @@ public class AutoSampleDepot extends LinearOpMode {
 
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void rotateLeftSlow(int distance, double power){
@@ -371,6 +372,7 @@ public class AutoSampleDepot extends LinearOpMode {
         while (motorBackLeft.isBusy()){
         }
         motorBackLeft.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void rotateRightSlow(int distance, double power){
@@ -381,6 +383,7 @@ public class AutoSampleDepot extends LinearOpMode {
         while (motorBackRight.isBusy()){
         }
         motorBackRight.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveForwards(int distance, double power) throws InterruptedException {
@@ -401,6 +404,8 @@ public class AutoSampleDepot extends LinearOpMode {
 
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void rotateRight(int distance, double power) throws InterruptedException {
