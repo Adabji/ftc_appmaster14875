@@ -142,27 +142,14 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
             moveForwards(2000, .5);
-            telemetry.addData("1","moveForwards");
-            telemetry.update();
             teamMarker();
-            telemetry.addData("2","teamMarker");
-            telemetry.update();
             moveBackwards(1550, .5);
-            telemetry.addData("3","moveBackwards");
-            telemetry.update();
             Thread.sleep(400);
             rotateLeft(400, 0.5);
-            telemetry.addData("4","rotateLeft");
-            telemetry.update();
             Thread.sleep(500);
-
             moveForwards(1400, .5);
-            telemetry.addData("5","moveForwards");
-            telemetry.update();
             Thread.sleep(200);
             rotateLeftSlow(800,.5);
-            telemetry.addData("6","rotateLeftSlow");
-            telemetry.update();
             Thread.sleep(200);
             moveForwards(100, .5);
 
@@ -175,12 +162,10 @@ public class AutoSampleDepot extends LinearOpMode {
             teamMarker();
             moveBackwards(400, 1);
             Thread.sleep(200);
-
             rotateLeft(700, 1);
             Thread.sleep(200);
             rotateLeftSlow(300,0.5);
             Thread.sleep(200);
-
             moveForwards(1200, 1);
 
 
@@ -203,7 +188,7 @@ public class AutoSampleDepot extends LinearOpMode {
             turnLeft(1000, .5);
             turnRight(50, 1);
             Thread.sleep(300);
-            moveForwards(1600, 1);
+            moveForwards(1400, 1);
             teamMarker();
         }
     }
