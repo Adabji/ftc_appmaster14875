@@ -54,6 +54,7 @@ public class AutoSampleDepot extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
     private TouchSensor bottomLimit;
+    private TouchSensor topLimit;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -94,7 +95,9 @@ public class AutoSampleDepot extends LinearOpMode {
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
+        topLimit = hardwareMap.touchSensor.get("topLimit");
 
 
         //waitForStart();
@@ -152,6 +155,8 @@ public class AutoSampleDepot extends LinearOpMode {
             rotateLeftSlow(800,.5);
             Thread.sleep(200);
             moveForwards(100, .5);
+            parkInCrater();
+            lowerLift();
 
         }
         //Code to run if block is seen in left position, if variable left is returned as true
@@ -167,6 +172,8 @@ public class AutoSampleDepot extends LinearOpMode {
             rotateLeftSlow(300,0.5);
             Thread.sleep(200);
             moveForwards(1200, 1);
+            parkInCrater();
+            lowerLift();
 
 
         }
@@ -189,6 +196,8 @@ public class AutoSampleDepot extends LinearOpMode {
             turnRight(50, 1);
             Thread.sleep(300);
             moveForwards(1400, 1);
+            parkInCrater();
+            lowerLift();
         }
     }
 
@@ -316,6 +325,7 @@ public class AutoSampleDepot extends LinearOpMode {
         rotateLeftSlow(300,0.5);
 
 
+
     }
 
     public void teamMarker() throws InterruptedException {
@@ -413,5 +423,15 @@ public class AutoSampleDepot extends LinearOpMode {
     public void parkInCrater(){
         extend(0,0);
         extend(0,0);
+    }
+    public void lowerLift(){
+        while (!topLimit.isPressed()) {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            if (topLimit.isPressed()) {
+                lift1.setPower(0);
+                lift2.setPower(0);
+            }
+        }
     }
 }
