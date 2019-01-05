@@ -8,11 +8,18 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.path.LineSegment;
+import com.acmerobotics.roadrunner.path.Path;
+import com.acmerobotics.roadrunner.profile.MotionProfile;
+import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+import com.acmerobotics.roadrunner.profile.MotionState;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -93,6 +100,12 @@ public class AutoSampleCrater extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
+        /*MotionProfile profile = MotionProfileGenerator.generateSimpleMotionProfile(
+                new MotionState(0,0,0,0),
+                new MotionState(10,0,0,0),
+                5,
+                5
+        ); */
 
         detector.disable();
         leftIntakeFlipper.setPosition(0.4);
@@ -198,8 +211,8 @@ public class AutoSampleCrater extends LinearOpMode {
         while (strafingRight.isBusy() || strafingLeft.isBusy()) {
         }
 
-        strafingRight.setPower(0);
-        strafingLeft.setPower(0);
+        strafingRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        strafingLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void turnLeft(int distance, double power) {
@@ -278,8 +291,8 @@ public class AutoSampleCrater extends LinearOpMode {
         while (motorBackRight.isBusy() || motorBackLeft.isBusy()){
         }
 
-        motorBackLeft.setPower(0);
-        motorBackRight.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
     }
     public void moveForwards(int distance){
@@ -298,8 +311,8 @@ public class AutoSampleCrater extends LinearOpMode {
         while (motorBackRight.isBusy() || motorBackLeft.isBusy()){
         }
 
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void rotateRight(int distance){
         rotateLeft(-distance);
