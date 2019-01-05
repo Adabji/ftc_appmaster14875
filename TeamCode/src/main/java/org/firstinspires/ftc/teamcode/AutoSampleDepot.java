@@ -189,7 +189,6 @@ public class AutoSampleDepot extends LinearOpMode {
             turnRight(50, 1);
             Thread.sleep(300);
             moveForwards(1400, 1);
-            teamMarker();
         }
     }
 
@@ -327,7 +326,7 @@ public class AutoSampleDepot extends LinearOpMode {
         rightIntakeFlipper.setPosition(0.7);
     }
 
-    public void rotateLeft(int distance, double power) throws InterruptedException {
+    public void rotateLeft(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -371,7 +370,7 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
-    public void moveForwards(int distance, double power) throws InterruptedException {
+    public void moveForwards(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -393,21 +392,26 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
-    public void rotateRight(int distance, double power) throws InterruptedException {
+    public void rotateRight(int distance, double power){
         rotateLeft(-distance, power);
     }
 
-    public void moveBackwards(int distance, double power) throws InterruptedException {
+    public void moveBackwards(int distance, double power){
         moveForwards(-distance, power);
     }
 
-    public void parkInCrater() throws InterruptedException {
-        //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)
-        //left arm down
-        leftSampleArm.setPosition(0.9);
-        Thread.sleep(100);
-
+    public void extend(double power, int distance){
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()){
+        }
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void parkInCrater(){
+        extend(0,0);
+        extend(0,0);
     }
 }
-  //  turnLeft(500,1);
-  //  parkInCrater();
