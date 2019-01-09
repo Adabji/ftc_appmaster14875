@@ -145,16 +145,18 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
             moveForwards(2000, .5);
+            rotateLeft(150,0.5);
             teamMarker();
+            rotateRight(150,0.5);
             moveBackwards(1550, .5);
             Thread.sleep(400);
             rotateLeft(400, 0.5);
             Thread.sleep(500);
-            moveForwards(1400, .5);
+            moveForwards(1200, .5);
             Thread.sleep(200);
-            rotateLeftSlow(800,.5);
+            rotateLeftSlow(750,.5);
             Thread.sleep(200);
-            moveForwards(100, .5);
+            moveForwards(300, .5);
             parkInCrater();
             lowerLift();
 
@@ -171,7 +173,8 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(200);
             rotateLeftSlow(300,0.5);
             Thread.sleep(200);
-            moveForwards(1200, 1);
+            moveForwards(1500, 0.5);
+            turnLeft(1000,0.5);
             parkInCrater();
             lowerLift();
 
@@ -184,18 +187,17 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(500);
             sampleRight();
             teamMarker();
-            moveBackwards(250, 1);
+            moveBackwards(800, 0.5);
             Thread.sleep(300);
-            rotateLeft(250, 0.5);
+            rotateLeft(220, 0.5);
             Thread.sleep(300);
-            moveForwards(550, 1);
+            moveForwards(900, 1);
             Thread.sleep(1000);
-            rotateLeftSlow(500, 0.5);
+            rotateLeftSlow(550, 0.5);
             Thread.sleep(300);
-            turnLeft(1000, .5);
-            turnRight(50, 1);
-            Thread.sleep(300);
-            moveForwards(1400, 1);
+            moveForwards(250, 1);
+            rotateLeftSlow(300,0.5);
+            moveForwards(1000,1);
             parkInCrater();
             lowerLift();
         }
@@ -221,7 +223,8 @@ public class AutoSampleDepot extends LinearOpMode {
         }
 
         lift1.setPower(0);
-        lift2.setPower(0); */
+        lift2.setPower(0);
+        */
         while (!bottomLimit.isPressed()) {
             lift1.setPower(-1);
             lift2.setPower(-1);
@@ -301,9 +304,9 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(500);
         moveForwards(900, 0.5);
         Thread.sleep(500);
-        rotateLeftSlow(1200, 0.5);
+        rotateLeftSlow(1000, 0.5);
         Thread.sleep(200);
-        moveForwards(470, 0.5);
+        moveForwards(900, 0.5);
         /*rotateRight(300, 1);
         Thread.sleep(200);
         moveForwards(1300, 1);
@@ -321,7 +324,7 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(300);
         rotateRightSlow(800, 0.5);
         Thread.sleep(1000);
-        moveForwards(900, 0.5);
+        moveForwards(800, 0.5);
         rotateLeftSlow(300,0.5);
 
 
@@ -421,8 +424,7 @@ public class AutoSampleDepot extends LinearOpMode {
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void parkInCrater(){
-        extend(0,0);
-        extend(0,0);
+        extend(1,3000);
     }
     public void lowerLift(){
         while (!topLimit.isPressed()) {
