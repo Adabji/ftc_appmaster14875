@@ -122,7 +122,7 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(2000);
 
         //Telemetry returned X-Value for when block is seen in center position
-        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 550){
+        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 600){
             center = true;
         }
 
@@ -149,7 +149,7 @@ public class AutoSampleCrater extends LinearOpMode {
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
-            sampleRight();
+            sampleCenter();
             moveToDepot();
             rotateLeft(1200,0.3);
             moveForwards(2000,0.5);
@@ -159,7 +159,7 @@ public class AutoSampleCrater extends LinearOpMode {
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
-            sampleRight();
+            sampleLeft();
             moveToDepot();
             rotateLeft(1200,0.3);
             moveForwards(2000,0.5);
