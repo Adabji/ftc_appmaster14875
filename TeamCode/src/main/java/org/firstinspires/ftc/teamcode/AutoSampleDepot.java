@@ -117,7 +117,7 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(1000);
 
         //Telemetry returned X-Value for when block is seen in center position
-        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 550) {
+        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 600) {
             center = true;
         }
 

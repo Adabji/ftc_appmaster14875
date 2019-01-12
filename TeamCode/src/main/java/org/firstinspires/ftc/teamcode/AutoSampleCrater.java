@@ -115,7 +115,7 @@ public class AutoSampleCrater extends LinearOpMode {
         detector.disable();
         leftIntakeFlipper.setPosition(0.4);
         rightIntakeFlipper.setPosition(0.6);
-        leftSampleArm.setPosition(0.3);
+        leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(500);
         detector.enable();
@@ -143,36 +143,40 @@ public class AutoSampleCrater extends LinearOpMode {
         phoneMount.setPosition(0.43);
         Thread.sleep(500);
 
-        lowerRobot();
+       /* lowerRobot();
         //turnRight(300, 0.3);
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
-            sampleLeft();
+            sampleRight();
+            moveToDepot();
+            rotateLeft(1200,0.3);
+            moveForwards(2000,0.5);
+            parkInCrater();
+            lowerLift();
 
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
-            sampleLeft();
+            sampleRight();
+            moveToDepot();
+            rotateLeft(1200,0.3);
+            moveForwards(2000,0.5);
+            parkInCrater();
+            lowerLift();
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
         if(left == false && center == false){
-            sampleLeft();
-            /*//turnLeft(270, 0.3);
-            //teamMarker();
-            moveBackwards(700,0.5);
-            Thread.sleep(200);
-            rotateLeft(400,0.5);
-            moveForwards(1400,0.5);
-            Thread.sleep(200);
-            rotateLeft(350,0.5);
-            moveForwards(2000,0.5);/* moveForwards(300);
             sampleRight();
-            //teamMarker();
-            Thread.sleep(1000); */
-        }
+            moveToDepot();
+            rotateLeft(1200,0.3);
+            moveForwards(2000,0.5);
+            parkInCrater();
+            lowerLift();
+
+        }*/
     }
 
 
@@ -324,12 +328,6 @@ public class AutoSampleCrater extends LinearOpMode {
     public void moveBackwards(int distance, double power){
         moveForwards(-distance, power);
     }
-    public void parkInCrater() throws InterruptedException{
-        //This space is for any commands like rotate or move forward (if it stalls add Thread.sleep(time in milliseconds)
-        //left arm down
-        leftSampleArm.setPosition(0.9);
-        Thread.sleep(100);
-    }
     public void sampleCenter() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
@@ -342,23 +340,81 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(400,0.5);
         Thread.sleep(500);
         rotateLeft(350,0.5);
-        moveForwards(700,0.5);
+        moveForwards(750,0.3);
         Thread.sleep(200);
-        moveBackwards(700,0.5);
+        moveBackwards(750,0.3);
         rotateRight(350,0.5);
     }
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateRight(350,0.5);
-        moveForwards(700,0.5);
+        rotateRight(300,0.5);
+        Thread.sleep(400);
+        moveForwards(750,0.5);
         Thread.sleep(200);
-        moveBackwards(700,0.5);
-        rotateLeft(350,0.5);
+        moveBackwards(750,0.3);
+        rotateLeft(300,0.5);
+        Thread.sleep(200);
     }
-    })
 
+    public void moveToDepot() throws InterruptedException{
+        rotateLeft(450,0.5);
+        Thread.sleep(200);
+        moveForwards(1400,0.5);
+        Thread.sleep(200);
+        rotateLeftSlow(880,0.5);
+        Thread.sleep(200);
+        moveForwards(2000,0.5);
+        rotateLeft(200,0.2);
+        teamMarker();
+        rotateRight(200,0.2);
+        Thread.sleep(200);
 
+    }
 
+    public void rotateLeftSlow(int distance, double power){
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setTargetPosition(distance);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setPower(power);
+
+        while (motorBackLeft.isBusy()){
+        }
+        motorBackLeft.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void rotateRightSlow(int distance, double power){
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setTargetPosition(-distance);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setPower(power);
+        while (motorBackRight.isBusy()){
+        }
+        motorBackRight.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void extend(double power, int distance) {
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()) {
+        }
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void parkInCrater(){
+        extend(1,3000);
+    }
+    public void lowerLift(){
+        while (!topLimit.isPressed()) {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            if (topLimit.isPressed()) {
+                lift1.setPower(0);
+                lift2.setPower(0);
+            }
+        }
+    }
 
 }
