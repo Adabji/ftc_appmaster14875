@@ -29,7 +29,6 @@ public class TeleOpHDrive extends LinearOpMode {
     private Servo landerFlipper;
     private CRServo intakeCR;
     private DcMotor extension;
-    private Servo intakeWheels;
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
     private TouchSensor inLimit;
@@ -62,7 +61,6 @@ public class TeleOpHDrive extends LinearOpMode {
 
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeWheels = hardwareMap.servo.get("intakeWheels");
 
         topLimit = hardwareMap.touchSensor.get("topLimit");
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
@@ -153,14 +151,6 @@ public class TeleOpHDrive extends LinearOpMode {
                     } else {
                         extension.setPower(0);
                     }
-                }
-                //intake wheels move down to stabilize extension
-                if (gamepad1.dpad_down) {
-                    intakeWheels.setPosition(0.71);
-                }
-                //intake wheels move up to extend slides over crater
-                if (gamepad1.dpad_up) {
-                    intakeWheels.setPosition(0.3);
                 }
                 //limit switch will stop lift if it is too high or low; prevents jamming
                 if (bottomLimit.isPressed()) {
