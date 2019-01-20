@@ -113,8 +113,8 @@ public class AutoSampleCrater extends LinearOpMode {
         ); */
 
         detector.disable();
-        leftIntakeFlipper.setPosition(0.4);
-        rightIntakeFlipper.setPosition(0.6);
+        leftIntakeFlipper.setPosition(0.5);
+        rightIntakeFlipper.setPosition(0.5);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(500);
@@ -143,7 +143,7 @@ public class AutoSampleCrater extends LinearOpMode {
         phoneMount.setPosition(0.43);
         Thread.sleep(500);
 
-       /* lowerRobot();
+        lowerRobot();
         //turnRight(300, 0.3);
         Thread.sleep(100);
 
@@ -176,30 +176,11 @@ public class AutoSampleCrater extends LinearOpMode {
             parkInCrater();
             lowerLift();
 
-        }*/
+        }
     }
 
 
     public void lowerRobot() {
-       /* lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Adham you can change these encoder values if you need the lift to go lower or higher
-        //JUST MAKE SURE THEY ARE BOTH NEGATIVE OR ELSE THE LIFT WILL BREAK
-        lift1.setTargetPosition(-4560);
-        lift2.setTargetPosition(-4560);
-
-        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        lift1.setPower(1);
-        lift2.setPower(1);
-
-        while (lift1.isBusy() || lift2.isBusy()) {
-        }
-
-        lift1.setPower(0);
-        lift2.setPower(0); */
         while (!bottomLimit.isPressed()) {
             lift1.setPower(-1);
             lift2.setPower(-1);
@@ -350,17 +331,17 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(500);
         rotateRight(300,0.5);
         Thread.sleep(400);
-        moveForwards(750,0.5);
+        moveForwards(850,0.5);
         Thread.sleep(200);
-        moveBackwards(750,0.3);
-        rotateLeft(300,0.5);
+        moveBackwards(850,0.3);
+        rotateLeft(320,0.5);
         Thread.sleep(200);
     }
 
     public void moveToDepot() throws InterruptedException{
         rotateLeft(450,0.5);
         Thread.sleep(200);
-        moveForwards(1400,0.5);
+        moveForwards(1500,0.5);
         Thread.sleep(200);
         rotateLeftSlow(880,0.5);
         Thread.sleep(200);

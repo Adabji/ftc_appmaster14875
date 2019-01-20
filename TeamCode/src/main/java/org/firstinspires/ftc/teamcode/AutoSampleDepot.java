@@ -108,8 +108,8 @@ public class AutoSampleDepot extends LinearOpMode {
         telemetry.setAutoClear(false);
 
         detector.disable();
-        leftIntakeFlipper.setPosition(0.4);
-        rightIntakeFlipper.setPosition(0.6);
+        leftIntakeFlipper.setPosition(0.5);
+        rightIntakeFlipper.setPosition(0.5);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(1000);
