@@ -331,17 +331,17 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(500);
         rotateRight(300,0.5);
         Thread.sleep(400);
-        moveForwards(850,0.5);
+        moveForwards(750,0.5);
         Thread.sleep(200);
-        moveBackwards(850,0.3);
-        rotateLeft(320,0.5);
+        moveBackwards(750,0.3);
+        rotateLeft(300,0.5);
         Thread.sleep(200);
     }
 
     public void moveToDepot() throws InterruptedException{
         rotateLeft(450,0.5);
         Thread.sleep(200);
-        moveForwards(1500,0.5);
+        moveForwards(1400,0.5);
         Thread.sleep(200);
         rotateLeftSlow(880,0.5);
         Thread.sleep(200);
