@@ -87,7 +87,9 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        lowerRobot();
+
+
+
         //turnRight(300, 0.3);
         Thread.sleep(100);
 
@@ -106,5 +108,6 @@ public class LimitLiftAuto extends LinearOpMode {
             }
         }
     }
+
 }
 

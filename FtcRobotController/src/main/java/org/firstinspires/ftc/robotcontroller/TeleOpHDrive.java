@@ -32,6 +32,8 @@ public class TeleOpHDrive extends LinearOpMode {
     private Servo intakeWheels;
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
+    private TouchSensor inLimit;
+    private int extensionReset;
 
 
     @Override
@@ -67,9 +69,11 @@ public class TeleOpHDrive extends LinearOpMode {
 
         phoneMount = hardwareMap.servo.get("phoneMount");
 
+        inLimit = hardwareMap.touchSensor.get("inLimit");
+
 
 //Wait for the game to start
-        while (!opModeIsActive() && !isStopRequested()){
+        while (!opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
@@ -88,23 +92,25 @@ public class TeleOpHDrive extends LinearOpMode {
 
             //down position of flipper
             if (gamepad2.a) {
-                rightIntakeFlipper.setPosition(0.2);
+                rightIntakeFlipper.setPosition(0.7);
+                leftIntakeFlipper.setPosition(0.7);
+                Thread.sleep(500);
+                rightIntakeFlipper.setPosition(0.8);
                 leftIntakeFlipper.setPosition(0.8);
-                Thread.sleep(1000);
-                rightIntakeFlipper.setPosition(0.15);
-                leftIntakeFlipper.setPosition(0.85);
             }
 
             //up position of flipper
             if (gamepad2.y) {
-                leftIntakeFlipper.setPosition(0.2);
-                rightIntakeFlipper.setPosition(0.8);
+                leftIntakeFlipper.setPosition(0.24);
+                rightIntakeFlipper.setPosition(0.24);
+                Thread.sleep(100);
             }
 
             //mid position of flipper
             if (gamepad2.b) {
                 leftIntakeFlipper.setPosition(0.5);
                 rightIntakeFlipper.setPosition(0.5);
+                Thread.sleep(100);
 
             }
             //lander flipper up
@@ -118,11 +124,11 @@ public class TeleOpHDrive extends LinearOpMode {
             }
             if (gamepad1.a) {
                 //in
-                intakeCR.setPower(1);
+                intakeCR.setPower(-0.9);
             }
             if (gamepad1.y) {
                 //out
-                intakeCR.setPower(-1);
+                intakeCR.setPower(0.8);
             }
             if (gamepad1.x) {
                 //stop
@@ -133,50 +139,55 @@ public class TeleOpHDrive extends LinearOpMode {
                 intakeCR.setPower(0);
             }
             //extend extension slides
-            if (gamepad2.right_bumper) {
-                extension.setPower(1.0);
-            } else {
-                //retract extension slides
-                if (gamepad2.left_bumper) {
-                    extension.setPower(-1.0);
+            if (inLimit.isPressed()) {
+                extension.setPower(0);
+                Thread.sleep(500);
+                extensionReset = extension.getCurrentPosition();
+            }
+
+                if (gamepad2.right_bumper) {
+                    extension.setPower(1.0);
                 } else {
-                    extension.setPower(0);
+                    if (gamepad2.left_bumper) {
+                        extension.setPower(-1.0);
+                    } else {
+                        extension.setPower(0);
+                    }
                 }
-            }
-            //intake wheels move down to stabilize extension
-            if (gamepad1.dpad_down) {
-                intakeWheels.setPosition(0.71);
-            }
-            //intake wheels move up to extend slides over crater
-            if (gamepad1.dpad_up) {
-                intakeWheels.setPosition(0.3);
-            }
-            //limit switch will stop lift if it is too high or low; prevents jamming
-            if (bottomLimit.isPressed()) {
-                lift1.setPower(1);
-                lift2.setPower(1);
-                Thread.sleep(50);
-                stopLift();
-                lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-            } else {
-                if (topLimit.isPressed()) {
-                    lift1.setPower(-1);
-                    lift2.setPower(-1);
-                    Thread.sleep(100);
+                //intake wheels move down to stabilize extension
+                if (gamepad1.dpad_down) {
+                    intakeWheels.setPosition(0.71);
+                }
+                //intake wheels move up to extend slides over crater
+                if (gamepad1.dpad_up) {
+                    intakeWheels.setPosition(0.3);
+                }
+                //limit switch will stop lift if it is too high or low; prevents jamming
+                if (bottomLimit.isPressed()) {
+                    lift1.setPower(1);
+                    lift2.setPower(1);
+                    Thread.sleep(50);
                     stopLift();
                     lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                     lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                 } else {
-                    lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                    lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                    if (topLimit.isPressed()) {
+                        lift1.setPower(-1);
+                        lift2.setPower(-1);
+                        Thread.sleep(100);
+                        stopLift();
+                        lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                        lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                    } else {
+                        lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                        lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                    }
                 }
             }
         }
+        private void stopLift () throws InterruptedException {
+            lift1.setPower(0);
+            lift2.setPower(0);
+            Thread.sleep(500);
+        }
     }
-    private void stopLift () throws InterruptedException{
-        lift1.setPower(0);
-        lift2.setPower(0);
-        Thread.sleep(500);
-    }
-}
