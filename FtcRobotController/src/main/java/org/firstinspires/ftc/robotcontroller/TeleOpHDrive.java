@@ -90,30 +90,38 @@ public class TeleOpHDrive extends LinearOpMode {
 
             //down position of flipper
             if (gamepad2.a) {
-                rightIntakeFlipper.setPosition(0.7);
-                leftIntakeFlipper.setPosition(0.7);
+                rightIntakeFlipper.setPosition(0.77);
+                leftIntakeFlipper.setPosition(0.77);
                 Thread.sleep(500);
-                rightIntakeFlipper.setPosition(0.8);
-                leftIntakeFlipper.setPosition(0.8);
+                rightIntakeFlipper.setPosition(0.87);
+                leftIntakeFlipper.setPosition(0.87);
             }
 
             //up position of flipper
             if (gamepad2.y) {
-                leftIntakeFlipper.setPosition(0.24);
-                rightIntakeFlipper.setPosition(0.24);
-                Thread.sleep(100);
+                leftIntakeFlipper.setPosition(0.31);
+                rightIntakeFlipper.setPosition(0.31);
+
             }
 
+
             //mid position of flipper
+            if (gamepad2.x) {
+                leftIntakeFlipper.setPosition(0.57);
+                rightIntakeFlipper.setPosition(0.57);
+
+
+            }
             if (gamepad2.b) {
-                leftIntakeFlipper.setPosition(0.5);
-                rightIntakeFlipper.setPosition(0.5);
-                Thread.sleep(100);
+                leftIntakeFlipper.setPosition(0.57);
+                rightIntakeFlipper.setPosition(0.57
+                );
+
 
             }
             //lander flipper up
             if (gamepad1.right_bumper) {
-                landerFlipper.setPosition(0.49);
+                landerFlipper.setPosition(0.55);
 
             }
             //lander flipper down
@@ -179,21 +187,21 @@ public class TeleOpHDrive extends LinearOpMode {
                 if (bottomLimit.isPressed()) {
                     lift1.setPower(1);
                     lift2.setPower(1);
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                     stopLift();
-                    lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                    lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 } else {
                     if (topLimit.isPressed()) {
                         lift1.setPower(-1);
                         lift2.setPower(-1);
                         Thread.sleep(100);
                         stopLift();
-                        lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                        lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                     } else {
-                        lift1.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                        lift2.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                     }
                 }
             }
