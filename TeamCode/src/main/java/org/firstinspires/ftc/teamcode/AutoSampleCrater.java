@@ -54,6 +54,7 @@ public class AutoSampleCrater extends LinearOpMode {
     double startTime = timer.time();
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
+    private Servo landerFlipper;
 
 
 
@@ -98,6 +99,7 @@ public class AutoSampleCrater extends LinearOpMode {
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topLimit = hardwareMap.touchSensor.get("topLimit");
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
+        landerFlipper = hardwareMap.servo.get("landerFlipper");
 
 
         //waitForStart();
@@ -115,6 +117,7 @@ public class AutoSampleCrater extends LinearOpMode {
         detector.disable();
         leftIntakeFlipper.setPosition(0.5);
         rightIntakeFlipper.setPosition(0.5);
+        landerFlipper.setPosition(0.05);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(500);
@@ -160,9 +163,19 @@ public class AutoSampleCrater extends LinearOpMode {
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
             sampleLeft();
-            moveToDepot();
-            rotateLeft(1200,0.3);
+            rotateLeft(450,0.5);
+            Thread.sleep(200);
+            moveForwards(1530,0.5);
+            Thread.sleep(200);
+            rotateLeftSlow(880,0.5);
+            Thread.sleep(200);
             moveForwards(2000,0.5);
+            rotateLeft(200,0.2);
+            teamMarker();
+            rotateRight(200,0.2);
+            Thread.sleep(200);
+            rotateLeft(1200,0.3);
+            moveForwards(2100,0.5);
             parkInCrater();
             lowerLift();
         }
@@ -260,8 +273,6 @@ public class AutoSampleCrater extends LinearOpMode {
         leftSampleArm.setPosition(0.9);
         Thread.sleep(1000);
         leftSampleArm.setPosition(0.3);
-        leftIntakeFlipper.setPosition(0.3);
-        rightIntakeFlipper.setPosition(0.7);
     }
     public void rotateLeft(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -321,10 +332,12 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(400,0.5);
         Thread.sleep(500);
         rotateLeft(350,0.5);
-        moveForwards(750,0.3);
+        Thread.sleep(400);
+        moveForwards(780,0.3);
         Thread.sleep(200);
-        moveBackwards(750,0.3);
-        rotateRight(350,0.5);
+        moveBackwards(780,0.3);
+        rotateRight(360,0.5);
+        Thread.sleep(200);
     }
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.5);
@@ -334,7 +347,7 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(750,0.5);
         Thread.sleep(200);
         moveBackwards(750,0.3);
-        rotateLeft(300,0.5);
+        rotateLeft(320,0.5);
         Thread.sleep(200);
     }
 

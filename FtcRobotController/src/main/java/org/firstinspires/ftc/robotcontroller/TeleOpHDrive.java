@@ -99,14 +99,9 @@ public class TeleOpHDrive extends LinearOpMode {
 
             //up position of flipper
             if (gamepad2.y) {
-<<<<<<< HEAD
                 leftIntakeFlipper.setPosition(0.24);
                 rightIntakeFlipper.setPosition(0.24);
-=======
-                leftIntakeFlipper.setPosition(0.31);
-                rightIntakeFlipper.setPosition(0.31);
 
->>>>>>> c1eedbc2dc02892dacb5b71ece1f8682558c07cf
             }
 
 
@@ -118,15 +113,9 @@ public class TeleOpHDrive extends LinearOpMode {
 
             }
             if (gamepad2.b) {
-<<<<<<< HEAD
-                leftIntakeFlipper.setPosition(0.5);
-                rightIntakeFlipper.setPosition(0.5);
-=======
                 leftIntakeFlipper.setPosition(0.57);
-                rightIntakeFlipper.setPosition(0.57
-                );
+                rightIntakeFlipper.setPosition(0.57);
 
->>>>>>> c1eedbc2dc02892dacb5b71ece1f8682558c07cf
 
             }
             //lander flipper up
@@ -157,8 +146,11 @@ public class TeleOpHDrive extends LinearOpMode {
             //extend extension slides
             if (inLimit.isPressed()) {
                 extension.setPower(0);
-                Thread.sleep(500);
-                extensionReset = extension.getCurrentPosition();
+                Thread.sleep(200);
+                if (gamepad2.right_bumper){
+                    extension.setPower(1.0);
+                }
+               // extensionReset = extension.getCurrentPosition();
             }
                 if (gamepad2.right_bumper) {
                     extension.setPower(1.0);
@@ -169,18 +161,14 @@ public class TeleOpHDrive extends LinearOpMode {
                         extension.setPower(0);
                     }
                 }
-            if (extension.getCurrentPosition() - extensionReset > 4500){
+            if (extension.getCurrentPosition() - extensionReset > 5000){
                 extension.setPower(0);
-                Thread.sleep(500);
-                if (gamepad2.right_bumper) {
-                    extension.setPower(1.0);
-                } else {
+                Thread.sleep(100);
                     if (gamepad2.left_bumper) {
                         extension.setPower(-1.0);
                     } else {
                         extension.setPower(0);
                     }
-                }
             }
 
                /* if (gamepad2.right_bumper) {

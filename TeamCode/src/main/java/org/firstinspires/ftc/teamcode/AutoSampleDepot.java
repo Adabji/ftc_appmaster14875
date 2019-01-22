@@ -55,6 +55,7 @@ public class AutoSampleDepot extends LinearOpMode {
     double startTime = timer.time();
     private TouchSensor bottomLimit;
     private TouchSensor topLimit;
+    private Servo landerFlipper;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -98,6 +99,7 @@ public class AutoSampleDepot extends LinearOpMode {
 
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         topLimit = hardwareMap.touchSensor.get("topLimit");
+        landerFlipper = hardwareMap.servo.get("landerFlipper");
 
 
         //waitForStart();
@@ -110,6 +112,7 @@ public class AutoSampleDepot extends LinearOpMode {
         detector.disable();
         leftIntakeFlipper.setPosition(0.5);
         rightIntakeFlipper.setPosition(0.5);
+        landerFlipper.setPosition(0.05);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         Thread.sleep(1000);
@@ -307,6 +310,8 @@ public class AutoSampleDepot extends LinearOpMode {
         rotateLeftSlow(1000, 0.5);
         Thread.sleep(200);
         moveForwards(900, 0.5);
+        rotateLeft(100,0.5);
+        rotateRight(100,0.5);
         /*rotateRight(300, 1);
         Thread.sleep(200);
         moveForwards(1300, 1);
@@ -335,8 +340,6 @@ public class AutoSampleDepot extends LinearOpMode {
         leftSampleArm.setPosition(0.9);
         Thread.sleep(1000);
         leftSampleArm.setPosition(0.3);
-        leftIntakeFlipper.setPosition(0.3);
-        rightIntakeFlipper.setPosition(0.7);
     }
 
     public void rotateLeft(int distance, double power){

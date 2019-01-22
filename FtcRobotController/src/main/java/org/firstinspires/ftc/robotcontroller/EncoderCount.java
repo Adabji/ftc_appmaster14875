@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.robotcontroller;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 //TeleOp program for HDrive
+@Disabled
 @TeleOp(name = "EncoderCount", group = "TeleOp")
 public class EncoderCount extends LinearOpMode {
 

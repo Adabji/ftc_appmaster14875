@@ -11,7 +11,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
+@Disabled
 @Autonomous(name = "AutoTeamMarker", group = "Autonomous")
 
 public class AutoTeamMarker extends LinearOpMode {
