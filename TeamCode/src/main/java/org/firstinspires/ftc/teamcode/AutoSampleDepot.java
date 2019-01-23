@@ -1,11 +1,3 @@
-//Adham don't touch anything besides:
-//1. lines 164/165 for lift
-//2. lines 129-133 for center sample (this one should be good though)
-//3. lines 141 & 144 for sample left (only change values labeled distance:)
-//4. lines 151 & 154 for sample right (only change values labeled distance:)
-//5. For left sample path = 252-256
-//6. For right sample path = 248-252
-
 package org.firstinspires.ftc.teamcode;
 
 import android.hardware.camera2.CameraDevice;
@@ -142,7 +134,6 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(500);
 
         lowerRobot();
-        //turnRight(300, 0.3);
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
@@ -194,7 +185,7 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(300);
             rotateLeft(220, 0.5);
             Thread.sleep(300);
-            moveForwards(900, 1);
+            moveForwards(850, 1);
             Thread.sleep(1000);
             rotateLeftSlow(550, 0.5);
             Thread.sleep(300);
@@ -206,28 +197,8 @@ public class AutoSampleDepot extends LinearOpMode {
         }
     }
 
-
+    //Lowers the robot from the lander at the beginning of Autonomous period
     public void lowerRobot() {
-     /*   lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Adham you can change these encoder values if you need the lift to go lower or higher
-        //JUST MAKE SURE THEY ARE BOTH NEGATIVE OR ELSE THE LIFT WILL BREAK
-        lift1.setTargetPosition(-4560);
-        lift2.setTargetPosition(-4560);
-
-        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        lift1.setPower(1);
-        lift2.setPower(1);
-
-        while (lift1.isBusy() || lift2.isBusy()) {
-        }
-
-        lift1.setPower(0);
-        lift2.setPower(0);
-        */
         while (!bottomLimit.isPressed()) {
             lift1.setPower(-1);
             lift2.setPower(-1);
@@ -262,46 +233,6 @@ public class AutoSampleDepot extends LinearOpMode {
         turnRight(-distance, power);
     }
 
-    //Moves the robot to the position where it can rotate to either left/right samples
-    //Move to Sample function takes distance values that are altered for center, right
-    //and left conditions of the mineral
-    public void moveToSample(int distance) {
-        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        lift1.setTargetPosition(4560);
-        lift2.setTargetPosition(4560);
-
-        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        lift1.setPower(1);
-        lift2.setPower(1);
-
-        motorBackRight.setPower(0.5);
-        motorBackLeft.setPower(0.5);
-
-        while (motorBackRight.isBusy() || motorBackLeft.isBusy()) {
-        }
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-
-        while (lift1.isBusy() || lift2.isBusy()) {
-        }
-        lift1.setPower(0);
-        lift2.setPower(0);
-
-    }
-
     public void sampleRight() throws InterruptedException {
         rotateRight(230, 0.5);
         Thread.sleep(500);
@@ -310,16 +241,8 @@ public class AutoSampleDepot extends LinearOpMode {
         rotateLeftSlow(1000, 0.5);
         Thread.sleep(200);
         moveForwards(900, 0.5);
-        rotateLeft(100,0.5);
-        rotateRight(100,0.5);
-        /*rotateRight(300, 1);
-        Thread.sleep(200);
-        moveForwards(1300, 1);
-        Thread.sleep(200);
-        rotateLeft(600, 1);
-        Thread.sleep(200);
-        moveForwards(900, 1);
-        Thread.sleep(200); */
+        rotateLeft(300,0.5);
+        rotateRight(300,0.5);
     }
 
     public void sampleLeft() throws InterruptedException {
@@ -331,9 +254,6 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(1000);
         moveForwards(800, 0.5);
         rotateLeftSlow(300,0.5);
-
-
-
     }
 
     public void teamMarker() throws InterruptedException {
