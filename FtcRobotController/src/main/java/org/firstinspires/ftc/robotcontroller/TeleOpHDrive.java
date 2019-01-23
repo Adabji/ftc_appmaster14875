@@ -150,7 +150,6 @@ public class TeleOpHDrive extends LinearOpMode {
                 if (gamepad2.right_bumper){
                     extension.setPower(1.0);
                 }
-               // extensionReset = extension.getCurrentPosition();
             }
                 if (gamepad2.right_bumper) {
                     extension.setPower(1.0);
@@ -161,7 +160,7 @@ public class TeleOpHDrive extends LinearOpMode {
                         extension.setPower(0);
                     }
                 }
-            if (extension.getCurrentPosition() - extensionReset > 5000){
+            if (extension.getCurrentPosition() - extensionReset > 5200){
                 extension.setPower(0);
                 Thread.sleep(100);
                     if (gamepad2.left_bumper) {
@@ -170,16 +169,6 @@ public class TeleOpHDrive extends LinearOpMode {
                         extension.setPower(0);
                     }
             }
-
-               /* if (gamepad2.right_bumper) {
-                    extension.setPower(1.0);
-                } else {
-                    if (gamepad2.left_bumper) {
-                        extension.setPower(-1.0);
-                    } else {
-                        extension.setPower(0);
-                    }
-                }*/
 
                 //limit switch will stop lift if it is too high or low; prevents jamming
                 if (bottomLimit.isPressed()) {

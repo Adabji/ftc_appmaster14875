@@ -103,17 +103,10 @@ public class AutoSampleCrater extends LinearOpMode {
 
 
         //waitForStart();
-        while (!opModeIsActive() && !isStopRequested()){
+        while (!opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        /*MotionProfile profile = MotionProfileGenerator.generateSimpleMotionProfile(
-                new MotionState(0,0,0,0),
-                new MotionState(10,0,0,0),
-                5,
-                5
-        ); */
-
         detector.disable();
         leftIntakeFlipper.setPosition(0.5);
         rightIntakeFlipper.setPosition(0.5);
@@ -147,7 +140,6 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(500);
 
         lowerRobot();
-        //turnRight(300, 0.3);
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
@@ -158,7 +150,6 @@ public class AutoSampleCrater extends LinearOpMode {
             moveForwards(2000,0.5);
             parkInCrater();
             lowerLift();
-
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
@@ -188,11 +179,8 @@ public class AutoSampleCrater extends LinearOpMode {
             moveForwards(2000,0.5);
             parkInCrater();
             lowerLift();
-
         }
     }
-
-
     public void lowerRobot() {
         while (!bottomLimit.isPressed()) {
             lift1.setPower(-1);
@@ -202,9 +190,7 @@ public class AutoSampleCrater extends LinearOpMode {
                 lift2.setPower(0);
             }
         }
-
     }
-
     public void turnRight(int distance, double power) {
         strafingRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -226,48 +212,8 @@ public class AutoSampleCrater extends LinearOpMode {
         strafingRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         strafingLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
-
     public void turnLeft(int distance, double power) {
         turnRight(-distance, power);
-    }
-    //Moves the robot to the position where it can rotate to either left/right samples
-    //Move to Sample function takes distance values that are altered for center, right
-    //and left conditions of the mineral
-    public void moveToSample(int distance) {
-        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        lift1.setTargetPosition(4560);
-        lift2.setTargetPosition(4560);
-
-        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        lift1.setPower(1);
-        lift2.setPower(1);
-
-        motorBackRight.setPower(0.5);
-        motorBackLeft.setPower(0.5);
-
-        while (motorBackRight.isBusy() || motorBackLeft.isBusy()) {
-        }
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-
-        while (lift1.isBusy() || lift2.isBusy()) {
-        }
-        lift1.setPower(0);
-        lift2.setPower(0);
-
     }
     public void teamMarker() throws InterruptedException{
         leftSampleArm.setPosition(0.9);
@@ -363,7 +309,6 @@ public class AutoSampleCrater extends LinearOpMode {
         teamMarker();
         rotateRight(200,0.2);
         Thread.sleep(200);
-
     }
 
     public void rotateLeftSlow(int distance, double power){
@@ -410,5 +355,4 @@ public class AutoSampleCrater extends LinearOpMode {
             }
         }
     }
-
 }
