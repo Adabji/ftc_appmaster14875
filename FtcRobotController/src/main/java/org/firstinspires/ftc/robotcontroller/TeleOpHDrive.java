@@ -120,7 +120,7 @@ public class TeleOpHDrive extends LinearOpMode {
             }
             //lander flipper up
             if (gamepad1.right_bumper) {
-                landerFlipper.setPosition(0.55);
+                landerFlipper.setPosition(0.6);
 
             }
             //lander flipper down
@@ -193,7 +193,7 @@ public class TeleOpHDrive extends LinearOpMode {
                     if (topLimit.isPressed()) {
                         lift1.setPower(-1);
                         lift2.setPower(-1);
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                         stopLift();
                         lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                         lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
