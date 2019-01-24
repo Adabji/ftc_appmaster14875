@@ -273,6 +273,7 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(500,0.5);
         Thread.sleep(200);
         moveBackwards(600,0.5);
+        rotateLeft(50,.5);
     }
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
@@ -288,25 +289,31 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateRight(300,0.5);
+        rotateRight(200,0.5);
         Thread.sleep(400);
         moveForwards(750,0.5);
+        rotateLeft(200,.5);
+        rotateRight(200,.5);
         Thread.sleep(200);
         moveBackwards(750,0.3);
-        rotateLeft(320,0.5);
+        rotateLeft(200,0.5);
         Thread.sleep(200);
     }
 
     public void moveToDepot() throws InterruptedException{
-        rotateLeft(450,0.5);
+        rotateLeft(500,0.5);
         Thread.sleep(200);
         moveForwards(1400,0.5);
         Thread.sleep(200);
-        rotateLeftSlow(880,0.5);
+        rotateLeftSlow(820,0.5);
         Thread.sleep(200);
+        turnLeft(800,.5);
+        turnRight(100,.5);
         moveForwards(2000,0.5);
         rotateLeft(200,0.2);
         teamMarker();
+        leftIntakeFlipper.setPosition(0.7);
+        rightIntakeFlipper.setPosition(0.7);
         rotateRight(200,0.2);
         Thread.sleep(200);
     }
