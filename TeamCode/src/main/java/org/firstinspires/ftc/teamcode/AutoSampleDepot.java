@@ -148,14 +148,12 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(500);
             moveForwards(1100, .5);
             Thread.sleep(200);
-            leftIntakeFlipper.setPosition(0.24);
-            rightIntakeFlipper.setPosition(0.24);
             rotateLeftSlow(800,.5);
             Thread.sleep(200);
-            leftIntakeFlipper.setPosition(0.5);
-            rightIntakeFlipper.setPosition(0.5);
             moveForwards(300, .5);
-            parkInCrater();
+            rightIntakeFlipper.setPosition(0.77);
+            leftIntakeFlipper.setPosition(0.77);
+            Thread.sleep(500);
             lowerLift();
 
         }
@@ -173,6 +171,9 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(200);
             moveForwards(1500, 0.5);
             turnLeft(1000,0.5);
+            rightIntakeFlipper.setPosition(0.77);
+            leftIntakeFlipper.setPosition(0.77);
+            Thread.sleep(500);
             parkInCrater();
             lowerLift();
 
@@ -195,6 +196,9 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(250, 1);
             rotateLeftSlow(400,0.5);
             moveForwards(1200,1);
+            rightIntakeFlipper.setPosition(0.77);
+            leftIntakeFlipper.setPosition(0.77);
+            Thread.sleep(500);
             parkInCrater();
             lowerLift();
         }
