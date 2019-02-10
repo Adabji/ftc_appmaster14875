@@ -55,6 +55,7 @@ public class AutoSampleCrater extends LinearOpMode {
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
     private Servo landerFlipper;
+    private TouchSensor inLimit;
 
 
 
@@ -100,6 +101,7 @@ public class AutoSampleCrater extends LinearOpMode {
         topLimit = hardwareMap.touchSensor.get("topLimit");
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         landerFlipper = hardwareMap.servo.get("landerFlipper");
+        inLimit = hardwareMap.touchSensor.get("inLimit");
 
 
         //waitForStart();
@@ -154,19 +156,9 @@ public class AutoSampleCrater extends LinearOpMode {
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
             sampleLeft();
-            rotateLeft(450,0.5);
-            Thread.sleep(200);
-            moveForwards(1530,0.5);
-            Thread.sleep(200);
-            rotateLeftSlow(880,0.5);
-            Thread.sleep(200);
-            moveForwards(2000,0.5);
-            rotateLeft(200,0.2);
-            teamMarker();
-            rotateRight(200,0.2);
-            Thread.sleep(200);
+            moveToDepot();
             rotateLeft(1200,0.3);
-            moveForwards(2100,0.5);
+            moveForwards(2000,1);
             parkInCrater();
             lowerLift();
         }
@@ -176,7 +168,7 @@ public class AutoSampleCrater extends LinearOpMode {
             sampleRight();
             moveToDepot();
             rotateLeft(1200,0.3);
-            moveForwards(2000,0.5);
+            moveForwards(2000,1);
             parkInCrater();
             lowerLift();
         }
@@ -230,8 +222,8 @@ public class AutoSampleCrater extends LinearOpMode {
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorBackRight.setPower(1);
-        motorBackLeft.setPower(1);
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
         while (motorBackRight.isBusy() && motorBackLeft.isBusy()){
         }
         motorBackLeft.setPower(0);
@@ -269,47 +261,58 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleCenter() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
+        extend(1,2000);
+        extend(1,-2000);
+        Thread.sleep(200);
         //rotateLeft(300,0.5);
-        moveForwards(500,0.5);
+        /*moveForwards(500,0.5);
         Thread.sleep(200);
         moveBackwards(600,0.5);
-        rotateLeft(50,.5);
+        rotateLeft(50,.5);*/
     }
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateLeft(350,0.5);
+        rotateLeft(270,0.5);
         Thread.sleep(400);
-        moveForwards(780,0.3);
+        extend(1,2000);
+        extend(1,-2000);
+        rotateRight(270,0.5);
+        Thread.sleep(200);
+        /*moveForwards(780,0.3);
         Thread.sleep(200);
         moveBackwards(780,0.3);
         rotateRight(360,0.5);
-        Thread.sleep(200);
+        Thread.sleep(200);*/
     }
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateRight(200,0.5);
+        rotateRight(220,0.5);
         Thread.sleep(400);
-        moveForwards(750,0.5);
+        extend(1,2000);
+        extend(1,-2000);
+        rotateLeft(220,0.5);
+        Thread.sleep(200);
+        /*moveForwards(750,0.5);
         rotateLeft(200,.5);
         rotateRight(200,.5);
         Thread.sleep(200);
         moveBackwards(750,0.3);
         rotateLeft(200,0.5);
-        Thread.sleep(200);
+        Thread.sleep(200);*/
     }
 
     public void moveToDepot() throws InterruptedException{
-        rotateLeft(500,0.5);
+        rotateLeft(470,0.5);
         Thread.sleep(200);
-        moveForwards(1400,0.5);
+        moveForwards(1400,1);
         Thread.sleep(200);
         rotateLeftSlow(820,0.5);
         Thread.sleep(200);
         turnLeft(800,.5);
         turnRight(100,.5);
-        moveForwards(2000,0.5);
+        moveForwards(1800,0.5);
         rotateLeft(200,0.2);
         teamMarker();
         leftIntakeFlipper.setPosition(0.7);
@@ -360,6 +363,14 @@ public class AutoSampleCrater extends LinearOpMode {
                 lift1.setPower(0);
                 lift2.setPower(0);
             }
+        }
+    }
+    public void retract(){
+        while (!inLimit.isPressed()) {
+            extension.setPower(-1);
+        }
+        if (inLimit.isPressed()) {
+            extension.setPower(0);
         }
     }
 }

@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
@@ -24,16 +25,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.opencv.imgproc.LineSegmentDetector;
 
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample Depot", group = "Autonomous")
+@Autonomous(name = "GyroDepotEncoders", group = "Autonomous")
 
 //Declare motors
-public class AutoSampleDepot extends LinearOpMode {
+public class GyroDepotEncoders extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
@@ -53,7 +57,11 @@ public class AutoSampleDepot extends LinearOpMode {
     private TouchSensor bottomLimit;
     private TouchSensor topLimit;
     private Servo landerFlipper;
-
+    private BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double globalAngle;
+    double power = 0.30;
+    double correction;
 
 
     @Override
@@ -90,6 +98,7 @@ public class AutoSampleDepot extends LinearOpMode {
         strafingRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeFlipper = hardwareMap.servo.get("rightIntakeFlipper");
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
@@ -100,11 +109,33 @@ public class AutoSampleDepot extends LinearOpMode {
         topLimit = hardwareMap.touchSensor.get("topLimit");
         landerFlipper = hardwareMap.servo.get("landerFlipper");
 
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        while (!isStopRequested() && !imu.isGyroCalibrated()){
+            Thread.sleep(50);
+        }
+        telemetry.addData("imu calibration status", imu.getCalibrationStatus().toString());
+        telemetry.update();
+
+
+
         //waitForStart();
         while (!opModeIsActive() && !isStopRequested()) {
             telemetry.update();
             telemetry.addData("Status", "waiting for start command...");
         }
+
+        rotate(-45,power);
+
         telemetry.setAutoClear(false);
 
         detector.disable();
@@ -147,9 +178,7 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(2000, .5);
             rotateLeft(150,0.5);
             teamMarker();
-            Thread.sleep(400);
             rotateRight(150,0.5);
-            Thread.sleep(100);
             moveBackwards(1550, .5);
             Thread.sleep(400);
             rotateLeft(400, 0.5);
@@ -375,5 +404,54 @@ public class AutoSampleDepot extends LinearOpMode {
                 lift2.setPower(0);
             }
         }
+    }
+    public void resetAngle(){
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        globalAngle = 0;
+    }
+    private double getAngle(){
+       Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+       double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+       if (deltaAngle < -180){
+           deltaAngle = deltaAngle + 360;
+       }else if (deltaAngle > 180){
+           deltaAngle = deltaAngle - 360;
+       }
+       globalAngle = globalAngle + deltaAngle;
+       lastAngles = angles;
+       return globalAngle;
+    }
+    public void rotate (int degrees, double power) throws InterruptedException{
+        double leftPower, rightPower;
+
+        resetAngle();
+
+        if (degrees < 0){
+            leftPower = -power;
+            rightPower = power;
+        }else if (degrees > 0){
+            leftPower = power;
+            rightPower = -power;
+        }
+        else return;
+
+        motorBackLeft.setPower(leftPower);
+        motorBackRight.setPower(rightPower);
+
+        if (degrees < 0){
+            while (opModeIsActive() && getAngle() == 0){}
+            while(opModeIsActive() && getAngle() > degrees){}
+        }else{
+            while (opModeIsActive() && getAngle() < degrees){}
+        }
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        Thread.sleep(1000);
+
+        resetAngle();
     }
 }
