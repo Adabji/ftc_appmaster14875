@@ -158,7 +158,11 @@ public class AutoSampleCrater extends LinearOpMode {
             sampleLeft();
             moveToDepot();
 <<<<<<< HEAD
+<<<<<<< HEAD
             rotateLeft(1100,0.3);
+=======
+            rotateLeft(1200,0.3);
+>>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
 =======
             rotateLeft(1200,0.3);
 >>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
@@ -280,15 +284,21 @@ public class AutoSampleCrater extends LinearOpMode {
         rotateLeft(270,0.5);
         Thread.sleep(400);
 <<<<<<< HEAD
+<<<<<<< HEAD
         moveForwards(780,0.3);
         rotateLeft(200,5);
         rotateRight(200,.5);
 =======
+=======
+>>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
         extend(1,2000);
         extend(1,-2000);
         rotateRight(270,0.5);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
+<<<<<<< HEAD
+>>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
+=======
 >>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
         Thread.sleep(200);
         moveBackwards(780,0.3);
