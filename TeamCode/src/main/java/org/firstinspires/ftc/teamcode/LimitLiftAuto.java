@@ -38,6 +38,7 @@ public class LimitLiftAuto extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
     private TouchSensor topLimit;
+    private TouchSensor inLimit;
 
 
     @Override
@@ -80,6 +81,8 @@ public class LimitLiftAuto extends LinearOpMode {
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topLimit = hardwareMap.touchSensor.get("topLimit");
+        inLimit = hardwareMap.touchSensor.get("inLimit");
+
 
 
         //waitForStart();
@@ -104,6 +107,14 @@ public class LimitLiftAuto extends LinearOpMode {
                 lift1.setPower(0);
                 lift2.setPower(0);
             }
+        }
+    }
+    public void retract(){
+        while (!inLimit.isPressed()) {
+            extension.setPower(-1);
+        }
+        if (inLimit.isPressed()) {
+            extension.setPower(0);
         }
     }
 }

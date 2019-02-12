@@ -14,12 +14,14 @@ import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -30,12 +32,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample Crater", group = "Autonomous")
+@Autonomous(name = "GyroCraterEncoders", group = "Autonomous")
 
 //Declare motors
-public class AutoSampleCrater extends LinearOpMode {
+public class GyroCraterEncoders extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
@@ -56,6 +63,10 @@ public class AutoSampleCrater extends LinearOpMode {
     private TouchSensor bottomLimit;
     private Servo landerFlipper;
     private TouchSensor inLimit;
+    private BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double globalAngle;
+    double power = 0.30;
 
 
 
@@ -93,6 +104,7 @@ public class AutoSampleCrater extends LinearOpMode {
         strafingRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeFlipper = hardwareMap.servo.get("rightIntakeFlipper");
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
@@ -102,6 +114,23 @@ public class AutoSampleCrater extends LinearOpMode {
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         landerFlipper = hardwareMap.servo.get("landerFlipper");
         inLimit = hardwareMap.touchSensor.get("inLimit");
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        while (!isStopRequested() && !imu.isGyroCalibrated()) {
+            Thread.sleep(50);
+        }
+        telemetry.addData("imu calibration status", imu.getCalibrationStatus().toString());
+        telemetry.update();
 
 
         //waitForStart();
@@ -120,7 +149,7 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(2000);
 
         //Telemetry returned X-Value for when block is seen in center position
-        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 600){
+        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 600) {
             center = true;
         }
 
@@ -130,10 +159,10 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(100);
 
         //Telemetry returned X-Value for when block is seen in left position
-        if (detector.getXPosition() < 300 && detector.getXPosition() > 10){
+        if (detector.getXPosition() < 300 && detector.getXPosition() > 10) {
             left = true;
         }
-        telemetry.addData("left",left);
+        telemetry.addData("left", left);
         telemetry.update();
         Thread.sleep(100);
 
@@ -145,34 +174,40 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
-        if(center == true){
+        if (center == true) {
             sampleCenter();
             moveToDepot();
-            rotateLeft(1200,0.3);
-            moveForwards(2000,0.5);
+            rotateLeft(1200, 0.3);
+            moveForwards(2000, 0.5);
             parkInCrater();
             lowerLift();
         }
         //Code to run if block is seen in left position, if variable left is returned as true
-        if(left == true){
+        if (left == true) {
             sampleLeft();
-            moveToDepot();
-<<<<<<< HEAD
-            rotateLeft(1100,0.3);
-=======
-            rotateLeft(1200,0.3);
->>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
-            moveForwards(2000,1);
+            rotateLeft(450, 0.5);
+            Thread.sleep(200);
+            moveForwards(1530, 0.5);
+            Thread.sleep(200);
+            rotateLeftSlow(880, 0.5);
+            Thread.sleep(200);
+            moveForwards(2000, 0.5);
+            rotateLeft(200, 0.2);
+            teamMarker();
+            rotateRight(200, 0.2);
+            Thread.sleep(200);
+            rotateLeft(1200, 0.3);
+            moveForwards(2100, 0.5);
             parkInCrater();
             lowerLift();
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
-        if(left == false && center == false){
+        if (left == false && center == false) {
             sampleRight();
             moveToDepot();
-            rotateLeft(1200,0.3);
-            moveForwards(2000,1);
+            rotateLeft(1200, 0.3);
+            moveForwards(2000, 0.5);
             parkInCrater();
             lowerLift();
         }
@@ -240,7 +275,7 @@ public class AutoSampleCrater extends LinearOpMode {
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        motorBackRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(distance);
         motorBackLeft.setTargetPosition(distance);
 
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -265,64 +300,44 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleCenter() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        extend(1,2000);
-        extend(1,-2000);
-        Thread.sleep(200);
-        //rotateLeft(300,0.5);
-        /*moveForwards(500,0.5);
+        moveForwards(500,0.5);
         Thread.sleep(200);
         moveBackwards(600,0.5);
-        rotateLeft(50,.5);*/
+        rotateLeft(50,.5);
     }
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateLeft(270,0.5);
+        rotateLeft(350,0.5);
         Thread.sleep(400);
-<<<<<<< HEAD
         moveForwards(780,0.3);
-        rotateLeft(200,5);
-        rotateRight(200,.5);
-=======
-        extend(1,2000);
-        extend(1,-2000);
-        rotateRight(270,0.5);
-        Thread.sleep(200);
-        /*moveForwards(780,0.3);
->>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
         Thread.sleep(200);
         moveBackwards(780,0.3);
         rotateRight(360,0.5);
-        Thread.sleep(200);*/
+        Thread.sleep(200);
     }
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateRight(220,0.5);
-        Thread.sleep(400);
+        rotate(-45,power);
+        Thread.sleep(200);
         extend(1,2000);
-        extend(1,-2000);
-        rotateLeft(220,0.5);
-        Thread.sleep(200);
-        /*moveForwards(750,0.5);
-        rotateLeft(200,.5);
-        rotateRight(200,.5);
-        Thread.sleep(200);
-        moveBackwards(750,0.3);
+        retract();
+        //moveForwards(750,0.5);
         rotateLeft(200,0.5);
-        Thread.sleep(200);*/
+        Thread.sleep(200);
     }
 
     public void moveToDepot() throws InterruptedException{
-        rotateLeft(470,0.5);
+        rotateLeft(500,0.5);
         Thread.sleep(200);
-        moveForwards(1400,1);
+        moveForwards(1400,0.5);
         Thread.sleep(200);
         rotateLeftSlow(820,0.5);
         Thread.sleep(200);
         turnLeft(800,.5);
         turnRight(100,.5);
-        moveForwards(1800,0.5);
+        moveForwards(2000,0.5);
         rotateLeft(200,0.2);
         teamMarker();
         leftIntakeFlipper.setPosition(0.7);
@@ -362,6 +377,14 @@ public class AutoSampleCrater extends LinearOpMode {
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
+    public void retract(){
+        while (!inLimit.isPressed()) {
+            extension.setPower(-1);
+        }
+        if (inLimit.isPressed()) {
+            extension.setPower(0);
+        }
+    }
     public void parkInCrater(){
         extend(1,3000);
     }
@@ -375,12 +398,53 @@ public class AutoSampleCrater extends LinearOpMode {
             }
         }
     }
-    public void retract(){
-        while (!inLimit.isPressed()) {
-            extension.setPower(-1);
+    public void resetAngle(){
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        globalAngle = 0;
+    }
+    private double getAngle(){
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180){
+            deltaAngle = deltaAngle + 360;
+        }else if (deltaAngle > 180){
+            deltaAngle = deltaAngle - 360;
         }
-        if (inLimit.isPressed()) {
-            extension.setPower(0);
+        globalAngle = globalAngle + deltaAngle;
+        lastAngles = angles;
+        return globalAngle;
+    }
+    public void rotate (int degrees, double power) throws InterruptedException{
+        double leftPower, rightPower;
+
+        resetAngle();
+
+        if (degrees < 0){
+            leftPower = -power;
+            rightPower = power;
+        }else if (degrees > 0){
+            leftPower = power;
+            rightPower = -power;
         }
+        else return;
+
+        motorBackLeft.setPower(leftPower);
+        motorBackRight.setPower(rightPower);
+
+        if (degrees < 0){
+            while (opModeIsActive() && getAngle() == 0){}
+            while(opModeIsActive() && getAngle() > degrees){}
+        }else{
+            while (opModeIsActive() && getAngle() < degrees){}
+        }
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        Thread.sleep(1000);
+
+        resetAngle();
     }
 }

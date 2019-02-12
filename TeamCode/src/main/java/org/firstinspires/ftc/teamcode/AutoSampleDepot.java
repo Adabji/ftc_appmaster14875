@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.camera2.CameraDevice;
 
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -20,6 +24,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.opencv.imgproc.LineSegmentDetector;
 
 import java.util.concurrent.SynchronousQueue;
@@ -48,6 +53,8 @@ public class AutoSampleDepot extends LinearOpMode {
     private TouchSensor bottomLimit;
     private TouchSensor topLimit;
     private Servo landerFlipper;
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -92,7 +99,6 @@ public class AutoSampleDepot extends LinearOpMode {
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         topLimit = hardwareMap.touchSensor.get("topLimit");
         landerFlipper = hardwareMap.servo.get("landerFlipper");
-
 
         //waitForStart();
         while (!opModeIsActive() && !isStopRequested()) {
@@ -141,7 +147,9 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(2000, .5);
             rotateLeft(150,0.5);
             teamMarker();
+            Thread.sleep(400);
             rotateRight(150,0.5);
+            Thread.sleep(100);
             moveBackwards(1550, .5);
             Thread.sleep(400);
             rotateLeft(400, 0.5);
@@ -153,6 +161,7 @@ public class AutoSampleDepot extends LinearOpMode {
             moveForwards(300, .5);
             rightIntakeFlipper.setPosition(0.77);
             leftIntakeFlipper.setPosition(0.77);
+            parkInCrater();
             Thread.sleep(500);
             lowerLift();
 

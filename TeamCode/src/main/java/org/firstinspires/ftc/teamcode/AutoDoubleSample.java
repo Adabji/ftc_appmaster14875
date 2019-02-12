@@ -32,10 +32,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample Crater", group = "Autonomous")
+@Autonomous(name = "AutoDoubleSample", group = "Autonomous")
 
 //Declare motors
-public class AutoSampleCrater extends LinearOpMode {
+public class AutoDoubleSample extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
@@ -148,8 +148,8 @@ public class AutoSampleCrater extends LinearOpMode {
         if(center == true){
             sampleCenter();
             moveToDepot();
-            rotateLeft(1200,0.3);
-            moveForwards(2000,0.5);
+            rotateLeft(700,0.3);
+            moveForwards(1500,0.5);
             parkInCrater();
             lowerLift();
         }
@@ -157,13 +157,10 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == true){
             sampleLeft();
             moveToDepot();
-<<<<<<< HEAD
-            rotateLeft(1100,0.3);
-=======
-            rotateLeft(1200,0.3);
->>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
-            moveForwards(2000,1);
-            parkInCrater();
+            rotateLeft(600,0.3);
+            moveForwards(800,1);
+            rotateLeft(600,0.5);
+            moveForwards(400,0.5);
             lowerLift();
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
@@ -171,9 +168,8 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == false && center == false){
             sampleRight();
             moveToDepot();
-            rotateLeft(1200,0.3);
-            moveForwards(2000,1);
-            parkInCrater();
+            rotateLeft(1000,0.3);
+            moveForwards(1500,1);
             lowerLift();
         }
     }
@@ -279,17 +275,11 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(500);
         rotateLeft(270,0.5);
         Thread.sleep(400);
-<<<<<<< HEAD
-        moveForwards(780,0.3);
-        rotateLeft(200,5);
-        rotateRight(200,.5);
-=======
         extend(1,2000);
         extend(1,-2000);
         rotateRight(270,0.5);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
->>>>>>> a5efb221350a812b5835bde37b3bed12dea13bd7
         Thread.sleep(200);
         moveBackwards(780,0.3);
         rotateRight(360,0.5);
