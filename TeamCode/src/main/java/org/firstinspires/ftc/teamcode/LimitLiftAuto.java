@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -39,6 +40,7 @@ public class LimitLiftAuto extends LinearOpMode {
     double startTime = timer.time();
     private TouchSensor topLimit;
     private TouchSensor inLimit;
+    private DcMotor intake;
 
 
     @Override
@@ -70,8 +72,8 @@ public class LimitLiftAuto extends LinearOpMode {
         leftSampleArm = hardwareMap.servo.get("leftSampleArm");
         phoneMount = hardwareMap.servo.get("phoneMount");
 
-        lift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         strafingRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -82,6 +84,7 @@ public class LimitLiftAuto extends LinearOpMode {
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topLimit = hardwareMap.touchSensor.get("topLimit");
         inLimit = hardwareMap.touchSensor.get("inLimit");
+        intake = hardwareMap.dcMotor.get("intake");
 
 
 
@@ -91,8 +94,8 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.update();
         }
         lowerRobot();
-        //turnRight(300, 0.3);
         Thread.sleep(100);
+        intakeOut();
 
         //Code to run if block is seen in center position, if variable center is returned as true
 
@@ -109,13 +112,58 @@ public class LimitLiftAuto extends LinearOpMode {
             }
         }
     }
+    public void extend(double power, int distance) {
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()) {
+        }
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+
     public void retract(){
         while (!inLimit.isPressed()) {
+            extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             extension.setPower(-1);
         }
         if (inLimit.isPressed()) {
             extension.setPower(0);
         }
+    }
+    public void moveForwards3(int distance, double power){
+        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        lift1.setTargetPosition(4560);
+        lift2.setTargetPosition(4560);
+        extension.setTargetPosition(2000);
+
+        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        lift1.setPower(1);
+        lift2.setPower(1);
+        extension.setPower(1);
+
+        while (lift1.isBusy() && lift2.isBusy() && extension.isBusy()){
+        }
+        lift1.setPower(0);
+        lift2.setPower(0);
+        extension.setPower(0);
+    }
+    public void intakeIn() throws InterruptedException{
+        intake.setPower(1);
+        Thread.sleep(200);
+        intake.setPower(0);
+    }
+    public void intakeOut() throws InterruptedException{
+        intake.setPower(-1);
+        Thread.sleep(200);
+        intake.setPower(0);
     }
 }
 

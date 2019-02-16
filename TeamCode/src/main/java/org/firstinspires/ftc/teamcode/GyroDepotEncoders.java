@@ -35,6 +35,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Autonomous(name = "GyroDepotEncoders", group = "Autonomous")
+@Disabled
 
 //Declare motors
 public class GyroDepotEncoders extends LinearOpMode {

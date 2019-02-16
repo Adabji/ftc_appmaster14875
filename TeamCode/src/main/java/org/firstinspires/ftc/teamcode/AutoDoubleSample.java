@@ -32,7 +32,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoDoubleSample", group = "Autonomous")
+@Autonomous(name = "Double Sample", group = "Autonomous")
 
 //Declare motors
 public class AutoDoubleSample extends LinearOpMode {
@@ -56,6 +56,7 @@ public class AutoDoubleSample extends LinearOpMode {
     private TouchSensor bottomLimit;
     private Servo landerFlipper;
     private TouchSensor inLimit;
+    private DcMotor intake;
 
 
 
@@ -88,8 +89,8 @@ public class AutoDoubleSample extends LinearOpMode {
         leftSampleArm = hardwareMap.servo.get("leftSampleArm");
         phoneMount = hardwareMap.servo.get("phoneMount");
 
-        lift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         strafingRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -102,6 +103,7 @@ public class AutoDoubleSample extends LinearOpMode {
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         landerFlipper = hardwareMap.servo.get("landerFlipper");
         inLimit = hardwareMap.touchSensor.get("inLimit");
+        intake = hardwareMap.dcMotor.get("intake");
 
 
         //waitForStart();
@@ -110,12 +112,9 @@ public class AutoDoubleSample extends LinearOpMode {
             telemetry.update();
         }
         detector.disable();
-        leftIntakeFlipper.setPosition(0.5);
-        rightIntakeFlipper.setPosition(0.5);
         landerFlipper.setPosition(0.05);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
-        Thread.sleep(500);
         detector.enable();
         Thread.sleep(2000);
 
@@ -148,29 +147,43 @@ public class AutoDoubleSample extends LinearOpMode {
         if(center == true){
             sampleCenter();
             moveToDepot();
-            rotateLeft(700,0.3);
-            moveForwards(1500,0.5);
-            parkInCrater();
-            lowerLift();
+            teamMarker();
+            rotateLeft(450,0.3);
+            moveForwards(1000,1);
+            moveBackwards(1000,1);
+            rotateLeft(500,1);
+            turnRight(800,1);
+            turnLeft(100,0.5);
+            moveForwards2(2000,1);
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if(left == true){
             sampleLeft();
             moveToDepot();
-            rotateLeft(600,0.3);
-            moveForwards(800,1);
-            rotateLeft(600,0.5);
-            moveForwards(400,0.5);
-            lowerLift();
+            teamMarker();
+            rotateRight(200,0.5);
+            Thread.sleep(200);
+            rotateLeft(490,0.5);
+            moveForwards(2300,1);
+            rotateRightSlow(400,0.5);
+            moveForwards(400,1);
+            extend(1,700);
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
         if(left == false && center == false){
             sampleRight();
             moveToDepot();
-            rotateLeft(1000,0.3);
+            teamMarker();
+            rotateRight(200,0.5);
+            Thread.sleep(200);
+            rotateLeft(1000,0.5);
+            Thread.sleep(200);
             moveForwards(1500,1);
-            lowerLift();
+            rotateLeft(450,0.5);
+            Thread.sleep(200);
+            moveForwards(450,1);
+            parkInCrater();
         }
     }
     public void lowerRobot() {
@@ -259,10 +272,12 @@ public class AutoDoubleSample extends LinearOpMode {
         moveForwards(-distance, power);
     }
     public void sampleCenter() throws InterruptedException{
-        moveForwards(400,0.5);
-        Thread.sleep(500);
+        moveForwards(400,1);
+        lowerLift();
+        rotateLeft(100,1);
         extend(1,2000);
-        extend(1,-2000);
+        retract();
+        rotateRight(100,1);
         Thread.sleep(200);
         //rotateLeft(300,0.5);
         /*moveForwards(500,0.5);
@@ -272,12 +287,13 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
+        lowerLift();
         Thread.sleep(500);
-        rotateLeft(270,0.5);
+        rotateLeft(290,0.5);
         Thread.sleep(400);
-        extend(1,2000);
-        extend(1,-2000);
-        rotateRight(270,0.5);
+        extend(1,2100);
+        retract();
+        rotateRight(270,1);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
         Thread.sleep(200);
@@ -286,13 +302,14 @@ public class AutoDoubleSample extends LinearOpMode {
         Thread.sleep(200);*/
     }
     public void sampleRight() throws InterruptedException{
-        moveForwards(400,0.5);
-        Thread.sleep(500);
-        rotateRight(220,0.5);
-        Thread.sleep(400);
+        moveForwards(400,1);
+        lowerLift();
+        Thread.sleep(300);
+        rotateRight(220,1);
+        Thread.sleep(300);
         extend(1,2000);
-        extend(1,-2000);
-        rotateLeft(220,0.5);
+        retract();
+        rotateLeft(220,1);
         Thread.sleep(200);
         /*moveForwards(750,0.5);
         rotateLeft(200,.5);
@@ -313,12 +330,7 @@ public class AutoDoubleSample extends LinearOpMode {
         turnLeft(800,.5);
         turnRight(100,.5);
         moveForwards(1800,0.5);
-        rotateLeft(200,0.2);
-        teamMarker();
-        leftIntakeFlipper.setPosition(0.7);
-        rightIntakeFlipper.setPosition(0.7);
-        rotateRight(200,0.2);
-        Thread.sleep(200);
+        rotateLeft(200,0.5);
     }
 
     public void rotateLeftSlow(int distance, double power){
@@ -367,10 +379,42 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void retract(){
         while (!inLimit.isPressed()) {
+            extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             extension.setPower(-1);
         }
         if (inLimit.isPressed()) {
             extension.setPower(0);
+            extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            return;
         }
+    }
+    public void moveForwards2(int distance, double power){
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+        extension.setTargetPosition(2000);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+        extension.setPower(1);
+
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy() && extension.isBusy()){
+        }
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        extension.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void intakeOut(){
+
     }
 }

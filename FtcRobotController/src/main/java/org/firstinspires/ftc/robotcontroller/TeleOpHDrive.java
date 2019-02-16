@@ -28,12 +28,12 @@ public class TeleOpHDrive extends LinearOpMode {
     private Servo leftIntakeFlipper;
     private Servo rightIntakeFlipper;
     private Servo landerFlipper;
-    private CRServo intakeCR;
     private DcMotor extension;
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
     private TouchSensor inLimit;
     private int extensionReset;
+    private DcMotor intake;
 
 
     @Override
@@ -58,7 +58,6 @@ public class TeleOpHDrive extends LinearOpMode {
         leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
 
         landerFlipper = hardwareMap.servo.get("landerFlipper");
-        intakeCR = hardwareMap.crservo.get("intakeCR");
 
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -69,6 +68,8 @@ public class TeleOpHDrive extends LinearOpMode {
         phoneMount = hardwareMap.servo.get("phoneMount");
 
         inLimit = hardwareMap.touchSensor.get("inLimit");
+
+        intake = hardwareMap.dcMotor.get("intake");
 
 
 //Wait for the game to start
@@ -89,35 +90,20 @@ public class TeleOpHDrive extends LinearOpMode {
             //setting positions of servo arms
             leftSampleArm.setPosition(0.3);
 
-            //down position of flipper
-            if (gamepad2.a) {
-                rightIntakeFlipper.setPosition(0.77);
-                leftIntakeFlipper.setPosition(0.77);
-                Thread.sleep(500);
-                rightIntakeFlipper.setPosition(0.87);
-                leftIntakeFlipper.setPosition(0.87);
+            if (gamepad1.a){
+                intake.setPower(1);
             }
 
-            //up position of flipper
-            if (gamepad2.y) {
-                leftIntakeFlipper.setPosition(0.24);
-                rightIntakeFlipper.setPosition(0.24);
-
+            if (gamepad1.y){
+                intake.setPower(-1);
             }
 
-
-            //mid position of flipper
-            if (gamepad2.x) {
-                leftIntakeFlipper.setPosition(0.57);
-                rightIntakeFlipper.setPosition(0.57);
-
-
+            if (gamepad1.x){
+                intake.setPower(0);
             }
-            if (gamepad2.b) {
-                leftIntakeFlipper.setPosition(0.57);
-                rightIntakeFlipper.setPosition(0.57);
 
-
+            if (gamepad1.b){
+                intake.setPower(0);
             }
             //lander flipper up
             if (gamepad1.right_bumper) {
@@ -127,22 +113,6 @@ public class TeleOpHDrive extends LinearOpMode {
             //lander flipper down
             if (gamepad1.left_bumper) {
                 landerFlipper.setPosition(0.05);
-            }
-            if (gamepad1.a) {
-                //in
-                intakeCR.setPower(-0.9);
-            }
-            if (gamepad1.y) {
-                //out
-                intakeCR.setPower(0.8);
-            }
-            if (gamepad1.x) {
-                //stop
-                intakeCR.setPower(0);
-            }
-            if (gamepad1.b) {
-                //stop
-                intakeCR.setPower(0);
             }
             //extend extension slides
             if (inLimit.isPressed()) {
@@ -171,19 +141,36 @@ public class TeleOpHDrive extends LinearOpMode {
                     }
                 } else {
                     while (gamepad2.left_stick_y > 0.5) {
+                        intake.setPower(0);
                         extension.setPower(-1);
+                        while (gamepad2.right_stick_y > 0.5) {
+                            lift1.setPower(1);
+                            lift2.setPower(1);
+                        }
+                        while (gamepad2.right_stick_y < -0.5) {
+                            lift1.setPower(-1);
+                            lift2.setPower(-1);
+                        }
+                        lift1.setPower(-gamepad2.right_trigger);
+                        lift2.setPower(-gamepad2.right_trigger);
                     }
                     while (gamepad2.left_stick_y < -0.5) {
                         extension.setPower(1);
+                        while (gamepad2.right_stick_y > 0.5) {
+                            lift1.setPower(1);
+                            lift2.setPower(1);
+                        }
+                        while (gamepad2.right_stick_y < -0.5) {
+                            lift1.setPower(-1);
+                            lift2.setPower(-1);
+                        }
+                        lift1.setPower(-gamepad2.right_trigger);
+                        lift2.setPower(-gamepad2.right_trigger);
                     }
                     extension.setPower(0);
                 }
             }
-           /* if (extension.getCurrentPosition() - extensionReset > 5000) {
-                extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-                extension.setPower(0);
-                Thread.sleep(2000);
-            } */
+
 
 
                 //limit switch will stop lift if it is too high or low; prevents jamming

@@ -40,6 +40,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Autonomous(name = "TestGyroEncoders", group = "Autonomous")
+@Disabled
 
 //Declare motors
 public class TestGyroEncoders extends LinearOpMode {

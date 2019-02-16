@@ -30,7 +30,7 @@ import org.opencv.imgproc.LineSegmentDetector;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "AutoSample Depot", group = "Autonomous")
+@Autonomous(name = "Sample Depot", group = "Autonomous")
 
 //Declare motors
 public class AutoSampleDepot extends LinearOpMode {
@@ -85,8 +85,8 @@ public class AutoSampleDepot extends LinearOpMode {
         leftSampleArm = hardwareMap.servo.get("leftSampleArm");
         phoneMount = hardwareMap.servo.get("phoneMount");
 
-        lift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         strafingRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -144,14 +144,7 @@ public class AutoSampleDepot extends LinearOpMode {
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
-            moveForwards(2000, .5);
-            rotateLeft(150,0.5);
-            teamMarker();
-            Thread.sleep(400);
-            rotateRight(150,0.5);
-            Thread.sleep(100);
-            moveBackwards(1550, .5);
-            Thread.sleep(400);
+            sampleCenter();
             rotateLeft(400, 0.5);
             Thread.sleep(500);
             moveForwards(1100, .5);
@@ -159,8 +152,6 @@ public class AutoSampleDepot extends LinearOpMode {
             rotateLeftSlow(800,.5);
             Thread.sleep(200);
             moveForwards(300, .5);
-            rightIntakeFlipper.setPosition(0.77);
-            leftIntakeFlipper.setPosition(0.77);
             parkInCrater();
             Thread.sleep(500);
             lowerLift();
@@ -168,20 +159,14 @@ public class AutoSampleDepot extends LinearOpMode {
         }
         //Code to run if block is seen in left position, if variable left is returned as true
         if (left == true) {
-            moveForwards(300, 0.5);
-            Thread.sleep(200);
             sampleLeft();
-            teamMarker();
-            moveBackwards(400, 1);
+            rotateLeft(780, 0.5);
             Thread.sleep(200);
-            rotateLeft(700, 1);
+            moveForwards(200,0.5);
             Thread.sleep(200);
-            rotateLeftSlow(300,0.5);
+            rotateLeftSlow(400,0.5);
             Thread.sleep(200);
-            moveForwards(1500, 0.5);
-            turnLeft(1000,0.5);
-            rightIntakeFlipper.setPosition(0.77);
-            leftIntakeFlipper.setPosition(0.77);
+            moveForwards(300, 0.5);
             Thread.sleep(500);
             parkInCrater();
             lowerLift();
@@ -191,25 +176,15 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
         if (left == false && center == false) {
-            moveForwards(350, 0.5);
-            Thread.sleep(500);
             sampleRight();
-            moveBackwards(800, 0.5);
+            moveBackwards(790, 0.5);
             Thread.sleep(300);
-            rotateLeft(220, 0.5);
+            rotateLeft(720, 0.5);
             Thread.sleep(300);
-            moveForwards(850, 1);
-            Thread.sleep(1000);
-            rotateLeftSlow(550, 0.5);
+            moveForwards(1300, 0.5);
             Thread.sleep(300);
-            moveForwards(250, 1);
             rotateLeftSlow(400,0.5);
-            moveForwards(1200,1);
-            rightIntakeFlipper.setPosition(0.77);
-            leftIntakeFlipper.setPosition(0.77);
-            Thread.sleep(500);
             parkInCrater();
-            lowerLift();
         }
     }
 
@@ -250,27 +225,40 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleRight() throws InterruptedException {
-        rotateRight(230, 0.5);
+        moveForwards(350, 0.5);
         Thread.sleep(500);
-        moveForwards(900, 0.5);
+        rotateRight(210, 0.5);
         Thread.sleep(500);
-        rotateLeftSlow(1000, 0.5);
-        Thread.sleep(200);
-        moveForwards(900, 0.5);
-        rotateLeft(300,0.5);
-        teamMarker();
-        rotateRight(300,0.5);
+        moveForwards(1000, 0.5);
+        Thread.sleep(500);
+        rotateLeft(400, 0.5);
+        extend(1,2300);
+        Thread.sleep(300);
+        extend(1,-2300);
+        rotateRight(400,0.5);
     }
 
     public void sampleLeft() throws InterruptedException {
+        moveForwards(300, 0.5);
+        Thread.sleep(200);
         rotateLeft(250, 0.5);
         Thread.sleep(300);
         moveForwards(1150, 0.5);
         Thread.sleep(300);
-        rotateRightSlow(800, 0.5);
-        Thread.sleep(1000);
-        moveForwards(800, 0.5);
-        rotateLeftSlow(300,0.5);
+        rotateRight(450,0.5);
+        extend(1,2300);
+        Thread.sleep(300);
+        extend(1,-2300);
+
+    }
+
+    public void sampleCenter() throws InterruptedException {
+        moveForwards(1000, .5);
+        extend(1,2000);
+        Thread.sleep(300);
+        extend(1,-2000);
+        moveBackwards(500, .5);
+        Thread.sleep(400);
     }
 
     public void teamMarker() throws InterruptedException {
