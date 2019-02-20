@@ -155,6 +155,10 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == true){
             sampleLeft();
             moveToDepot();
+            rotateLeft(1100,0.3);
+            rotateLeft(1200,0.3);
+            rotateLeft(1200,0.3);
+            moveForwards(2000,1);
             parkInCrater();
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
@@ -295,6 +299,11 @@ public class AutoSampleCrater extends LinearOpMode {
         extend2(1,2000);
         intakeIn();
         retract();
+        moveForwards(780,0.3);
+        rotateLeft(200,5);
+        rotateRight(200,.5);
+        extend(1,2000);
+        extend(1,-2000);
         rotateRight(270,0.5);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
