@@ -181,7 +181,7 @@ public class AutoSampleDepot extends LinearOpMode {
             Thread.sleep(300);
             moveForwards(1700, 0.5);
             Thread.sleep(300);
-            rotateLeftSlow(300, 0.5);
+            rotateLeftSlow(350, 0.5);
             parkInCrater();
         }
     }
