@@ -78,8 +78,6 @@ public class LimitLiftAuto extends LinearOpMode {
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightIntakeFlipper = hardwareMap.servo.get("rightIntakeFlipper");
-        leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topLimit = hardwareMap.touchSensor.get("topLimit");
@@ -93,11 +91,8 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        lowerRobot();
-        Thread.sleep(100);
-        intakeOut();
+        retract();
 
-        //Code to run if block is seen in center position, if variable center is returned as true
 
     }
 
@@ -118,6 +113,7 @@ public class LimitLiftAuto extends LinearOpMode {
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extension.setPower(power);
         while (extension.isBusy()) {
+            lowerRobot();
         }
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -132,29 +128,6 @@ public class LimitLiftAuto extends LinearOpMode {
             extension.setPower(0);
         }
     }
-    public void moveForwards3(int distance, double power){
-        lift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        lift1.setTargetPosition(4560);
-        lift2.setTargetPosition(4560);
-        extension.setTargetPosition(2000);
-
-        lift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        lift1.setPower(1);
-        lift2.setPower(1);
-        extension.setPower(1);
-
-        while (lift1.isBusy() && lift2.isBusy() && extension.isBusy()){
-        }
-        lift1.setPower(0);
-        lift2.setPower(0);
-        extension.setPower(0);
-    }
     public void intakeIn() throws InterruptedException{
         intake.setPower(1);
         Thread.sleep(200);
@@ -164,6 +137,39 @@ public class LimitLiftAuto extends LinearOpMode {
         intake.setPower(-1);
         Thread.sleep(200);
         intake.setPower(0);
+    }
+    public void extend2(double power, int distance) throws InterruptedException {
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()) {
+            intakeIn();
+        }
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void moveForwards(int distance, double power) {
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+
+        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
+            lowerRobot();
+        }
+
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 }
 

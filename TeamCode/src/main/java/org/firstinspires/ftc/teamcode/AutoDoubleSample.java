@@ -47,16 +47,15 @@ public class AutoDoubleSample extends LinearOpMode {
     private GoldAlignDetector detector;
     boolean center = false;
     boolean left = false;
-    private Servo rightIntakeFlipper;
-    private Servo leftIntakeFlipper;
     private DcMotor extension;
     ElapsedTime timer = new ElapsedTime();
     double startTime = timer.time();
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
-    private Servo landerFlipper;
     private TouchSensor inLimit;
     private DcMotor intake;
+    private Servo liftServo1;
+    private Servo liftServo2;
 
 
 
@@ -95,15 +94,15 @@ public class AutoDoubleSample extends LinearOpMode {
         strafingLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightIntakeFlipper = hardwareMap.servo.get("rightIntakeFlipper");
-        leftIntakeFlipper = hardwareMap.servo.get("leftIntakeFlipper");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topLimit = hardwareMap.touchSensor.get("topLimit");
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
-        landerFlipper = hardwareMap.servo.get("landerFlipper");
         inLimit = hardwareMap.touchSensor.get("inLimit");
         intake = hardwareMap.dcMotor.get("intake");
+        liftServo1 = hardwareMap.servo.get("liftServo1");
+
+        liftServo2 = hardwareMap.servo.get("liftServo2");
 
 
         //waitForStart();
@@ -112,7 +111,6 @@ public class AutoDoubleSample extends LinearOpMode {
             telemetry.update();
         }
         detector.disable();
-        landerFlipper.setPosition(0.05);
         leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.8);
         detector.enable();
@@ -137,7 +135,11 @@ public class AutoDoubleSample extends LinearOpMode {
         Thread.sleep(100);
 
         detector.disable();
+        leftSampleArm.setPosition(0.4);
         phoneMount.setPosition(0.43);
+        liftServo1.setPosition(0.94);
+        Thread.sleep(10);
+        liftServo2.setPosition(0.75);
         Thread.sleep(500);
 
         lowerRobot();
@@ -367,15 +369,22 @@ public class AutoDoubleSample extends LinearOpMode {
     public void parkInCrater(){
         extend(1,3000);
     }
-    public void lowerLift(){
+    public void lowerLift() throws InterruptedException{
         while (!topLimit.isPressed()) {
             lift1.setPower(1);
             lift2.setPower(1);
             if (topLimit.isPressed()) {
-                lift1.setPower(0);
-                lift2.setPower(0);
+                lift1.setPower(1);
+                lift2.setPower(1);
+                Thread.sleep(100);
+                stopLift();
             }
         }
+    }
+    private void stopLift () throws InterruptedException {
+        lift1.setPower(0);
+        lift2.setPower(0);
+        Thread.sleep(500);
     }
     public void retract(){
         while (!inLimit.isPressed()) {
@@ -388,6 +397,7 @@ public class AutoDoubleSample extends LinearOpMode {
             return;
         }
     }
+    //Robot moves forwards and lowers lift at the same time
     public void moveForwards2(int distance, double power){
         extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -413,8 +423,5 @@ public class AutoDoubleSample extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-    }
-    public void intakeOut(){
-
     }
 }
