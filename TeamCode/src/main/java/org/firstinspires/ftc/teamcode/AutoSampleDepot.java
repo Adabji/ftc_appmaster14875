@@ -145,7 +145,7 @@ public class AutoSampleDepot extends LinearOpMode {
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
             sampleCenter();
-            rotateLeft(400, 0.5);
+            rotateLeft(440, 0.5);
             Thread.sleep(500);
             moveForwards(1100, .5);
             Thread.sleep(200);
@@ -252,11 +252,11 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleCenter() throws InterruptedException {
-        moveForwards(1000, .5);
+        moveForwards(1300, .5);
         extend2(1, 2000);
         intakeOut();
         extend(1, -1800);
-        moveBackwards(500, .5);
+        moveBackwards(800, .5);
         Thread.sleep(400);
     }
 

@@ -150,7 +150,7 @@ public class AutoDoubleSample extends LinearOpMode {
             sampleCenter();
             moveToDepot();
             teamMarker();
-            rotateLeft(450,0.3);
+            rotateLeft(505,0.3);
             moveForwards(1000,1);
             moveBackwards(1000,1);
             rotateLeft(500,1);
@@ -275,12 +275,12 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void sampleCenter() throws InterruptedException{
         moveForwards(400,1);
-        lowerLift();
-        rotateLeft(100,1);
-        extend(1,2000);
-        retract();
-        rotateRight(100,1);
-        Thread.sleep(200);
+        rotateLeft(75,1);
+        extend2(1,2000);
+        intakeOut();
+        extend(1,-1800);
+        rotateRight(75,1);
+        Thread.sleep(400);
         //rotateLeft(300,0.5);
         /*moveForwards(500,0.5);
         Thread.sleep(200);
@@ -289,12 +289,12 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
-        lowerLift();
         Thread.sleep(500);
         rotateLeft(290,0.5);
         Thread.sleep(400);
-        extend(1,2100);
-        retract();
+        extend2(1,2100);
+        intakeOut();
+        extend(1,-1900);
         rotateRight(270,1);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
@@ -309,8 +309,9 @@ public class AutoDoubleSample extends LinearOpMode {
         Thread.sleep(300);
         rotateRight(220,1);
         Thread.sleep(300);
-        extend(1,2000);
-        retract();
+        extend2(1,2000);
+        intakeOut();
+        extend(1,-1800);
         rotateLeft(220,1);
         Thread.sleep(200);
         /*moveForwards(750,0.5);
@@ -366,6 +367,19 @@ public class AutoDoubleSample extends LinearOpMode {
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
+    public void extend2(double power, int distance) throws InterruptedException{
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()){
+            lowerLift();
+        }
+        lowerLift();
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+
     public void parkInCrater(){
         extend(1,3000);
     }
@@ -374,10 +388,8 @@ public class AutoDoubleSample extends LinearOpMode {
             lift1.setPower(1);
             lift2.setPower(1);
             if (topLimit.isPressed()) {
-                lift1.setPower(1);
-                lift2.setPower(1);
-                Thread.sleep(100);
-                stopLift();
+                lift1.setPower(0);
+                lift2.setPower(0);
             }
         }
     }
@@ -423,5 +435,10 @@ public class AutoDoubleSample extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void intakeOut() throws InterruptedException{
+        intake.setPower(-1);
+        Thread.sleep(300);
+        intake.setPower(0);
     }
 }
