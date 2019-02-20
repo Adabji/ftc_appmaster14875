@@ -89,11 +89,7 @@ public class TeleOpHDrive extends LinearOpMode {
             leftSampleArm.setPosition(0.3);
 
             if (gamepad1.left_bumper){
-<<<<<<< HEAD
                 liftServo1.setPosition(0.96);
-=======
-                liftServo1.setPosition(0.94);
->>>>>>> 2a1473c1db3993230405f9cf002336a2ed59d17a
                 Thread.sleep(10);
                 liftServo2.setPosition(0.72);
             }
