@@ -89,13 +89,17 @@ public class TeleOpHDrive extends LinearOpMode {
             leftSampleArm.setPosition(0.3);
 
             if (gamepad1.left_bumper){
+<<<<<<< HEAD
                 liftServo1.setPosition(0.96);
+=======
+                liftServo1.setPosition(0.94);
+>>>>>>> 2a1473c1db3993230405f9cf002336a2ed59d17a
                 Thread.sleep(10);
                 liftServo2.setPosition(0.72);
             }
             if (gamepad1.right_bumper){
                 liftServo1.setPosition(0);
-                Thread.sleep(10);
+                Thread.sleep(100);
                 liftServo2.setPosition(0.3);
             }
             if (gamepad1.a){
@@ -247,10 +251,7 @@ public class TeleOpHDrive extends LinearOpMode {
                         lift1.setPower(-gamepad2.right_trigger);
                         lift2.setPower(-gamepad2.right_trigger);
                         if (gamepad2.left_trigger > 0.5) {
-                            liftServo1.setPosition(0.94);
-                            Thread.sleep(10);
-                            liftServo2.setPosition(0.72);
-                            Thread.sleep(500);
+                           
                             while (!topLimit.isPressed()) {
                                 lift1.setPower(1);
                                 lift2.setPower(1);
