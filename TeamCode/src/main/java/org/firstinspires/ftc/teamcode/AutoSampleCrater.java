@@ -112,9 +112,8 @@ public class AutoSampleCrater extends LinearOpMode {
         }
         detector.disable();
         leftSampleArm.setPosition(0.4);
-        liftServo1.setPosition(0.94);
-        Thread.sleep(10);
-        liftServo2.setPosition(0.75);
+        liftServo1.setPosition(0.82);
+        liftServo2.setPosition(0.72);
         phoneMount.setPosition(0.8);
         Thread.sleep(500);
         detector.enable();
@@ -155,9 +154,6 @@ public class AutoSampleCrater extends LinearOpMode {
         if(left == true){
             sampleLeft();
             moveToDepot();
-            rotateLeft(1100,0.3);
-            rotateLeft(1200,0.3);
-            rotateLeft(1200,0.3);
             moveForwards(2000,1);
             parkInCrater();
         }
@@ -278,12 +274,14 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(-distance, power);
     }
     public void sampleCenter() throws InterruptedException{
-        moveForwards2(400,0.5);
+        moveForwards(400,0.5);
         Thread.sleep(200);
-        rotateLeft(100,1);
-        extend2(1,2000);
-        rotateRight(100,1);
-        extend(1,-2000);
+        rotateLeft(75,1);
+        extend(1,2000);
+        intakeOut();
+        extend(1,-1800);
+        rotateRight(75,1);
+        lowerLift();
         Thread.sleep(200);
         //rotateLeft(300,0.5);
         /*moveForwards(500,0.5);
@@ -292,19 +290,15 @@ public class AutoSampleCrater extends LinearOpMode {
         rotateLeft(50,.5);*/
     }
     public void sampleLeft() throws InterruptedException{
-        moveForwards2(400,0.5);
+        moveForwards(400,0.5);
         Thread.sleep(500);
         rotateLeft(270,0.5);
         Thread.sleep(400);
-        extend2(1,2000);
-        intakeIn();
-        retract();
-        moveForwards(780,0.3);
-        rotateLeft(200,5);
-        rotateRight(200,.5);
         extend(1,2000);
-        extend(1,-2000);
+        intakeOut();
+        extend(1,-1800);
         rotateRight(270,0.5);
+        lowerLift();
         Thread.sleep(200);
         /*moveForwards(780,0.3);
         Thread.sleep(200);
@@ -313,14 +307,15 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(200);*/
     }
     public void sampleRight() throws InterruptedException{
-        moveForwards2(400,0.5);
+        moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateRight(220,0.5);
+        rotateRight(210,0.5);
         Thread.sleep(400);
-        extend2(1,2000);
-        intakeIn();
-        retract();
+        extend(1,2300);
+        intakeOut();
+        extend(1,-2100);
         rotateLeft(220,0.5);
+        lowerLift();
         Thread.sleep(200);
         /*moveForwards(750,0.5);
         rotateLeft(200,.5);
@@ -338,12 +333,12 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(200);
         rotateLeftSlow(820,0.5);
         Thread.sleep(200);
-        turnLeft(800,.5);
+        turnLeft(700,1);
         turnRight(100,.5);
         moveForwards(1800,0.5);
         rotateLeft(200,0.2);
         teamMarker();
-        rotateRight(200,0.2);
+        rotateRight(200,0.3);
         Thread.sleep(200);
         rotateLeft(1200,0.3);
         moveForwards(2000,1);
@@ -384,14 +379,16 @@ public class AutoSampleCrater extends LinearOpMode {
         extend(1,3000);
     }
     public void lowerLift() throws InterruptedException{
+        liftServo1.setPosition(0.96);
+        Thread.sleep(10);
+        liftServo2.setPosition(0.72);
         while (!topLimit.isPressed()) {
             lift1.setPower(1);
             lift2.setPower(1);
             if (topLimit.isPressed()) {
-                lift1.setPower(1);
-                lift2.setPower(1);
-                Thread.sleep(100);
-                stopLift();
+                lift1.setPower(0);
+                lift2.setPower(0);
+
             }
         }
     }
@@ -411,8 +408,8 @@ public class AutoSampleCrater extends LinearOpMode {
         }
     }
     public void intakeIn() throws InterruptedException{
-        intake.setPower(1);
-        Thread.sleep(1200);
+        intake.setPower(-1);
+        Thread.sleep(100);
         intake.setPower(0);
     }
     public void intakeOut() throws InterruptedException{
@@ -430,5 +427,6 @@ public class AutoSampleCrater extends LinearOpMode {
         }
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        lowerLift();
     }
 }

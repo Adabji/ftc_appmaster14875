@@ -89,7 +89,7 @@ public class TeleOpHDrive extends LinearOpMode {
             leftSampleArm.setPosition(0.3);
 
             if (gamepad1.left_bumper){
-                liftServo1.setPosition(0.92);
+                liftServo1.setPosition(0.96);
                 Thread.sleep(10);
                 liftServo2.setPosition(0.72);
             }
@@ -138,6 +138,8 @@ public class TeleOpHDrive extends LinearOpMode {
                     while (!inLimit.isPressed()) {
                         extension.setPower(-1);
                     }
+                    motorBackLeft.setPower(-gamepad1.left_stick_y);
+                    motorBackRight.setPower(-gamepad1.right_stick_y);
                     if (inLimit.isPressed()) {
                         extension.setPower(0);
                     }
@@ -155,6 +157,10 @@ public class TeleOpHDrive extends LinearOpMode {
                         }
                         lift1.setPower(-gamepad2.right_trigger);
                         lift2.setPower(-gamepad2.right_trigger);
+                        if (topLimit.isPressed()){
+                            lift1.setPower(0);
+                            lift2.setPower(0);
+                        }
                     }
                     while (gamepad2.left_stick_y < -0.5) {
                         extension.setPower(1);
@@ -199,6 +205,7 @@ public class TeleOpHDrive extends LinearOpMode {
                         if (topLimit.isPressed()) {
                             lift1.setPower(0);
                             lift2.setPower(0);
+                            Thread.sleep(50);
                         }
                     }
                 } else {
@@ -206,12 +213,7 @@ public class TeleOpHDrive extends LinearOpMode {
 
                         lift1.setPower(0);
                         lift2.setPower(0);
-                        Thread.sleep(200);
-
-                        lift1.setPower(-1);
-                        lift2.setPower(-1);
-                        Thread.sleep(150);
-                        stopLift();
+                        Thread.sleep(50);
 
                         while (gamepad2.right_stick_y > 0.5) {
                             lift1.setPower(1);

@@ -109,9 +109,9 @@ public class AutoSampleDepot extends LinearOpMode {
 
         detector.disable();
         leftSampleArm.setPosition(0.4);
-        liftServo1.setPosition(0.94);
+        liftServo1.setPosition(0.96);
         Thread.sleep(10);
-        liftServo2.setPosition(0.75);
+        liftServo2.setPosition(0.72);
         phoneMount.setPosition(0.8);
         Thread.sleep(1000);
         detector.enable();
@@ -175,13 +175,13 @@ public class AutoSampleDepot extends LinearOpMode {
         //when both left and center are negated as true conditions
         if (left == false && center == false) {
             sampleRight();
-            moveBackwards(790, 0.5);
+            moveBackwards(900, 0.5);
             Thread.sleep(300);
-            rotateLeft(720, 0.5);
+            rotateLeft(600, 0.5);
             Thread.sleep(300);
-            moveForwards(1300, 0.5);
+            moveForwards(1700, 0.5);
             Thread.sleep(300);
-            rotateLeftSlow(400, 0.5);
+            rotateLeftSlow(300, 0.5);
             parkInCrater();
         }
     }
@@ -223,38 +223,39 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleRight() throws InterruptedException {
-        moveForwards2(350, 0.5);
+        moveForwards(350, 0.5);
         Thread.sleep(500);
         rotateRight(210, 0.5);
         Thread.sleep(500);
         moveForwards(1000, 0.5);
         Thread.sleep(500);
         rotateLeft(400, 0.5);
-        extend(1, 2300);
-        Thread.sleep(300);
-        extend(1, -2300);
-        rotateRight(400, 0.5);
+        extend2(1, 2300);
+        intakeOut();
+        extend(1, -2100);
+        rotateRight(300, 0.5);
+        Thread.sleep(200);
     }
 
     public void sampleLeft() throws InterruptedException {
-        moveForwards2(300, 0.5);
+        moveForwards(300, 0.5);
         Thread.sleep(200);
         rotateLeft(250, 0.5);
         Thread.sleep(300);
         moveForwards(1150, 0.5);
         Thread.sleep(300);
         rotateRight(450, 0.5);
-        extend(1, 2300);
-        Thread.sleep(300);
-        extend(1, -2300);
+        extend2(1, 2300);
+        intakeOut();
+        extend(1, -2100);
 
     }
 
     public void sampleCenter() throws InterruptedException {
-        moveForwards2(1000, .5);
-        extend(1, 2000);
-        Thread.sleep(300);
-        extend(1, -2000);
+        moveForwards(1000, .5);
+        extend2(1, 2000);
+        intakeOut();
+        extend(1, -1800);
         moveBackwards(500, .5);
         Thread.sleep(400);
     }
@@ -369,10 +370,22 @@ public class AutoSampleDepot extends LinearOpMode {
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extension.setPower(power);
         while (extension.isBusy()) {
-            intakeIn();
         }
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+
+    public void extend2(double power, int distance) throws InterruptedException{
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(power);
+        while (extension.isBusy()) {
+            lowerLift();
+        }
+        extension.setPower(0);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        lowerLift();
     }
 
     public void parkInCrater() throws InterruptedException{
@@ -384,10 +397,8 @@ public class AutoSampleDepot extends LinearOpMode {
             lift1.setPower(1);
             lift2.setPower(1);
             if (topLimit.isPressed()) {
-                lift1.setPower(1);
-                lift2.setPower(1);
-                Thread.sleep(100);
-                stopLift();
+                lift1.setPower(0);
+                lift2.setPower(0);
             }
         }
     }
@@ -396,8 +407,8 @@ public class AutoSampleDepot extends LinearOpMode {
         lift2.setPower(0);
         Thread.sleep(500);
     }
-    private void intakeIn() throws InterruptedException{
-        intake.setPower(1);
+    private void intakeOut() throws InterruptedException{
+        intake.setPower(-1);
         Thread.sleep(1200);
         intake.setPower(0);
     }
