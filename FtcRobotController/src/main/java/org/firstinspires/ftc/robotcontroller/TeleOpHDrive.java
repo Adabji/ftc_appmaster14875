@@ -132,47 +132,12 @@ public class TeleOpHDrive extends LinearOpMode {
                     telemetry.update();
                 }
                 if (gamepad2.left_bumper) {
-                    intake.setPower(-1);
-                    Thread.sleep(100);
-                    intake.setPower(0);
-                    motorBackLeft.setPower(-gamepad1.left_stick_y);
-                    motorBackRight.setPower(-gamepad1.right_stick_y);
                     while (!inLimit.isPressed()) {
                         extension.setPower(-1);
                     }
                     if (inLimit.isPressed()) {
                         extension.setPower(0);
                     }
-                } else {
-                    while (gamepad2.left_stick_y > 0.5) {
-                        intake.setPower(0);
-                        extension.setPower(-1);
-                        while (gamepad2.right_stick_y > 0.5) {
-                            lift1.setPower(1);
-                            lift2.setPower(1);
-                        }
-                        while (gamepad2.right_stick_y < -0.5) {
-                            lift1.setPower(-1);
-                            lift2.setPower(-1);
-                        }
-                        if (topLimit.isPressed()){
-                            lift1.setPower(0);
-                            lift2.setPower(0);
-                        }
-                    }
-                    while (gamepad2.left_stick_y < -0.5) {
-                        extension.setPower(1);
-                        while (gamepad2.right_stick_y > 0.5) {
-                            lift1.setPower(1);
-                            lift2.setPower(1);
-                        }
-                        while (gamepad2.right_stick_y < -0.5) {
-                            lift1.setPower(-1);
-                            lift2.setPower(-1);
-                        }
-                    }
-                    motorBackLeft.setPower(-gamepad1.left_stick_y);
-                    motorBackRight.setPower(-gamepad1.right_stick_y);
                 }
             }
 
@@ -184,90 +149,22 @@ public class TeleOpHDrive extends LinearOpMode {
                     lift2.setPower(1);
                     Thread.sleep(100);
                     stopLift();
-                    lift1.setPower(-gamepad2.right_trigger);
-                    lift2.setPower(-gamepad2.right_trigger);
-                    while (gamepad2.right_stick_y > 0.5) {
-                        lift1.setPower(1);
-                        lift2.setPower(1);
-                    }
-                    while (gamepad2.right_stick_y < -0.5) {
-                        lift1.setPower(-1);
-                        lift2.setPower(-1);
-                    }
-                    if (gamepad2.left_trigger > 0.5) {
-                        while (!topLimit.isPressed()) {
-                            lift1.setPower(1);
-                            lift2.setPower(1);
-                        }
-                        if (topLimit.isPressed()) {
-                            lift1.setPower(0);
-                            lift2.setPower(0);
-                            Thread.sleep(50);
-                        }
-                    }
+                    lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
+                    lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
                 } else {
                     if (topLimit.isPressed()) {
-
-                        lift1.setPower(0);
-                        lift2.setPower(0);
-                        Thread.sleep(50);
-
-                        while (gamepad2.right_stick_y > 0.5) {
-                            lift1.setPower(1);
-                            lift2.setPower(1);
-                        }
-                        while (gamepad2.right_stick_y < -0.5) {
-                            lift1.setPower(-1);
-                            lift2.setPower(-1);
-                        }
-                        lift1.setPower(-gamepad2.right_trigger);
-                        lift2.setPower(-gamepad2.right_trigger);
-                        if (gamepad2.left_trigger > 0.5) {
-                            while (!topLimit.isPressed()) {
-                                lift1.setPower(1);
-                                lift2.setPower(1);
-                            }
-                            if (topLimit.isPressed()) {
-                                lift1.setPower(0);
-                                lift2.setPower(0);
-                            }
-                        }
+                        lift1.setPower(1);
+                        lift2.setPower(1);
+                        Thread.sleep(20);
+                        stopLift();
+                        lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
                     } else {
-                        while (gamepad2.right_stick_y > 0.5) {
-                            lift1.setPower(1);
-                            lift2.setPower(1);
+                        lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
                         }
-                        while (gamepad2.right_stick_y < -0.5) {
-                            lift1.setPower(-1);
-                            lift2.setPower(-1);
-                        }
-                        lift1.setPower(-gamepad2.right_trigger);
-                        lift2.setPower(-gamepad2.right_trigger);
-                        if (gamepad2.left_trigger > 0.5) {
-                            motorBackLeft.setPower(-gamepad1.left_stick_y);
-                            motorBackRight.setPower(-gamepad1.right_stick_y);
-                            while (!topLimit.isPressed()) {
-                                lift1.setPower(1);
-                                lift2.setPower(1);
-                                if (gamepad2.right_bumper){
-                                    extension.setPower(1);
-                                    Thread.sleep(10);
-                                    extension.setPower(0);
-                                }
-                            }
-                            if (topLimit.isPressed()) {
-                                lift1.setPower(0);
-                                lift2.setPower(0);
-                                while (gamepad2.right_bumper) {
-                                    extension.setPower(1);
-                                }
-                            }
-                        }
-                    }
                 }
-            }
-        }
-        private void stopLift () throws InterruptedException {
+          private void stopLift () throws InterruptedException {
             lift1.setPower(0);
             lift2.setPower(0);
             Thread.sleep(500);
