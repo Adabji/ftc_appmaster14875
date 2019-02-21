@@ -115,51 +115,50 @@ public class TeleOpHDrive extends LinearOpMode {
             }
             //extend extension slides
             if (gamepad2.right_bumper) {
-                if (!inLimit.isPressed()) {
-                    extension.setPower(1);
-                }
-                else if (inLimit.isPressed()) {
-                    extension.setPower(1);
-                }
-            }
-        }
-        if (gamepad2.left_bumper) {
-            if (!inLimit.isPressed()) {
                 extension.setPower(1);
-            }
-            else if (inLimit.isPressed()) {
+            } else if (gamepad2.left_bumper) {
+                if (inLimit.isPressed()) {
+                    extension.setPower(0);
+                } else {
+                    extension.setPower(-1);
+                }
+            } else {
                 extension.setPower(0);
+
             }
         }
+        if (gamepad2.a) {
+        intake.setPower(1);
+        telemetry.addData("Does this", "1");
 
 
-                //limit switch will stop lift if it is too high or low; prevents jamming
-                if (bottomLimit.isPressed()) {
-                    lift1.setPower(1);
-                    lift2.setPower(1);
-                    Thread.sleep(100);
-                    stopLift();
-                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                } else {
-                    if (topLimit.isPressed()) {
-                        lift1.setPower(-1);
-                        lift2.setPower(-1);
-                        Thread.sleep(50);
-                        stopLift();
-                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                    } else {
-                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                    }
+            }}}
 
-                }
-            }
-
-        private void stopLift () throws InterruptedException {
+        //limit switch will stop lift if it is too high or low; prevents jamming
+        /*if (bottomLimit.isPressed()) {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            Thread.sleep(100);
             lift1.setPower(0);
             lift2.setPower(0);
             Thread.sleep(500);
+            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+        } else {
+            if (topLimit.isPressed()) {
+                lift1.setPower(-1);
+                lift2.setPower(-1);
+                Thread.sleep(50);
+                lift1.setPower(0);
+                lift2.setPower(0);
+                Thread.sleep(500);
+                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            } else {
+                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            }
+
         }
     }
+}*/
