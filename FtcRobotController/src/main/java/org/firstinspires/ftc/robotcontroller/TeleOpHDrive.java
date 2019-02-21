@@ -88,59 +88,49 @@ public class TeleOpHDrive extends LinearOpMode {
             //setting positions of servo arms
             leftSampleArm.setPosition(0.3);
 
-            if (gamepad1.left_bumper){
+            if (gamepad1.left_bumper) {
                 liftServo1.setPosition(0.96);
                 Thread.sleep(100);
                 liftServo2.setPosition(0.72);
             }
-            if (gamepad1.right_bumper){
+            if (gamepad1.right_bumper) {
                 liftServo1.setPosition(0);
                 Thread.sleep(100);
                 liftServo2.setPosition(0.3);
             }
-            if (gamepad1.a){
+            if (gamepad1.a) {
                 intake.setPower(1);
             }
 
-            if (gamepad1.y){
+            if (gamepad1.y) {
                 intake.setPower(-1);
             }
 
-            if (gamepad1.x){
+            if (gamepad1.x) {
                 intake.setPower(0);
             }
 
-            if (gamepad1.b){
+            if (gamepad1.b) {
                 intake.setPower(0);
             }
             //extend extension slides
-            if (inLimit.isPressed()) {
-                extension.setPower(0);
-                extensionReset = 0;
-                telemetry.addData("extensionReset",extension.getCurrentPosition());
-                telemetry.update();
-                Thread.sleep(200);
-                while (gamepad2.right_bumper) {
+            if (gamepad2.right_bumper) {
+                if (!inLimit.isPressed()) {
                     extension.setPower(1);
-                    telemetry.addData("position",extension.getCurrentPosition()-extensionReset);
-                    telemetry.update();
                 }
-            } else {
-                while (gamepad2.right_bumper) {
+                else if (inLimit.isPressed()) {
                     extension.setPower(1);
-                    telemetry.addData("position",extension.getCurrentPosition()-extensionReset);
-                    telemetry.update();
-                }
-                if (gamepad2.left_bumper) {
-                    while (!inLimit.isPressed()) {
-                        extension.setPower(-1);
-                    }
-                    if (inLimit.isPressed()) {
-                        extension.setPower(0);
-                    }
                 }
             }
-
+        }
+        if (gamepad2.left_bumper) {
+            if (!inLimit.isPressed()) {
+                extension.setPower(1);
+            }
+            else if (inLimit.isPressed()) {
+                extension.setPower(0);
+            }
+        }
 
 
                 //limit switch will stop lift if it is too high or low; prevents jamming
@@ -149,22 +139,25 @@ public class TeleOpHDrive extends LinearOpMode {
                     lift2.setPower(1);
                     Thread.sleep(100);
                     stopLift();
-                    lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
-                    lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
+                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 } else {
                     if (topLimit.isPressed()) {
-                        lift1.setPower(1);
-                        lift2.setPower(1);
-                        Thread.sleep(20);
+                        lift1.setPower(-1);
+                        lift2.setPower(-1);
+                        Thread.sleep(50);
                         stopLift();
-                        lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
-                        lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
+                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                     } else {
-                        lift1.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
-                        lift2.setPower(gamepad1.left_trigger - gamepad2.right_trigger);
-                        }
+                        lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                        lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                    }
+
                 }
-          private void stopLift () throws InterruptedException {
+            }
+
+        private void stopLift () throws InterruptedException {
             lift1.setPower(0);
             lift2.setPower(0);
             Thread.sleep(500);
