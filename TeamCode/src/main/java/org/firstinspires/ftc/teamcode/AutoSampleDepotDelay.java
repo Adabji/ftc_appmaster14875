@@ -30,10 +30,10 @@ import org.opencv.imgproc.LineSegmentDetector;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "Sample Depot", group = "Autonomous")
+@Autonomous(name = "Sample Depot Delay", group = "Autonomous")
 
 //Declare motors
-public class AutoSampleDepot extends LinearOpMode {
+public class AutoSampleDepotDelay extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
@@ -140,7 +140,7 @@ public class AutoSampleDepot extends LinearOpMode {
         Thread.sleep(500);
 
         lowerRobot();
-        Thread.sleep(100);
+        Thread.sleep(4100);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
@@ -245,7 +245,7 @@ public class AutoSampleDepot extends LinearOpMode {
         moveForwards(1150, 0.5);
         Thread.sleep(300);
         rotateRight(450, 0.5);
-        extend(1, 2300);
+        extend2(1, 2300);
         intakeOut();
         extend(1, -2100);
 
