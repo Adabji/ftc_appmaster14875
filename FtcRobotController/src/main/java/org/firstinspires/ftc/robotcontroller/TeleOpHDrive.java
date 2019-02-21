@@ -126,39 +126,36 @@ public class TeleOpHDrive extends LinearOpMode {
                 extension.setPower(0);
 
             }
-        }
-        if (gamepad2.a) {
-        intake.setPower(1);
-        telemetry.addData("Does this", "1");
-
-
-            }}}
-
-        //limit switch will stop lift if it is too high or low; prevents jamming
-        /*if (bottomLimit.isPressed()) {
-            lift1.setPower(1);
-            lift2.setPower(1);
-            Thread.sleep(100);
-            lift1.setPower(0);
-            lift2.setPower(0);
-            Thread.sleep(500);
-            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-        } else {
-            if (topLimit.isPressed()) {
-                lift1.setPower(-1);
-                lift2.setPower(-1);
-                Thread.sleep(50);
+            //limit switch will stop lift if it is too high or low; prevents jamming
+            if (bottomLimit.isPressed()) {
+                lift1.setPower(1);
+                lift2.setPower(1);
+                Thread.sleep(100);
                 lift1.setPower(0);
                 lift2.setPower(0);
                 Thread.sleep(500);
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             } else {
-                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                if (topLimit.isPressed()) {
+                    lift1.setPower(-1);
+                    lift2.setPower(-1);
+                    Thread.sleep(50);
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    Thread.sleep(500);
+                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                } else {
+                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                }
+
             }
 
-        }
+
+            }
     }
-}*/
+}
+
+
