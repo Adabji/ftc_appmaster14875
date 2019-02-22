@@ -385,8 +385,8 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void lowerLift() throws InterruptedException{
         while (!topLimit.isPressed()) {
-            lift1.setPower(1);
-            lift2.setPower(1);
+            lift1.setPower(.5);
+            lift2.setPower(.5);
             if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);

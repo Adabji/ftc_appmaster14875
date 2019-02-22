@@ -394,8 +394,8 @@ public class AutoSampleDepot extends LinearOpMode {
 
     public void lowerLift() throws InterruptedException {
         while (!topLimit.isPressed()) {
-            lift1.setPower(0.8);
-            lift2.setPower(0.8);
+            lift1.setPower(0.5);
+            lift2.setPower(0.5);
             if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);
