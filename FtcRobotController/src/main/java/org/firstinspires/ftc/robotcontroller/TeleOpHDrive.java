@@ -95,7 +95,7 @@ public class TeleOpHDrive extends LinearOpMode {
             }
             if (gamepad1.right_bumper) {
                 liftServo1.setPosition(0);
-                Thread.sleep(100);
+                Thread.sleep(150);
                 liftServo2.setPosition(0.3);
             }
             if (gamepad1.a) {
