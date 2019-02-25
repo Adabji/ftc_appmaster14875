@@ -143,6 +143,11 @@ public class AutoSampleCrater extends LinearOpMode {
 
         lowerRobot();
         Thread.sleep(100);
+        lift1.setPower(1);
+        lift2.setPower(1);
+        Thread.sleep(30);
+        lift1.setPower(0);
+        lift2.setPower(0);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
@@ -277,11 +282,11 @@ public class AutoSampleCrater extends LinearOpMode {
         moveForwards(400,0.5);
         Thread.sleep(200);
         rotateLeft(75,1);
-        extend(1,2000);
+        extend(1,2200);
         intakeOut();
-        extend(1,-1800);
-        rotateRight(75,1);
         lowerLift();
+        extend(1,-2000);
+        rotateRight(75,1);
         Thread.sleep(200);
         //rotateLeft(300,0.5);
         /*moveForwards(500,0.5);
@@ -296,9 +301,9 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(400);
         extend(1,2000);
         intakeOut();
+        lowerLift();
         extend(1,-1800);
         rotateRight(270,0.5);
-        lowerLift();
         Thread.sleep(200);
         /*moveForwards(780,0.3);
         Thread.sleep(200);
@@ -313,9 +318,9 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(400);
         extend(1,2300);
         intakeOut();
+        lowerLift();
         extend(1,-2100);
         rotateLeft(220,0.5);
-        lowerLift();
         Thread.sleep(200);
         /*moveForwards(750,0.5);
         rotateLeft(200,.5);
@@ -333,15 +338,15 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(200);
         rotateLeftSlow(820,0.5);
         Thread.sleep(200);
-        turnLeft(700,1);
-        turnRight(100,.5);
+        turnLeft(400,1);
+        turnRight(100,1);
         moveForwards(1800,0.5);
         rotateLeft(200,0.2);
         teamMarker();
         rotateRight(200,0.3);
         Thread.sleep(200);
         rotateLeft(1200,0.3);
-        moveForwards(2000,1);
+        moveForwards(1800,1);
     }
 
     public void rotateLeftSlow(int distance, double power){
@@ -414,7 +419,8 @@ public class AutoSampleCrater extends LinearOpMode {
     }
     public void intakeOut() throws InterruptedException{
         intake.setPower(-1);
-        Thread.sleep(500);
+        Thread.sleep(1500
+        );
         intake.setPower(0);
     }
     public void extend2(double power, int distance) throws InterruptedException {
