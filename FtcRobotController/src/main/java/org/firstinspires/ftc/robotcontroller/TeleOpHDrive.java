@@ -143,7 +143,7 @@ public class TeleOpHDrive extends LinearOpMode {
                     Thread.sleep(50);
                     lift1.setPower(0);
                     lift2.setPower(0);
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                     lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                     lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 } else {
