@@ -130,7 +130,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (bottomLimit.isPressed()) {
                 lift1.setPower(1);
                 lift2.setPower(1);
-                Thread.sleep(100);
+                Thread.sleep(40);
                 lift1.setPower(0);
                 lift2.setPower(0);
                 Thread.sleep(500);
