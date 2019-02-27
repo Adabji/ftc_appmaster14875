@@ -312,15 +312,15 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(200);*/
     }
     public void sampleRight() throws InterruptedException{
-        moveForwards(400,0.5);
+        moveForwards(400,0.7);
         Thread.sleep(500);
-        rotateRight(210,0.5);
+        rotateRight(210,0.7);
         Thread.sleep(400);
         extend(1,2300);
         intakeOut();
         lowerLift();
         extend(1,-2100);
-        rotateLeft(220,0.5);
+        rotateLeft(220,0.7);
         Thread.sleep(200);
         /*moveForwards(750,0.5);
         rotateLeft(200,.5);
@@ -345,7 +345,7 @@ public class AutoSampleCrater extends LinearOpMode {
         teamMarker();
         rotateRight(200,0.3);
         Thread.sleep(200);
-        rotateLeft(1200,0.3);
+        rotateLeft(1250,0.3);
         moveForwards(1800,1);
     }
 
@@ -418,9 +418,11 @@ public class AutoSampleCrater extends LinearOpMode {
         intake.setPower(0);
     }
     public void intakeOut() throws InterruptedException{
-        intake.setPower(-1);
-        Thread.sleep(1500
+        intake.setPower(1);
+        Thread.sleep(500
         );
+        intake.setPower(-1);
+        Thread.sleep(500);
         intake.setPower(0);
     }
     public void extend2(double power, int distance) throws InterruptedException {
