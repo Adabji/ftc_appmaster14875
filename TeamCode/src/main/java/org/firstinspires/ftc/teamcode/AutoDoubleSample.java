@@ -8,12 +8,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.path.LineSegment;
-import com.acmerobotics.roadrunner.path.Path;
-import com.acmerobotics.roadrunner.profile.MotionProfile;
-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
-import com.acmerobotics.roadrunner.profile.MotionState;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -144,6 +138,11 @@ public class AutoDoubleSample extends LinearOpMode {
 
         lowerRobot();
         Thread.sleep(100);
+        lift1.setPower(1);
+        lift2.setPower(1);
+        Thread.sleep(50);
+        lift1.setPower(0);
+        lift2.setPower(0);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if(center == true){
@@ -290,7 +289,7 @@ public class AutoDoubleSample extends LinearOpMode {
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateLeft(290,0.5);
+        rotateLeft(270,0.5);
         Thread.sleep(400);
         extend2(1,2100);
         intakeOut();
@@ -330,7 +329,7 @@ public class AutoDoubleSample extends LinearOpMode {
         Thread.sleep(200);
         rotateLeftSlow(820,0.5);
         Thread.sleep(200);
-        turnLeft(800,.5);
+        turnLeft(400,.5);
         turnRight(100,.5);
         moveForwards(1800,0.5);
         rotateLeft(200,0.5);
@@ -437,8 +436,10 @@ public class AutoDoubleSample extends LinearOpMode {
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void intakeOut() throws InterruptedException{
+        intake.setPower(1);
+        Thread.sleep(500);
         intake.setPower(-1);
-        Thread.sleep(300);
+        Thread.sleep(500);
         intake.setPower(0);
     }
 }

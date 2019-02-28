@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.camera2.CameraDevice;
 
-import com.acmerobotics.roadrunner.profile.MotionProfile;
-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -141,6 +140,11 @@ public class AutoSampleDepot extends LinearOpMode {
 
         lowerRobot();
         Thread.sleep(100);
+        lift1.setPower(1);
+        lift2.setPower(1);
+        Thread.sleep(50);
+        lift1.setPower(0);
+        lift2.setPower(0);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
@@ -232,6 +236,7 @@ public class AutoSampleDepot extends LinearOpMode {
         rotateLeft(400, 0.5);
         extend2(1, 2300);
         intakeOut();
+        lowerLift();
         extend(1, -2100);
         rotateRight(300, 0.5);
         Thread.sleep(200);
@@ -247,6 +252,7 @@ public class AutoSampleDepot extends LinearOpMode {
         rotateRight(450, 0.5);
         extend(1, 2300);
         intakeOut();
+        lowerLift();
         extend(1, -2100);
 
     }
@@ -255,6 +261,7 @@ public class AutoSampleDepot extends LinearOpMode {
         moveForwards(1300, .5);
         extend2(1, 2000);
         intakeOut();
+        lowerLift();
         extend(1, -1800);
         moveBackwards(800, .5);
         Thread.sleep(400);
@@ -409,7 +416,7 @@ public class AutoSampleDepot extends LinearOpMode {
     }
     private void intakeOut() throws InterruptedException{
         intake.setPower(-1);
-        Thread.sleep(1200);
+        Thread.sleep(1500);
         intake.setPower(0);
     }
 }

@@ -8,12 +8,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.path.LineSegment;
-import com.acmerobotics.roadrunner.path.Path;
-import com.acmerobotics.roadrunner.profile.MotionProfile;
-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
-import com.acmerobotics.roadrunner.profile.MotionState;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -145,7 +139,7 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(100);
         lift1.setPower(1);
         lift2.setPower(1);
-        Thread.sleep(30);
+        Thread.sleep(50);
         lift1.setPower(0);
         lift2.setPower(0);
 
@@ -419,8 +413,7 @@ public class AutoSampleCrater extends LinearOpMode {
     }
     public void intakeOut() throws InterruptedException{
         intake.setPower(1);
-        Thread.sleep(500
-        );
+        Thread.sleep(500);
         intake.setPower(-1);
         Thread.sleep(500);
         intake.setPower(0);

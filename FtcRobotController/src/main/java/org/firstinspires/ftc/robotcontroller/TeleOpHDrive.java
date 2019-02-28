@@ -29,11 +29,13 @@ public class TeleOpHDrive extends LinearOpMode {
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
     private TouchSensor inLimit;
-    private int extensionReset;
     private DcMotor intake;
     private Servo liftServo1;
     private Servo liftServo2;
-
+    public long rightBumperTimer = -1;
+    public long leftBumperTimer = -1;
+    public long liftDownTimer = -1;
+    public long liftUpTimer = -1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -88,16 +90,19 @@ public class TeleOpHDrive extends LinearOpMode {
             //setting positions of servo arms
             leftSampleArm.setPosition(0.3);
 
-            if (gamepad1.left_bumper) {
+            if (gamepad1.left_bumper && leftBumperTimer == -1) {
                 liftServo1.setPosition(0.96);
-                Thread.sleep(100);
+                leftBumperTimer = System.currentTimeMillis();
+            }  else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 150) {
                 liftServo2.setPosition(0.72);
+                leftBumperTimer = -1;
             }
-            if (gamepad1.right_bumper) {
-
+            if (gamepad1.right_bumper && rightBumperTimer == -1) {
                 liftServo1.setPosition(0);
-                Thread.sleep(150);
+                rightBumperTimer = System.currentTimeMillis();
+            } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 150) {
                 liftServo2.setPosition(0.3);
+                rightBumperTimer = -1;
             }
             if (gamepad1.a) {
                 intake.setPower(1);
@@ -128,35 +133,44 @@ public class TeleOpHDrive extends LinearOpMode {
 
             }
             //limit switch will stop lift if it is too high or low; prevents jamming
-            if (bottomLimit.isPressed()) {
+            /*if (gamepad1.right_bumper && rightBumperTimer == -1) {
+             liftServo1.setPosition(0);
+              rightBumperTimer = System.currentTimeMillis();
+                } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 150) {
+                liftServo2.setPosition(0.3);
+                rightBumperTimer = -1;
+                    }*/
+            if (bottomLimit.isPressed() && liftDownTimer == -1) {
                 lift1.setPower(1);
                 lift2.setPower(1);
-                Thread.sleep(40);
+                liftDownTimer = System.currentTimeMillis();
+            }
+                else if (liftDownTimer > 0 && System.currentTimeMillis() - liftDownTimer > 200){
                 lift1.setPower(0);
                 lift2.setPower(0);
-                Thread.sleep(500);
+                liftDownTimer = -1;
+            }
+                else if (!bottomLimit.isPressed() && liftDownTimer== -1)
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            } else {
-                if (topLimit.isPressed()) {
-                    lift1.setPower(-1);
-                    lift2.setPower(-1);
-                    Thread.sleep(50);
-                    lift1.setPower(0);
-                    lift2.setPower(0);
-                    Thread.sleep(100);
-                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                } else {
-                    lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                    lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                }
 
-            }
-
-
-            }
+         if (topLimit.isPressed() && liftUpTimer == -1) {
+            lift1.setPower(-1);
+            lift2.setPower(-1);
+            liftUpTimer = System.currentTimeMillis();
+        }
+        else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200){
+            lift1.setPower(0);
+            lift2.setPower(0);
+            liftUpTimer =  -1;
+        }
+        else if (!topLimit.isPressed() && liftUpTimer== -1)
+            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+         }
     }
 }
+
+
 
 
