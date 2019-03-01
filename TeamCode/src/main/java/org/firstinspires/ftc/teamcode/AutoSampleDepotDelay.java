@@ -99,6 +99,9 @@ public class AutoSampleDepotDelay extends LinearOpMode {
 
         liftServo2 = hardwareMap.servo.get("liftServo2");
 
+        liftServo1.setPosition(0.82);
+        liftServo2.setPosition(0.72);
+
         //waitForStart();
         while (!opModeIsActive() && !isStopRequested()) {
             telemetry.update();

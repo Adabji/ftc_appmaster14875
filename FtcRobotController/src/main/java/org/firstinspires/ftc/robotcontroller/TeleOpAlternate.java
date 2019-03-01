@@ -11,10 +11,13 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Delayed;
+
 
 //TeleOp program for HDrive
-@TeleOp(name = "HDrive TeleOp", group = "TeleOp")
-public class TeleOpHDrive extends LinearOpMode {
+@TeleOp(name = "TeleOpAlternate", group = "TeleOp")
+public class TeleOpAlternate extends LinearOpMode {
 
     //Declare motors
     private DcMotor motorBackRight;
@@ -156,17 +159,13 @@ public class TeleOpHDrive extends LinearOpMode {
                 lift1.setPower(-1);
                 lift2.setPower(-1);
                 liftUpTimer = System.currentTimeMillis();
-            } else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200) {
+            } else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 1000) {
                 lift1.setPower(0);
                 lift2.setPower(0);
                 liftUpTimer = -1;
             } else if (!topLimit.isPressed() && liftUpTimer == -1)
-            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
         }
     }
 }
-
-
-
-
