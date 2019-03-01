@@ -153,7 +153,7 @@ public class AutoDoubleSample extends LinearOpMode {
             moveForwards(1000,1);
             moveBackwards(1000,1);
             rotateLeft(500,1);
-            turnRight(800,1);
+            turnRight(400,1);
             turnLeft(100,0.5);
             moveForwards2(2000,1);
         }
@@ -170,8 +170,8 @@ public class AutoDoubleSample extends LinearOpMode {
             moveForwards(400,1);
             extend(1,700);
         }
-        //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
-        //when both left and center are negated as true conditions
+        /*Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
+        when both left and center are negated as true conditions*/
         if(left == false && center == false){
             sampleRight();
             moveToDepot();
@@ -182,7 +182,8 @@ public class AutoDoubleSample extends LinearOpMode {
             Thread.sleep(200);
             moveForwards(1500,1);
             rotateLeft(450,0.5);
-            Thread.sleep(200);
+            turnRight(400,1);
+            turnLeft(100,0.5);
             moveForwards(450,1);
             parkInCrater();
         }
@@ -274,6 +275,7 @@ public class AutoDoubleSample extends LinearOpMode {
     }
     public void sampleCenter() throws InterruptedException{
         moveForwards(400,1);
+        Thread.sleep(100);
         rotateLeft(75,1);
         extend2(1,2000);
         intakeOut();
