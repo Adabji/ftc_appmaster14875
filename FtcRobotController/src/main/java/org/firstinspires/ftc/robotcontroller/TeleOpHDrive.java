@@ -163,10 +163,10 @@ public class TeleOpHDrive extends LinearOpMode {
             } else if (!topLimit.isPressed() && liftUpTimer == -1)
             lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+
         }
     }
 }
-
 
 
 
