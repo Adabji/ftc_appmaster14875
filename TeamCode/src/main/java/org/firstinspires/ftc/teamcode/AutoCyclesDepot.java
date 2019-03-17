@@ -29,17 +29,17 @@ import org.opencv.imgproc.LineSegmentDetector;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Autonomous(name = "Sample Depot", group = "Autonomous")
+@Autonomous(name = "Auto Cycles Depot", group = "Autonomous")
 
 //Declare motors
-public class AutoSampleDepot extends LinearOpMode {
+public class AutoCyclesDepot extends LinearOpMode {
     private DcMotor lift1;
     private DcMotor lift2;
     private DcMotor strafingRight;
     private DcMotor strafingLeft;
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
-    private Servo leftSampleArm;
+    private Servo sampleArm;
     private GoldAlignDetector detector;
     boolean center = false;
     boolean left = false;
@@ -51,7 +51,13 @@ public class AutoSampleDepot extends LinearOpMode {
     private DcMotor intake;
     private Servo liftServo1;
     private Servo liftServo2;
-
+    private Servo flipper1;
+    private Servo flipper2;
+    boolean right = false;
+    private TouchSensor inLimit;
+    double extensionCounter;
+    double negExtensionCounter;
+    double intakePower = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -61,7 +67,7 @@ public class AutoSampleDepot extends LinearOpMode {
         detector = new GoldAlignDetector();
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         detector.useDefaults();
-        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignSize = 1000; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
         detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
@@ -79,7 +85,7 @@ public class AutoSampleDepot extends LinearOpMode {
         strafingLeft = hardwareMap.dcMotor.get("strafingLeft");
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        leftSampleArm = hardwareMap.servo.get("leftSampleArm");
+        sampleArm = hardwareMap.servo.get("sampleArm");
 
         lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -92,66 +98,67 @@ public class AutoSampleDepot extends LinearOpMode {
 
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         topLimit = hardwareMap.touchSensor.get("topLimit");
+        inLimit = hardwareMap.touchSensor.get("inLimit");
         intake = hardwareMap.dcMotor.get("intake");
         liftServo1 = hardwareMap.servo.get("liftServo1");
 
         liftServo2 = hardwareMap.servo.get("liftServo2");
 
+
+        flipper1 = hardwareMap.servo.get("flipper1");
+        flipper2 = hardwareMap.servo.get("flipper2");
+        telemetry.setAutoClear(true);
+        detector.enable();
+
         //waitForStart();
         while (!opModeIsActive() && !isStopRequested()) {
-            telemetry.update();
             telemetry.addData("Status", "waiting for start command...");
-        }
-        telemetry.setAutoClear(false);
 
+            //Telemetry returned X-Value for when block is seen in center position
+            if (detector.getXPosition() < 100 && detector.getXPosition() > 0) {
+                left = true;
+                center = false;
+                telemetry.addData("center", center);
+                telemetry.addData("left", left);
+                telemetry.update();
+            }
+            if (detector.getXPosition() > 400 && detector.getXPosition() < 600) {
+                center = true;
+                left = false;
+                telemetry.addData("center", center);
+                telemetry.addData("left", left);
+                telemetry.update();
+            }
+            if (detector.getAligned() == false) {
+                left = false;
+                center = false;
+                telemetry.addData("center", center);
+                telemetry.addData("left", left);
+                telemetry.update();
+            }
+
+
+            telemetry.addData("center", center);
+            telemetry.addData("left", left);
+            telemetry.update();
+
+        }
         detector.disable();
-        leftSampleArm.setPosition(0.4);
+        sampleArm.setPosition(0.8);
         liftServo1.setPosition(0.96);
         liftServo2.setPosition(0.72);
-        Thread.sleep(1000);
-        detector.enable();
-        Thread.sleep(1000);
-
-        //Telemetry returned X-Value for when block is seen in center position
-        if (detector.getXPosition() >= 400 && detector.getXPosition() <= 600) {
-            center = true;
-        }
-
-        Thread.sleep(100);
-        telemetry.addData("center", center);
-        telemetry.update();
-        Thread.sleep(100);
-
-        //Telemetry returned X-Value for when block is seen in left position
-        if (detector.getXPosition() < 300 && detector.getXPosition() > 10) {
-            left = true;
-        }
-        telemetry.addData("left", left);
-        telemetry.update();
-        Thread.sleep(100);
-
-        detector.disable();
-        Thread.sleep(500);
-
         lowerRobot();
-        Thread.sleep(100);
-        lift1.setPower(1);
-        lift2.setPower(1);
-        Thread.sleep(50);
-        lift1.setPower(0);
-        lift2.setPower(0);
 
         //Code to run if block is seen in center position, if variable center is returned as true
         if (center == true) {
             sampleCenter();
             rotateLeft(440, 0.5);
-            Thread.sleep(500);
+            Thread.sleep(300);
             moveForwards(1100, .5);
             Thread.sleep(200);
             rotateLeftSlow(650, .5);
             Thread.sleep(200);
-            moveForwards(300, .5);
-            parkInCrater();
+            parkInCraterCenter(300,1);
             Thread.sleep(500);
 
         }
@@ -172,7 +179,7 @@ public class AutoSampleDepot extends LinearOpMode {
         }
         //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
         //when both left and center are negated as true conditions
-        if (left == false && center == false) {
+        if (right == true) {
             sampleRight();
             moveBackwards(900, 0.5);
             Thread.sleep(300);
@@ -253,19 +260,19 @@ public class AutoSampleDepot extends LinearOpMode {
     }
 
     public void sampleCenter() throws InterruptedException {
-        moveForwards(1300, .5);
-        extend2(1, 2000);
+        moveForwards2(700, .5);
         intakeOut();
-        lowerLift();
-        extend(1, -1800);
-        moveBackwards(800, .5);
+        flipperUp();
+        retract(1,700);
+        //moveBackwards(800, .5);
+        intakeOut();
         Thread.sleep(400);
     }
 
     public void teamMarker() throws InterruptedException {
-        leftSampleArm.setPosition(0.9);
+        sampleArm.setPosition(0.9);
         Thread.sleep(1000);
-        leftSampleArm.setPosition(0.3);
+        sampleArm.setPosition(0.3);
     }
 
     public void rotateLeft(int distance, double power) {
@@ -333,30 +340,6 @@ public class AutoSampleDepot extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
-    //Robot moves forwards and lowers lift at the same time
-    public void moveForwards2(int distance, double power) throws InterruptedException{
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(power);
-
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
-            lowerLift();
-        }
-
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        lowerLift();
-    }
 
     public void rotateRight(int distance, double power) {
         rotateLeft(-distance, power);
@@ -366,7 +349,7 @@ public class AutoSampleDepot extends LinearOpMode {
         moveForwards(-distance, power);
     }
 
-    public void extend(double power, int distance) throws InterruptedException{
+    public void extend(double power, int distance){
         extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extension.setTargetPosition(distance);
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -389,15 +372,41 @@ public class AutoSampleDepot extends LinearOpMode {
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         lowerLift();
     }
+    public void parkInCrater(){
+        extend(1,500);
+    }
+    public void parkInCraterCenter(int distance, double power) throws InterruptedException{
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-    public void parkInCrater() throws InterruptedException{
-        extend(1, 3000);
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+        extension.setTargetPosition(500);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+        extension.setPower(1);
+
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy() && extension.isBusy()){
+            lowerLift2();
+        }
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        extension.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void lowerLift() throws InterruptedException {
         while (!topLimit.isPressed()) {
-            lift1.setPower(0.5);
-            lift2.setPower(0.5);
+            lift1.setPower(1);
+            lift2.setPower(1);
             if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);
@@ -411,7 +420,79 @@ public class AutoSampleDepot extends LinearOpMode {
     }
     private void intakeOut() throws InterruptedException{
         intake.setPower(-1);
-        Thread.sleep(1500);
+        Thread.sleep(500);
         intake.setPower(0);
     }
+    private void intakeIn() throws InterruptedException{
+        intake.setPower(1);
+        flipperUp();
+        intake.setPower(0);
+    }
+    public void retract(double power, int distance){
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setTargetPosition(-distance);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setPower(-power);
+        while (extension.isBusy()){
+            negExtensionCounter = extension.getCurrentPosition();
+            telemetry.addData("negExtensionTicks", negExtensionCounter);
+            telemetry.update();
+            if (negExtensionCounter < -400){
+                flipperDown();
+            }
+        }
+    }
+    public void moveForwards2(int distance, double power) throws InterruptedException{
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+        extension.setTargetPosition(900);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+        extension.setPower(1);
+
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy() && extension.isBusy()){
+            lowerLift2();
+        }
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        extension.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void lowerLift2() throws InterruptedException {
+        while (!topLimit.isPressed()) {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            extensionCounter = extension.getCurrentPosition();
+            telemetry.addData("extensionTicks", extensionCounter);
+            telemetry.update();
+            if (extensionCounter > 500){
+                flipperDown();
+            }
+            if (topLimit.isPressed()) {
+                lift1.setPower(0);
+                lift2.setPower(0);
+            }
+        }
+    }
+    public void flipperUp(){
+        flipper1.setPosition(0.0);
+        flipper2.setPosition(1.0);
+    }
+    public void flipperDown(){
+        flipper1.setPosition(0.4);
+        flipper2.setPosition(0.6);
+    }
+
+
 }

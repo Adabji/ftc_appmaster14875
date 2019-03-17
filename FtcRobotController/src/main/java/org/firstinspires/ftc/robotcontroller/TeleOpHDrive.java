@@ -26,8 +26,7 @@ public class TeleOpHDrive extends LinearOpMode {
     private DcMotor strafingLeft;
     private DcMotor lift1;
     private DcMotor lift2;
-    private Servo phoneMount;
-    private Servo leftSampleArm;
+    private Servo sampleArm;
     private DcMotor extension;
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
@@ -44,6 +43,7 @@ public class TeleOpHDrive extends LinearOpMode {
     public long liftUpTimer = -1;
     private double time1 = 1;
     private double time2 = 1;
+    private boolean isYPressed = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -58,31 +58,18 @@ public class TeleOpHDrive extends LinearOpMode {
 //Strafing motors move together to make the robot go left/right without turning
         strafingRight = hardwareMap.dcMotor.get("strafingRight");
         strafingLeft = hardwareMap.dcMotor.get("strafingLeft");
-
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        leftSampleArm = hardwareMap.servo.get("leftSampleArm");
-
+        sampleArm = hardwareMap.servo.get("sampleArm");
         extension = hardwareMap.dcMotor.get("extension");
         extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         topLimit = hardwareMap.touchSensor.get("topLimit");
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
-
-        phoneMount = hardwareMap.servo.get("phoneMount");
-
         inLimit = hardwareMap.touchSensor.get("inLimit");
-
         intake = hardwareMap.dcMotor.get("intake");
-
         liftServo1 = hardwareMap.servo.get("liftServo1");
-
         liftServo2 = hardwareMap.servo.get("liftServo2");
-
         flipper1 = hardwareMap.servo.get("flipper1");
-
         flipper2 = hardwareMap.servo.get("flipper2");
-
         stopper = hardwareMap.servo.get("stopper");
 
         liftServo1.setPosition(0.96);
@@ -98,14 +85,13 @@ public class TeleOpHDrive extends LinearOpMode {
             //setting power of back motors
             motorBackLeft.setPower(-gamepad1.left_stick_y);
             motorBackRight.setPower(-gamepad1.right_stick_y);
-            phoneMount.setPosition(0.43);
 
             //setting power of strafing motors
             strafingLeft.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
             strafingRight.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
 
             //setting positions of servo arms
-            leftSampleArm.setPosition(0.3);
+            sampleArm.setPosition(0.8);
 
             if (gamepad1.left_bumper && leftBumperTimer == -1) {
                 liftServo1.setPosition(0.96);
@@ -122,12 +108,16 @@ public class TeleOpHDrive extends LinearOpMode {
                 rightBumperTimer = -1;
             }
             if (gamepad2.a) {
-                flipper1.setPosition(0.5);
-                flipper2.setPosition(0.5);
+                stopper.setPosition(0.6);
+                flipper1.setPosition(0.4);
+                flipper2.setPosition(0.6);
+                isYPressed = false;
             }
+
             if (gamepad2.y) {
-                flipper1.setPosition(0.7);
-                flipper2.setPosition(0.3);
+                flipper1.setPosition(0.0);
+                flipper2.setPosition(1.0);
+                isYPressed = true;
             }
             if (gamepad1.a) {
                 intake.setPower(1);
@@ -144,8 +134,9 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad1.b) {
                 intake.setPower(0);
             }
-            if (gamepad2.y && inLimit.isPressed()) {
-                stopper.setPosition(0.4);
+
+            if (isYPressed == true && inLimit.isPressed()) {
+                stopper.setPosition(0.3);
             }
             //extend extension slides
             if (gamepad2.right_bumper) {
