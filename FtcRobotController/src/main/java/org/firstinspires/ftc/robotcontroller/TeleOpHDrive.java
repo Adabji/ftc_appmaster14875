@@ -121,11 +121,11 @@ public class TeleOpHDrive extends LinearOpMode {
                 liftServo2.setPosition(0.3);
                 rightBumperTimer = -1;
             }
-            if (gamepad2.a){
-               flipper1.setPosition(0.5);
-               flipper2.setPosition(0.5);
+            if (gamepad2.a) {
+                flipper1.setPosition(0.5);
+                flipper2.setPosition(0.5);
             }
-            if (gamepad2.y){
+            if (gamepad2.y) {
                 flipper1.setPosition(0.7);
                 flipper2.setPosition(0.3);
             }
@@ -144,7 +144,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad1.b) {
                 intake.setPower(0);
             }
-            if (gamepad2.y && inLimit.isPressed()){
+            if (gamepad2.y && inLimit.isPressed()) {
                 stopper.setPosition(0.4);
             }
             //extend extension slides
@@ -183,7 +183,7 @@ public class TeleOpHDrive extends LinearOpMode {
             lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
 
-            if (topLimit.isPressed()){
+            if (topLimit.isPressed()) {
                 lift1.setPower(gamepad2.right_trigger);
                 lift2.setPower(gamepad2.right_trigger);
                 if (time2 == 1) {
@@ -195,7 +195,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (time2 == 2) {
                 lift1.setPower(-1);
                 lift2.setPower(-1);
-<<<<<<< HEAD
+
                 time2 = 3;
             }
             if (time2 == 3) {
@@ -203,21 +203,20 @@ public class TeleOpHDrive extends LinearOpMode {
                 lift2.setPower(-1);
                 time2 = 1;
             }
-            if (!topLimit.isPressed()){
+            if (!topLimit.isPressed()) {
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            }
-=======
+
+
                 liftUpTimer = System.currentTimeMillis();
             } else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200) {
                 lift1.setPower(0);
                 lift2.setPower(0);
                 liftUpTimer = -1;
-            } else if (!topLimit.isPressed() && liftUpTimer == -1)
-            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-
->>>>>>> 8d8483ff88fb35ad91f6357b4b26e20f0e91cb55
+            } else if (!topLimit.isPressed() && liftUpTimer == -1) {
+                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            }
         }
     }
 }
