@@ -98,9 +98,6 @@ public class AutoSampleCrater extends LinearOpMode {
 
         liftServo2 = hardwareMap.servo.get("liftServo2");
 
-        liftServo1.setPosition(0.82);
-        liftServo2.setPosition(0.72);
-
 
         //waitForStart();
         while (!opModeIsActive() && !isStopRequested()) {
@@ -109,7 +106,7 @@ public class AutoSampleCrater extends LinearOpMode {
         }
         detector.disable();
         leftSampleArm.setPosition(0.4);
-        liftServo1.setPosition(0.82);
+        liftServo1.setPosition(0.96);
         liftServo2.setPosition(0.72);
         phoneMount.setPosition(0.8);
         Thread.sleep(500);

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -41,6 +41,10 @@ public class LimitLiftAuto extends LinearOpMode {
     private TouchSensor topLimit;
     private TouchSensor inLimit;
     private DcMotor intake;
+    private ElapsedTime runtime = new ElapsedTime();
+    private TouchSensor bottomLimit;
+    private double time2 = 1;
+    private double time1 = 1;
 
 
     @Override
@@ -83,6 +87,7 @@ public class LimitLiftAuto extends LinearOpMode {
         topLimit = hardwareMap.touchSensor.get("topLimit");
         inLimit = hardwareMap.touchSensor.get("inLimit");
         intake = hardwareMap.dcMotor.get("intake");
+        bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
 
 
 
@@ -91,7 +96,10 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        retract();
+        while (opModeIsActive()) {
+            retract();
+
+        }
 
 
     }

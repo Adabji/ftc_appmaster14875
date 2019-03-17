@@ -143,14 +143,14 @@ public class TeleOpAlternate extends LinearOpMode {
                 liftServo2.setPosition(0.3);
                 rightBumperTimer = -1;
                     }*/
-            if (bottomLimit.isPressed() && liftDownTimer == -1) {
+            if (bottomLimit.isPressed() && liftUpTimer == -1) {
                 lift1.setPower(1);
                 lift2.setPower(1);
-                liftDownTimer = System.currentTimeMillis();
-            } else if (liftDownTimer > 0 && System.currentTimeMillis() - liftDownTimer > 500) {
+                liftUpTimer = System.currentTimeMillis();
+            }else if(liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200){
                 lift1.setPower(0);
                 lift2.setPower(0);
-                liftDownTimer = -1;
+                liftUpTimer = -1;
             } else if (!bottomLimit.isPressed() && liftDownTimer == -1)
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
@@ -163,9 +163,10 @@ public class TeleOpAlternate extends LinearOpMode {
                 lift1.setPower(0);
                 lift2.setPower(0);
                 liftUpTimer = -1;
-            } else if (!topLimit.isPressed() && liftUpTimer == -1)
+            } else if (!topLimit.isPressed() && liftUpTimer == -1) {
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            }
         }
     }
 }

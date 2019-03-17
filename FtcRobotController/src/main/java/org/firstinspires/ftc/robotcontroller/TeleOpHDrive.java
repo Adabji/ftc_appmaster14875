@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 //TeleOp program for HDrive
 @TeleOp(name = "HDrive TeleOp", group = "TeleOp")
@@ -32,10 +35,15 @@ public class TeleOpHDrive extends LinearOpMode {
     private DcMotor intake;
     private Servo liftServo1;
     private Servo liftServo2;
+    private Servo flipper1;
+    private Servo flipper2;
+    private Servo stopper;
     public long rightBumperTimer = -1;
     public long leftBumperTimer = -1;
     public long liftDownTimer = -1;
     public long liftUpTimer = -1;
+    private double time1 = 1;
+    private double time2 = 1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -71,6 +79,15 @@ public class TeleOpHDrive extends LinearOpMode {
 
         liftServo2 = hardwareMap.servo.get("liftServo2");
 
+        flipper1 = hardwareMap.servo.get("flipper1");
+
+        flipper2 = hardwareMap.servo.get("flipper2");
+
+        stopper = hardwareMap.servo.get("stopper");
+
+        liftServo1.setPosition(0.96);
+        liftServo2.setPosition(0.72);
+
 
 //Wait for the game to start
         while (!opModeIsActive() && !isStopRequested()) {
@@ -104,6 +121,14 @@ public class TeleOpHDrive extends LinearOpMode {
                 liftServo2.setPosition(0.3);
                 rightBumperTimer = -1;
             }
+            if (gamepad2.a){
+               flipper1.setPosition(0.5);
+               flipper2.setPosition(0.5);
+            }
+            if (gamepad2.y){
+                flipper1.setPosition(0.7);
+                flipper2.setPosition(0.3);
+            }
             if (gamepad1.a) {
                 intake.setPower(1);
             }
@@ -118,6 +143,9 @@ public class TeleOpHDrive extends LinearOpMode {
 
             if (gamepad1.b) {
                 intake.setPower(0);
+            }
+            if (gamepad2.y && inLimit.isPressed()){
+                stopper.setPosition(0.4);
             }
             //extend extension slides
             if (gamepad2.right_bumper) {
@@ -140,29 +168,44 @@ public class TeleOpHDrive extends LinearOpMode {
                 liftServo2.setPosition(0.3);
                 rightBumperTimer = -1;
                     }*/
-            if (bottomLimit.isPressed() && liftDownTimer == -1) {
-                lift1.setPower(1);
-                lift2.setPower(1);
-                liftDownTimer = System.currentTimeMillis();
-            } else if (liftDownTimer > 0 && System.currentTimeMillis() - liftDownTimer > 500) {
-                lift1.setPower(0);
-                lift2.setPower(0);
-                liftDownTimer = -1;
-            } else if (!bottomLimit.isPressed() && liftDownTimer == -1)
-                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-
-            if (topLimit.isPressed() && liftUpTimer == -1) {
-                lift1.setPower(-1);
-                lift2.setPower(-1);
-                liftUpTimer = System.currentTimeMillis();
-            } else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200) {
-                lift1.setPower(0);
-                lift2.setPower(0);
-                liftUpTimer = -1;
-            } else if (!topLimit.isPressed() && liftUpTimer == -1)
             lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            if (bottomLimit.isPressed() && time1 == 1) {
+                lift1.setPower(1);
+                lift2.setPower(1);
+                time1 = 2;
+            }
+            if (time1 == 2) {
+                lift1.setPower(1);
+                lift2.setPower(1);
+                time1 = 1;
+            }
+            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+
+            if (topLimit.isPressed()){
+                lift1.setPower(gamepad2.right_trigger);
+                lift2.setPower(gamepad2.right_trigger);
+                if (time2 == 1) {
+                    lift1.setPower(-1);
+                    lift2.setPower(-1);
+                    time2 = 2;
+                }
+            }
+            if (time2 == 2) {
+                lift1.setPower(-1);
+                lift2.setPower(-1);
+                time2 = 3;
+            }
+            if (time2 == 3) {
+                lift1.setPower(-1);
+                lift2.setPower(-1);
+                time2 = 1;
+            }
+            if (!topLimit.isPressed()){
+                lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+                lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            }
         }
     }
 }
