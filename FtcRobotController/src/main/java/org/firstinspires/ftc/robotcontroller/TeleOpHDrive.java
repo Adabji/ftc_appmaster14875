@@ -195,6 +195,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (time2 == 2) {
                 lift1.setPower(-1);
                 lift2.setPower(-1);
+<<<<<<< HEAD
                 time2 = 3;
             }
             if (time2 == 3) {
