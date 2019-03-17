@@ -207,10 +207,20 @@ public class TeleOpHDrive extends LinearOpMode {
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
             }
+=======
+                liftUpTimer = System.currentTimeMillis();
+            } else if (liftUpTimer > 0 && System.currentTimeMillis() - liftUpTimer > 200) {
+                lift1.setPower(0);
+                lift2.setPower(0);
+                liftUpTimer = -1;
+            } else if (!topLimit.isPressed() && liftUpTimer == -1)
+            lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+            lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+
+>>>>>>> 8d8483ff88fb35ad91f6357b4b26e20f0e91cb55
         }
     }
 }
-
 
 
 
