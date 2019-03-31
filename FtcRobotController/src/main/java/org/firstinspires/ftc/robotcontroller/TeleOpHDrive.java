@@ -110,14 +110,19 @@ public class TeleOpHDrive extends LinearOpMode {
             }
             if (gamepad2.a) {
                 stopper.setPosition(0.7);
-                flipper1.setPosition(0.42);
-                flipper2.setPosition(0.58);
+                flipper1.setPosition(0.4);
+                flipper2.setPosition(0.6);
                 isYPressed = false;
             }
 
+            if (gamepad2.b){
+                flipper1.setPosition(0.5);
+                flipper2.setPosition(0.5);
+            }
+
             if (gamepad2.y) {
-                flipper1.setPosition(0.09);
-                flipper2.setPosition(0.91);
+                flipper1.setPosition(0.12);
+                flipper2.setPosition(0.88);
                 isYPressed = true;
             }
             if (gamepad1.a) {

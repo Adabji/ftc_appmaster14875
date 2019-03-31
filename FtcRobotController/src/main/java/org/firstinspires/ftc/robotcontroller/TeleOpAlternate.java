@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.robotcontroller;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -17,6 +18,7 @@ import java.util.concurrent.Delayed;
 
 //TeleOp program for HDrive
 @TeleOp(name = "TeleOpAlternate", group = "TeleOp")
+@Disabled
 public class TeleOpAlternate extends LinearOpMode {
 
     //Declare motors
