@@ -109,15 +109,15 @@ public class TeleOpHDrive extends LinearOpMode {
                 rightBumperTimer = -1;
             }
             if (gamepad2.a) {
-                stopper.setPosition(0.6);
-                flipper1.setPosition(0.4);
-                flipper2.setPosition(0.6);
+                stopper.setPosition(0.7);
+                flipper1.setPosition(0.42);
+                flipper2.setPosition(0.58);
                 isYPressed = false;
             }
 
             if (gamepad2.y) {
-                flipper1.setPosition(0.0);
-                flipper2.setPosition(1.0);
+                flipper1.setPosition(0.09);
+                flipper2.setPosition(0.91);
                 isYPressed = true;
             }
             if (gamepad1.a) {
