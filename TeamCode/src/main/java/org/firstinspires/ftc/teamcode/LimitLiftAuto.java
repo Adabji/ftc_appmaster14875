@@ -19,7 +19,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Autonomous(name = "LimitLiftAuto", group = "Autonomous")
-
 //Declare motors
 public class LimitLiftAuto extends LinearOpMode {
     private DcMotor lift1;
@@ -105,12 +104,24 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        moveForwards2(700,0.5);
-        retract(1,1500);
+        halfTurnLeft(600,1);
     }
 
 
+    public void lowerLift2() throws InterruptedException {
+        while (!topLimit.isPressed()) {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            }
+            if (topLimit.isPressed()) {
+                lift1.setPower(-1);
+                lift2.setPower(-1);
+                Thread.sleep(300);
+                lift1.setPower(0);
+                lift2.setPower(0);
 
+            }
+        }
     public void lowerRobot() {
         while (!topLimit.isPressed()) {
             lift1.setPower(1);
@@ -221,18 +232,32 @@ public class LimitLiftAuto extends LinearOpMode {
         while (!topLimit.isPressed()) {
             lift1.setPower(1);
             lift2.setPower(1);
-            extensionCounter = extension.getCurrentPosition();
-            telemetry.addData("extensionTicks", extensionCounter);
-            telemetry.update();
-            if (extensionCounter > 500){
-                flipper1.setPosition(0.4);
-                flipper2.setPosition(0.6);
-            }
             if (topLimit.isPressed()) {
                 lift1.setPower(0);
                 lift2.setPower(0);
             }
         }
+    }
+    public void halfTurnLeft(int distance, double power){
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(2/3* power);
+
+        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
+        }
+
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 }
 
