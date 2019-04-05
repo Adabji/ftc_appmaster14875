@@ -119,6 +119,10 @@ public class TeleOpHDrive extends LinearOpMode {
                 flipper2.setPosition(.9);
                 isYPressed = true;
             }
+
+            if (isYPressed == true && inLimit.isPressed()) {
+                stopper.setPosition(0.4);
+            }
             if (gamepad1.a) {
                 intake.setPower(1);
             }
@@ -133,10 +137,6 @@ public class TeleOpHDrive extends LinearOpMode {
 
             if (gamepad1.b) {
                 intake.setPower(0);
-            }
-
-            if (isYPressed == true && inLimit.isPressed()) {
-                stopper.setPosition(0.3);
             }
             //extend extension slides
             if (gamepad2.right_bumper) {
