@@ -97,19 +97,22 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad1.left_bumper && leftBumperTimer == -1) {
                 liftServo1.setPosition(0.96);
                 leftBumperTimer = System.currentTimeMillis();
-            } else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 150) {
+            } else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 300) {
                 liftServo2.setPosition(0.72);
                 leftBumperTimer = -1;
+            }
+            if (gamepad1.dpad_down) {
+                stopper.setPosition(.85);
             }
             if (gamepad1.right_bumper && rightBumperTimer == -1) {
                 liftServo1.setPosition(0);
                 rightBumperTimer = System.currentTimeMillis();
-            } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 150) {
+            } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 300) {
                 liftServo2.setPosition(0.2);
                 rightBumperTimer = -1;
             }
             if (gamepad2.a) {
-                stopper.setPosition(0.7);
+                stopper.setPosition(0.5);
                 flipper1.setPosition(0.4);
                 flipper2.setPosition(0.6);
                 isYPressed = false;
@@ -121,7 +124,7 @@ public class TeleOpHDrive extends LinearOpMode {
             }
 
             if (isYPressed == true && inLimit.isPressed()) {
-                stopper.setPosition(0.4);
+                stopper.setPosition(0.85);
             }
             if (gamepad1.a) {
                 intake.setPower(1);
