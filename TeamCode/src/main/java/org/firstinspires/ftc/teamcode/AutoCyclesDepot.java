@@ -128,13 +128,13 @@ public class AutoCyclesDepot extends LinearOpMode {
 
             //Telemetry returned X-Value for when block is seen in center position
             if (detector.getXPosition() < 100 && detector.getXPosition() > 0) {
-                left = true;
+                right = true;
                 center = false;
                 telemetry.addData("center", center);
                 telemetry.addData("left", left);
                 telemetry.update();
             }
-            if (detector.getXPosition() > 400 && detector.getXPosition() < 600) {
+            if (detector.getXPosition() > 125 && detector.getXPosition() < 225) {
                 center = true;
                 left = false;
                 telemetry.addData("center", center);
@@ -142,7 +142,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 telemetry.update();
             }
             if (detector.getAligned() == false) {
-                left = false;
+                right = false;
                 center = false;
                 telemetry.addData("center", center);
                 telemetry.addData("left", left);
@@ -208,7 +208,7 @@ public class AutoCyclesDepot extends LinearOpMode {
 
             }
             //Code to run if block is seen in left position, if variable left is returned as true
-            if (left == true) {
+            if (right == false & center == false) {
                 sampleLeft();
                 rotateLeft(220, 0.2);
                 Thread.sleep(300);
@@ -245,7 +245,7 @@ public class AutoCyclesDepot extends LinearOpMode {
             }
             //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
             //when both left and center are negated as true conditions
-            if (left == false & center == false) {
+            if (right) {
                 sampleRight();
                 rotateRight(210, 0.2);
                 Thread.sleep(300);
