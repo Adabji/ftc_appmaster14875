@@ -104,9 +104,10 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        lift1.setPower(-1);
+        moveForwardsCycle(1400,1);
+        /*lift1.setPower(-1);
         lift2.setPower(-1);
-        Thread.sleep(1160);
+        Thread.sleep(1160);*/
 
 
 
@@ -202,6 +203,13 @@ public class LimitLiftAuto extends LinearOpMode {
         lift2.setPower(1);
         Thread.sleep(500);
         while (lift == true) {
+            extensionCounter = extension.getCurrentPosition();
+            telemetry.addData("extensionTicks", extensionCounter);
+            telemetry.update();
+            if (extensionCounter > 100){
+                flipperDown();
+                intakeOut();
+            }
             lift1.setPower(0.4);
             lift2.setPower(0.4);
             if (topLimit.isPressed()) {
@@ -224,6 +232,10 @@ public class LimitLiftAuto extends LinearOpMode {
                 lift2.setPower(0);
             }
         }
+    }
+    public void flipperDown(){
+        flipper1.setPosition(0.4);
+        flipper2.setPosition(0.6);
     }
     public void extend(double power, int distance) {
         extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

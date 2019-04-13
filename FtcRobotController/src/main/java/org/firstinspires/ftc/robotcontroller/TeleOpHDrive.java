@@ -97,7 +97,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad1.left_bumper && leftBumperTimer == -1) {
                 liftServo1.setPosition(0.96);
                 leftBumperTimer = System.currentTimeMillis();
-            } else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 300) {
+            } else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 700) {
                 liftServo2.setPosition(0.72);
                 leftBumperTimer = -1;
             }
@@ -108,7 +108,7 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad1.right_bumper && rightBumperTimer == -1) {
                 liftServo1.setPosition(0);
                 rightBumperTimer = System.currentTimeMillis();
-            } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 300) {
+            } else if (rightBumperTimer > 0 && System.currentTimeMillis() - rightBumperTimer > 500) {
                 liftServo2.setPosition(0.15);
                 rightBumperTimer = -1;
             }
