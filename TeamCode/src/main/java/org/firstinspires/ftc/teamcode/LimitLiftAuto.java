@@ -49,6 +49,8 @@ public class LimitLiftAuto extends LinearOpMode {
     double negExtensionCounter;
     boolean intakeUp = false;
     boolean lift = true;
+    private TouchSensor midLimit;
+    boolean intakeNow = false;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
@@ -93,6 +95,7 @@ public class LimitLiftAuto extends LinearOpMode {
         flipper2 = hardwareMap.servo.get("flipper2");
         liftServo1 = hardwareMap.servo.get("liftServo1");
         liftServo2 = hardwareMap.servo.get("liftServo2");
+        midLimit = hardwareMap.touchSensor.get("midLimit");
 
 
         liftServo1.setPosition(0.96);
@@ -104,7 +107,7 @@ public class LimitLiftAuto extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             telemetry.update();
         }
-        moveForwardsCycle(1400,1);
+        liftToMid();
         /*lift1.setPower(-1);
         lift2.setPower(-1);
         Thread.sleep(1160);*/
@@ -112,6 +115,48 @@ public class LimitLiftAuto extends LinearOpMode {
 
 
     }
+    public void rotateLeftSlow(int distance, double power) {
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setTargetPosition(distance);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setPower(power);
+        while (motorBackLeft.isBusy()) {
+        }
+        motorBackLeft.setPower(0);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    public void moveBackwardsIntake(int distance, double power) throws InterruptedException {
+        intakeNow = true;
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+
+        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
+            if (intakeNow) {
+                intakeIn2();
+                intakeNow = false;
+            }
+        }
+
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+    private void intakeIn2() throws InterruptedException{
+        intake.setPower(1);
+        Thread.sleep(500);
+        intake.setPower(0);
+    }
+
     public void liftWithEncoders(double power, int distance){
         lift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -206,7 +251,7 @@ public class LimitLiftAuto extends LinearOpMode {
             extensionCounter = extension.getCurrentPosition();
             telemetry.addData("extensionTicks", extensionCounter);
             telemetry.update();
-            if (extensionCounter > 100){
+            if (extensionCounter > 50){
                 flipperDown();
                 intakeOut();
             }
@@ -338,6 +383,16 @@ public class LimitLiftAuto extends LinearOpMode {
             }
         }
     }
+    public void liftToMid(){
+        while(!midLimit.isPressed()){
+            lift1.setPower(-1);
+            lift2.setPower(-1);
+            if (midLimit.isPressed()){
+                lift1.setPower(0);
+                lift2.setPower(0);
+            }
+        }
+    }
     public void halfTurnLeft(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -371,7 +426,7 @@ public class LimitLiftAuto extends LinearOpMode {
 
         motorBackRight.setTargetPosition(-distance);
         motorBackLeft.setTargetPosition(distance);
-        extension.setTargetPosition(1500);
+        extension.setTargetPosition(1000);
 
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
