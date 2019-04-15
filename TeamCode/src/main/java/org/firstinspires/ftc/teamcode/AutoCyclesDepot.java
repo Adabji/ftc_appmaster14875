@@ -32,12 +32,40 @@ import java.util.concurrent.ThreadLocalRandom;
 @Autonomous(name = "Auto Cycles Depot", group = "Autonomous")
 //Declare motors
 public class AutoCyclesDepot extends LinearOpMode {
-    private DcMotor lift1, lift2, strafingRight, strafingLeft, motorBackRight, motorBackLeft, extension, intake;
-    private Servo sampleArm, liftServo1, liftServo2, flipper1, flipper2, stopper;
-    private TouchSensor bottomLimit, topLimit, midLimit;
-    boolean center = false, right = false, intakeNow = false, raiseLiftVar = true, intakeRetract = false, intakeUp, lift = true, stop = false;
-    double extensionCounter, negExtensionCounter, time2 = 1;
+    private DcMotor lift1;
+    private DcMotor lift2;
+    private DcMotor strafingRight;
+    private DcMotor strafingLeft;
+    private DcMotor motorBackRight;
+    private DcMotor motorBackLeft;
+    private Servo sampleArm;
     private GoldAlignDetector detector;
+    boolean center = false;
+    boolean left = false;
+    private DcMotor extension;
+    ElapsedTime timer = new ElapsedTime();
+    double startTime = timer.time();
+    private TouchSensor bottomLimit;
+    private TouchSensor topLimit;
+    private DcMotor intake;
+    private Servo liftServo1;
+    private Servo liftServo2;
+    private Servo flipper1;
+    private Servo flipper2;
+    boolean right = false;
+    private TouchSensor inLimit;
+    double extensionCounter;
+    double negExtensionCounter;
+    double intakePower = 0;
+    boolean intakeNow = false;
+    double time1 = 1;
+    double time2 = 1;
+    boolean lift = true;
+    boolean intakeUp;
+    private Servo stopper;
+    boolean raiseLiftVar = true;
+    boolean sample = false;
+    boolean intakeRetract = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -78,6 +106,7 @@ public class AutoCyclesDepot extends LinearOpMode {
 
         bottomLimit = hardwareMap.touchSensor.get("bottomLimit");
         topLimit = hardwareMap.touchSensor.get("topLimit");
+        inLimit = hardwareMap.touchSensor.get("inLimit");
         intake = hardwareMap.dcMotor.get("intake");
         liftServo1 = hardwareMap.servo.get("liftServo1");
 
@@ -87,7 +116,6 @@ public class AutoCyclesDepot extends LinearOpMode {
         flipper1 = hardwareMap.servo.get("flipper1");
         flipper2 = hardwareMap.servo.get("flipper2");
         stopper = hardwareMap.servo.get("stopper");
-        midLimit = hardwareMap.touchSensor.get("midLimit");
         telemetry.setAutoClear(true);
         detector.enable();
 
@@ -145,18 +173,17 @@ public class AutoCyclesDepot extends LinearOpMode {
                 intakeIn();
                 retract2(1, 230);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(500, 1);
+                moveBackwards(500, 1);
                 teleLift();
-                liftToMid();
+                liftWithEncoders(1,2600);
                 liftServo1.setPosition(0);
                 liftServo2.setPosition(0.3);
                 Thread.sleep(2000);
                 liftServo1.setPosition(0.96);
                 liftServo2.setPosition(0.72);
-                rotateLeftSlow(1300,1);
+                rotateLeftSlow(1500,1);
                 lift = true;
-                moveForwardsCycle(1800,1);
-                rotateLeftSlow(500,1);
+                moveForwardsCycle(1400,1);
                 flipperDown();
                 /*moveForwardsIntake(200,1);
                 intakeUp = false;
@@ -184,11 +211,11 @@ public class AutoCyclesDepot extends LinearOpMode {
                 intakeIn();
                 retract2(1, 250);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(530, 1);
+                moveBackwards(530, 1);
                 Thread.sleep(200);
                 rotateRight(210, 0.5);
                 teleLift();
-                liftToMid();
+                liftWithEncoders(1, 2600);
                 liftServo1.setPosition(0);
                 liftServo2.setPosition(0.3);
                 Thread.sleep(2000);
@@ -197,14 +224,13 @@ public class AutoCyclesDepot extends LinearOpMode {
                 rotateLeftSlow(1280,1);
                 lift = true;
                 moveForwardsCycle(1300,1);
-                rotateLeftSlow(500,1);
                 flipperDown();
-                moveForwardsIntake(200,1);
+                /*moveForwardsIntake(200,1);
                 intakeUp = false;
                 intakeIn();
                 retract2(1,600);
                 rotateRight(400,1);
-                moveBackwards(600,1);
+                moveBackwards(600,1);*/
 
             /*rotateLeft(780, 0.5);
             Thread.sleep(200);
@@ -228,11 +254,11 @@ public class AutoCyclesDepot extends LinearOpMode {
                 intakeIn();
                 retract2(1, 250);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(500, 1);
+                moveBackwards(500, 1);
                 Thread.sleep(200);
                 rotateLeft(250, 0.5);
                 teleLift();
-                liftToMid();
+                liftWithEncoders(1, 2600);
                 liftServo1.setPosition(0);
                 liftServo2.setPosition(0.3);
                 Thread.sleep(2000);
@@ -241,9 +267,8 @@ public class AutoCyclesDepot extends LinearOpMode {
                 rotateLeftSlow(1280,1);
                 lift = true;
                 moveForwardsCycle(1100,1);
-                rotateLeftSlow(500,1);
                 flipperDown();
-                moveForwardsIntake(200,1);
+                //moveForwardsIntake(200,1);
 
 
             /*moveBackwards(900, 0.5);
@@ -260,9 +285,12 @@ public class AutoCyclesDepot extends LinearOpMode {
 
         //Lowers the robot from the lander at the beginning of Autonomous period
         public void lowerRobot () throws InterruptedException {
+            lift1.setPower(-1);
+            lift2.setPower(-1);
+            Thread.sleep(1700);
             while (!bottomLimit.isPressed()) {
-                lift1.setPower(-1);
-                lift2.setPower(-1);
+                lift1.setPower(-0.8);
+                lift2.setPower(-0.8);
                 if (bottomLimit.isPressed()) {
                     lift1.setPower(0);
                     lift2.setPower(0);
@@ -531,11 +559,6 @@ public class AutoCyclesDepot extends LinearOpMode {
         intake.setPower(0);
         intakeUp = false;
     }
-    private void intakeIn2() throws InterruptedException{
-        intake.setPower(1);
-        Thread.sleep(500);
-        intake.setPower(0);
-    }
 
     public void retract2(double power, int distance){
         intakeRetract = true;
@@ -599,33 +622,6 @@ public class AutoCyclesDepot extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
-    public void moveBackwardsIntake(int distance, double power) throws InterruptedException {
-        intakeNow = true;
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
-
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(power);
-
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy()) {
-            if (intakeNow) {
-                intakeIn2();
-                intakeNow = false;
-            }
-        }
-
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-    }
-
     public void moveForwards2(int distance, double power) throws InterruptedException{
         extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -679,8 +675,8 @@ public class AutoCyclesDepot extends LinearOpMode {
         lift2.setPower(1);
         Thread.sleep(1500);
         while (lift == true) {
-            lift1.setPower(0.7);
-            lift2.setPower(0.7);
+            lift1.setPower(0.4);
+            lift2.setPower(0.4);
             extensionCounter = extension.getCurrentPosition();
             telemetry.addData("extensionTicks", extensionCounter);
             telemetry.update();
@@ -748,6 +744,9 @@ public class AutoCyclesDepot extends LinearOpMode {
         lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public void moveBackwardsIntake(double power, int distance)throws InterruptedException{
+        moveForwardsIntake(-distance,power);
+    }
     public void halfTurnLeft(int distance, double power){
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -770,52 +769,39 @@ public class AutoCyclesDepot extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void moveForwardsCycle(int distance, double power) throws InterruptedException{
-        //extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorBackRight.setTargetPosition(-distance);
         motorBackLeft.setTargetPosition(distance);
-        //extension.setTargetPosition(1100);
+        extension.setTargetPosition(1100);
 
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
-        //extension.setPower(1);
+        extension.setPower(1);
 
-        while (motorBackRight.isBusy() && motorBackLeft.isBusy()){
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy() && extension.isBusy()){
             lowerLift3();
         }
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
-        //extension.setPower(0);
+        extension.setPower(0);
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        //extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-    }
-    public void liftToMid()throws InterruptedException{
-        while(!topLimit.isPressed()){
-            lift1.setPower(-1);
-            lift2.setPower(-1);
-            if (topLimit.isPressed()){
-                stop = true;
-                if (stop){
-                    lift1.setPower(0);
-                    lift2.setPower(0);
-                }
-            }
-        }
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void lowerLift3() throws InterruptedException {
         lift1.setPower(1);
         lift2.setPower(1);
         Thread.sleep(500);
         while (lift == true) {
-            lift1.setPower(0.8);
-            lift2.setPower(0.8);
+            lift1.setPower(0.4);
+            lift2.setPower(0.4);
             extensionCounter = extension.getCurrentPosition();
             telemetry.addData("extensionTicks", extensionCounter);
             telemetry.update();
