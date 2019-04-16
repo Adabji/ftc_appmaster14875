@@ -526,10 +526,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 intakeUp = true;
             }
         }
-        intake.setPower(1);
-        Thread.sleep(1500);
         intake.setPower(0);
-        intakeUp = false;
     }
     private void intakeIn2() throws InterruptedException{
         intake.setPower(1);
