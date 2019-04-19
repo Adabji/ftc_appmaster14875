@@ -143,24 +143,24 @@ public class AutoSampleCrater extends LinearOpMode {
             //Code to run if block is seen in center position, if variable center is returned as true
             if (center == true) {
                 sampleCenter();
-                scoreSample();
+               // scoreSample();
                 moveToDepot();
-                //parkInCrater();
+                parkInCrater();
             }
             //Code to run if block is seen in left position, if variable left is returned as true
             if (right == true) {
                 sampleRight();
-                scoreSample();
+               // scoreSample();
                 moveToDepot();
-                //parkInCrater();
+                parkInCrater();
             }
             //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
             //when both left and center are negated as true conditions
             if (right == false && center == false) {
                 sampleLeft();
-                scoreSample();
+               // scoreSample();
                 moveToDepot();
-                //parkInCrater();
+                parkInCrater();
             }
         }
     }
@@ -279,7 +279,7 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper1.setPosition(.4);
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
-        intake.setPower(1);
+        intake.setPower(-1);
         extend(1,500);
         lowerLift();
         extend(1,-500);
@@ -298,14 +298,15 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateLeft(270,0.5);
+        rotateLeft(300,0.5);
         flipper1.setPosition(.4);
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
-        intake.setPower(1);
-        extend(1,500);
+        intake.setPower(-1);
+        extend(1,700);
         lowerLift();
-        extend(1,-500);
+        extend(1,-700);
+        intake.setPower(0);
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
         stopper.setPosition(.85);
@@ -324,7 +325,7 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper1.setPosition(.4);
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
-        intake.setPower(1);
+        intake.setPower(-1);
         extend(1,500);
         lowerLift();
         extend(1,-500);
@@ -358,7 +359,7 @@ public class AutoSampleCrater extends LinearOpMode {
         lowerLiftScore();
     }
     public void moveToDepot() throws InterruptedException{
-        moveForwards(400,.8);
+       // moveForwards(400,.8);
         rotateRight(530,0.5);
         Thread.sleep(200);
         moveBackwards(1400,1);
@@ -370,6 +371,7 @@ public class AutoSampleCrater extends LinearOpMode {
         rotateRight(50,1);
         moveBackwards(1800,0.5);
         teamMarker();
+        rotateLeft(50,1);
         moveForwards(1800,1);
     }
     public void rotateLeftSlow(int distance, double power){
@@ -404,7 +406,13 @@ public class AutoSampleCrater extends LinearOpMode {
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
     public void parkInCrater(){
-        extend(1,3000);
+        flipper1.setPosition(0.15);
+        flipper2.setPosition(.85);
+        extend(1,800);
+        stopper.setPosition(0.5);
+        flipper1.setPosition(0.4);
+        flipper2.setPosition(0.6);
+        intake.setPower(1);
     }
     public void lowerLift() throws InterruptedException{
         liftServo1.setPosition(0.96);
