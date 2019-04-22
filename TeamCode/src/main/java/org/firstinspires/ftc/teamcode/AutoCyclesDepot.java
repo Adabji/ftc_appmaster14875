@@ -211,7 +211,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 Thread.sleep(1000);
                 rotateLeftSlow(1100,1);
                 lift = true;
-                moveForwardsCycle(1650,1);
+                moveForwardsCycle(1350,1);
                 rotateLeftSlow(450,1);
                 extend(1,1200);
                 flipperDown();
@@ -262,9 +262,9 @@ public class AutoCyclesDepot extends LinearOpMode {
                 Thread.sleep(700);
                 liftServo2.setPosition(0.72);
                 Thread.sleep(400);
-                rotateLeftSlow(1150,1);
+                rotateLeftSlow(1050,1);
                 lift = true;
-                moveForwardsCycle(1470,1);
+                moveForwardsCycle(1370,1);
                 rotateLeftSlow(450,1);
                 extend(1,1200);
                 flipperDown();
