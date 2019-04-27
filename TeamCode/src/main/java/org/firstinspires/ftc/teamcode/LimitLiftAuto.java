@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
-
+@Disabled
 @Autonomous(name = "LimitLiftAuto", group = "Autonomous")
 //Declare motors
 public class LimitLiftAuto extends LinearOpMode {

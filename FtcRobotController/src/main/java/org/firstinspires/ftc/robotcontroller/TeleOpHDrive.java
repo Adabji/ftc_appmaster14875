@@ -147,10 +147,9 @@ public class TeleOpHDrive extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 extension.setPower(1);
             } else if (gamepad2.left_bumper) {
+                extension.setPower(-1);
                 if (inLimit.isPressed()) {
                     extension.setPower(0);
-                } else {
-                    extension.setPower(-1);
                 }
             } else {
                 extension.setPower(0);

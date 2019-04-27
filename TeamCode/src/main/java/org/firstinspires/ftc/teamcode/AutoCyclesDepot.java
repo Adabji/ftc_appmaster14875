@@ -143,18 +143,19 @@ public class AutoCyclesDepot extends LinearOpMode {
             //Code to run if block is seen in center position, if variable center is returned as true
             if (center == true) {
                 sampleCenter();
-                moveForwardsIntake(400, 1);
+                moveForwardsIntake(500, 0.5);
                 intakeIn();
                 retract2(1, 230);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(500, 1);
+                moveBackwardsIntake(600, 1);
                 turnRight(100,0.8);
                 teleLift();
                 liftWithEncoders(1,2900);
                 liftServo1.setPosition(0);
                 Thread.sleep(200);
                 liftServo2.setPosition(0.15);
-                Thread.sleep(1000);
+                Thread.sleep(1600);
+                lowerRobot();
                 rotateRight(100,1);
                 rotateLeft(100,1);
                 Thread.sleep(1000);
@@ -164,7 +165,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 Thread.sleep(200);
                 rotateLeftSlow(1000,0.5);
                 lift = true;
-                moveForwardsCycle(1400,1);
+                moveForwardsCycle(1200,0.5);
                 rotateLeftSlow(600,1);
                 extend(1,1200);
                 flipperDown();
@@ -187,22 +188,23 @@ public class AutoCyclesDepot extends LinearOpMode {
             //Code to run if block is seen in left position, if variable left is returned as true
             if (right == false & center == false) {
                 sampleLeft();
-                rotateLeft(220, 0.2);
+                rotateLeft(210, 0.2);
                 Thread.sleep(300);
-                moveForwardsIntake(430, 0.5);
+                moveForwardsIntake(600, 0.5);
                 intakeIn();
                 retract2(1, 250);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(530, 1);
+                moveBackwardsIntake(700, 1);
                 Thread.sleep(200);
                 rotateRight(210, 0.5);
-                turnRight(200,0.8);
+                turnLeft(200,0.8);
                 teleLift();
                 liftWithEncoders(1,2900);
                 liftServo1.setPosition(0);
                 liftServo2.setPosition(0.15);
-                Thread.sleep(1000);
-                turnRight(50,1);
+                Thread.sleep(1600);
+                lowerRobot();
+                turnRight(100,1);
                 turnLeft(50,1);
                 Thread.sleep(1000);
                 liftServo1.setPosition(0.96);
@@ -211,7 +213,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 Thread.sleep(1000);
                 rotateLeftSlow(1100,1);
                 lift = true;
-                moveForwardsCycle(1350,1);
+                moveForwardsCycle(1250,0.5);
                 rotateLeftSlow(450,1);
                 extend(1,1200);
                 flipperDown();
@@ -240,13 +242,13 @@ public class AutoCyclesDepot extends LinearOpMode {
                 sampleRight();
                 rotateRight(210, 0.2);
                 Thread.sleep(300);
-                moveForwardsIntake(450, 0.5);
+                moveForwardsIntake(600, 0.5);
                 intake.setPower(1);
                 Thread.sleep(300);
                 intakeIn();
                 retract2(1, 250);
                 stopper.setPosition(0.85);
-                moveBackwardsIntake(580, 1);
+                moveBackwardsIntake(740, 1);
                 Thread.sleep(200);
                 rotateLeft(250, 0.5);
                 teleLift();
@@ -254,7 +256,8 @@ public class AutoCyclesDepot extends LinearOpMode {
                 liftServo1.setPosition(0);
                 Thread.sleep(500);
                 liftServo2.setPosition(0.15);
-                Thread.sleep(1000);
+                Thread.sleep(1600);
+                lowerRobot();
                 rotateRight(100,1);
                 rotateLeft(100,1);
                 Thread.sleep(1000);
@@ -264,7 +267,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 Thread.sleep(400);
                 rotateLeftSlow(1050,1);
                 lift = true;
-                moveForwardsCycle(1370,1);
+                moveForwardsCycle(1250,0.5);
                 rotateLeftSlow(450,1);
                 extend(1,1200);
                 flipperDown();
@@ -287,6 +290,8 @@ public class AutoCyclesDepot extends LinearOpMode {
 
         //Lowers the robot from the lander at the beginning of Autonomous period
         public void lowerRobot () throws InterruptedException {
+        lift1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             while (!bottomLimit.isPressed()) {
                 lift1.setPower(-1);
                 lift2.setPower(-1);
@@ -347,26 +352,32 @@ public class AutoCyclesDepot extends LinearOpMode {
         }
 
         public void sampleRight () throws InterruptedException {
-            moveForwards2(850, .5);
+            moveForwards2(770, .5);
+            Thread.sleep(200);
             flipperUp();
+            Thread.sleep(200);
             moveBackwards(450, 1);
-            retract(1, 800);
+            retract(1, 1300);
             Thread.sleep(400);
         }
 
         public void sampleLeft () throws InterruptedException {
-            moveForwards2(850, .5);
+            moveForwards2(770, .5);
+            Thread.sleep(200);
             flipperUp();
+            Thread.sleep(200);
             moveBackwards(450, 1);
-            retract(1, 800);
+            retract(1, 1300);
             Thread.sleep(400);
         }
 
         public void sampleCenter () throws InterruptedException {
             moveForwards2(850, .5);
+            Thread.sleep(200);
             flipperUp();
-            moveBackwards(450, 1);
-            retract(1, 800);
+            Thread.sleep(200);
+            moveBackwards(450, 0.5);
+            retract(1, 1300);
             Thread.sleep(400);
         }
 
@@ -583,7 +594,7 @@ public class AutoCyclesDepot extends LinearOpMode {
         Thread.sleep(200);
         intake.setPower(0);
     }
-    public void retract(double power, int distance) {
+    public void retract(double power, int distance) throws InterruptedException {
         extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extension.setTargetPosition(-distance);
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -659,7 +670,7 @@ public class AutoCyclesDepot extends LinearOpMode {
 
         motorBackRight.setTargetPosition(-distance);
         motorBackLeft.setTargetPosition(distance);
-        extension.setTargetPosition(1000);
+        extension.setTargetPosition(1500);
 
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -711,16 +722,16 @@ public class AutoCyclesDepot extends LinearOpMode {
             telemetry.addData("extensionTicks", extensionCounter);
             telemetry.update();
             if (extensionCounter > 200){
-                flipperDown();
-                intakeOut();
+                flipperDown3();
             }
             if (topLimit.isPressed()) {
                 lift = false;
                 if (lift == false){
-                    intake.setPower(0);
                     lift1.setPower(0);
-
                     lift2.setPower(0);
+                    intake.setPower(-1);
+                    Thread.sleep(300);
+                    intake.setPower(0);
                 }
             }
         }
@@ -746,9 +757,14 @@ public class AutoCyclesDepot extends LinearOpMode {
         flipper2.setPosition(0.85);
 
     }
-    public void flipperDown(){
+    public void flipperDown() throws InterruptedException{
         flipper1.setPosition(0.4);
         flipper2.setPosition(0.6);
+    }
+    public void flipperDown3() throws InterruptedException{
+        flipper1.setPosition(0.4);
+        flipper2.setPosition(0.6);
+        Thread.sleep(400);
     }
     public void flipperDown2() throws InterruptedException{
         flipper1.setPosition(0.3);

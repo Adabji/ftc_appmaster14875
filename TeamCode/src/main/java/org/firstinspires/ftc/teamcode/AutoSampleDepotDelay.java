@@ -28,7 +28,7 @@ import org.opencv.imgproc.LineSegmentDetector;
 
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
-
+@Disabled
 @Autonomous(name = "Sample Depot Delay", group = "Autonomous")
 
 //Declare motors

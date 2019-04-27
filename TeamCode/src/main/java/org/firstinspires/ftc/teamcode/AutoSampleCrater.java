@@ -243,29 +243,7 @@ public class AutoSampleCrater extends LinearOpMode {
         motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
-    //Robot moves forwards and lowers lift at the same time
-    public void moveForwards2(int distance, double power) throws InterruptedException{
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(power);
-
-        while (motorBackRight.isBusy() && motorBackLeft.isBusy()){
-            lowerLift();
-        }
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        lowerLift();
-    }
     public void rotateRight(int distance, double power){
         rotateLeft(-distance, power);
     }
@@ -280,11 +258,11 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
         intake.setPower(-1);
+        flipper1.setPosition(.15);
+        flipper2.setPosition(.85);
         extend(1,500);
         lowerLift();
         extend(1,-500);
-        flipper1.setPosition(.15);
-        flipper2.setPosition(.85);
         stopper.setPosition(.85);
         rotateRight(75,1);
         intake.setPower(0);
@@ -437,6 +415,49 @@ public class AutoSampleCrater extends LinearOpMode {
         lift1.setPower(0);
         lift2.setPower(0);
     }
+    public void moveForwards2(int distance, double power) throws InterruptedException {
+        extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
+        extension.setTargetPosition(1000);
+
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+        extension.setPower(1);
+
+        while (motorBackRight.isBusy() && motorBackLeft.isBusy() && extension.isBusy()) {
+            lowerLift2();
+        }
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        extension.setPower(0);
+        motorBackRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+    }
+        public void lowerLift2() throws InterruptedException {
+            lift1.setPower(1);
+            lift2.setPower(1);
+            Thread.sleep(1500);
+            while (lift == true) {
+                lift1.setPower(0.7);
+                lift2.setPower(0.7);
+                flipperDown();
+                intakeOut();
+                if (topLimit.isPressed()) {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                }
+            }
+
+        }
     public void lowerLiftScore() throws InterruptedException{
         liftServo1.setPosition(0.96);
         Thread.sleep(700);
@@ -488,5 +509,9 @@ public class AutoSampleCrater extends LinearOpMode {
         extension.setPower(0);
         extension.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         lowerLift();
+    }
+    public void flipperDown(){
+        flipper1.setPosition(0.4);
+        flipper2.setPosition(0.6);
     }
 }

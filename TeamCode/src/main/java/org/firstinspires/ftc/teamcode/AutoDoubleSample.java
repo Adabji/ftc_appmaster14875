@@ -25,7 +25,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
-
+@Disabled
 @Autonomous(name = "Double Sample", group = "Autonomous")
 
 //Declare motors
