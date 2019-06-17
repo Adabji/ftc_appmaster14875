@@ -76,7 +76,7 @@ public class Line implements Comparable<Line> {
      */
     @Override
     public String toString() {
-        return "{" + Double.toString(x1) + "," + Double.toString(y1) + "} to {" + Double.toString(x2) + "," + Double.toString(y2) + "}";
+        return "{" + x1 + "," + y1 + "} to {" + x2 + "," + y2 + "}";
     }
 
 }
