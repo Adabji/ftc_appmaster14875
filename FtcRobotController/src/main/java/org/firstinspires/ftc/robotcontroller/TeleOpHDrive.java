@@ -93,7 +93,7 @@ public class TeleOpHDrive extends LinearOpMode {
 
             //setting positions of servo arms
             sampleArm.setPosition(0.8);
-
+// testing
             if (gamepad1.left_bumper && leftBumperTimer == -1) {
                 liftServo1.setPosition(0.96);
                 leftBumperTimer = System.currentTimeMillis();
@@ -211,8 +211,8 @@ public class TeleOpHDrive extends LinearOpMode {
             } else if (!topLimit.isPressed() && liftUpTimer == -1) {
                 lift1.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
                 lift2.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            }
-        }
+    }
+}
     }
 }
 
