@@ -26,6 +26,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.OpenCVPipeline;
+import com.disnodeteam.dogecv.detectors.DogeCVDetector;
+import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.opencv.core.Mat;
 import org.opencv.core.Point;
 
 @Autonomous(name = "Sample Crater", group = "Autonomous")
@@ -40,8 +48,6 @@ public class AutoSampleCrater extends LinearOpMode {
     private GoldAlignDetector detector;
 
 
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
@@ -54,7 +60,7 @@ public class AutoSampleCrater extends LinearOpMode {
 
         detector.cropTLCorner = new Point(200, 200); //Sets the top left corner of the new image, in pixel (x,y) coordinates
         detector.cropBRCorner = new Point(400, 400); //Sets the bottom right corner of the new image, in pixel (x,y) coordinates
-        
+
         detector.useDefaults();
         detector.alignSize = 1000; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
         detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
@@ -124,7 +130,7 @@ public class AutoSampleCrater extends LinearOpMode {
                 telemetry.addData("center", center);
                 telemetry.addData("right", right);
                 telemetry.update();
-            } else if (detector.getAligned() == false) {
+            } else if (!detector.getAligned()) {
                 right = false;
                 center = false;
                 telemetry.addData("center", center);
@@ -150,14 +156,14 @@ public class AutoSampleCrater extends LinearOpMode {
             lowerRobot();
 
             //Code to run if block is seen in center position, if variable center is returned as true
-            if (center == true) {
+            if (center) {
                 sampleCenter();
                // scoreSample();
                 moveToDepot();
                 parkInCrater();
             }
             //Code to run if block is seen in left position, if variable left is returned as true
-            if (right == true) {
+            if (right) {
                 sampleRight();
                // scoreSample();
                 moveToDepot();
@@ -165,7 +171,7 @@ public class AutoSampleCrater extends LinearOpMode {
             }
             //Code to run if block is in right position, not visible as an X-Value returned but rather as the condition
             //when both left and center are negated as true conditions
-            if (right == false && center == false) {
+            if (!right && !center) {
                 sampleLeft();
                // scoreSample();
                 moveToDepot();
@@ -347,11 +353,11 @@ public class AutoSampleCrater extends LinearOpMode {
     }
     public void moveToDepot() throws InterruptedException{
        // moveForwards(400,.8);
-        rotateRight(530,0.5);
+        rotateRight(570,0.5);
         Thread.sleep(200);
-        moveBackwards(1400,1);
+        moveBackwards(1370,1);
         Thread.sleep(200);
-        rotateLeft(320,0.5);
+        rotateLeft(360,0.5);
         Thread.sleep(200);
         turnRight(800,1);
         turnLeft(100,1);

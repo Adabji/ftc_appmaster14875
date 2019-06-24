@@ -39,6 +39,8 @@ public abstract class DogeCVDetector extends OpenCVPipeline{
 
     }
 
+    public Point cropTLCorner = null; //The top left corner of the image used for processing
+    public Point cropBRCorner = null; //The bottom right corner of the image used for processing
     public void setSpeed(DogeCV.DetectionSpeed speed){
         this.speed = speed;
     }
