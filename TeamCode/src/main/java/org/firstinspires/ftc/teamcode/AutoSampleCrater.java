@@ -26,6 +26,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.opencv.core.Point;
+
 @Autonomous(name = "Sample Crater", group = "Autonomous")
 
 //Declare motors
@@ -47,6 +49,12 @@ public class AutoSampleCrater extends LinearOpMode {
         //Set up detector with phone camera
         detector = new GoldAlignDetector();
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+
+        telemetry.addData("Status", "DogeCV 2019.1 - Cropping Example");
+
+        detector.cropTLCorner = new Point(200, 200); //Sets the top left corner of the new image, in pixel (x,y) coordinates
+        detector.cropBRCorner = new Point(400, 400); //Sets the bottom right corner of the new image, in pixel (x,y) coordinates
+        
         detector.useDefaults();
         detector.alignSize = 1000; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
         detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
@@ -58,6 +66,7 @@ public class AutoSampleCrater extends LinearOpMode {
 
         detector.ratioScorer.weight = 5;
         detector.ratioScorer.perfectRatio = 1.0;
+
 
         //Initialize motors
         lift1 = hardwareMap.dcMotor.get("lift1");
@@ -304,9 +313,9 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
         intake.setPower(-1);
-        extend(1,500);
+        extend(1,550);
         lowerLift();
-        extend(1,-500);
+        extend(1,-550);
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
         stopper.setPosition(.85);
