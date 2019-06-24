@@ -58,8 +58,8 @@ public class AutoSampleCrater extends LinearOpMode {
 
         telemetry.addData("Status", "DogeCV 2019.1 - Cropping Example");
 
-        detector.cropTLCorner = new Point(200, 200); //Sets the top left corner of the new image, in pixel (x,y) coordinates
-        detector.cropBRCorner = new Point(400, 400); //Sets the bottom right corner of the new image, in pixel (x,y) coordinates
+        detector.cropTLCorner = new Point(0, 150); //Sets the top left corner of the new image, in pixel (x,y) coordinates
+        detector.cropBRCorner = new Point(640, 480); //Sets the bottom right corner of the new image, in pixel (x,y) coordinates
 
         detector.useDefaults();
         detector.alignSize = 1000; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
