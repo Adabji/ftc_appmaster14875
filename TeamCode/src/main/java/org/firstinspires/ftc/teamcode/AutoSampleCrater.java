@@ -330,6 +330,7 @@ public class AutoSampleCrater extends LinearOpMode {
         extend(1,550);
         lowerLift();
         extend(1,-550);
+        intake.setPower(0); // changes
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
         stopper.setPosition(.85);
@@ -366,17 +367,17 @@ public class AutoSampleCrater extends LinearOpMode {
         // moveForwards(400,.8);
         rotateRight(570,0.5);
         Thread.sleep(200);
-        moveBackwards(1370,1);
+        moveBackwards(1400,1);
         Thread.sleep(200);
         rotateLeft(360,0.5);
         Thread.sleep(200);
-        turnRight(800,1);
-        turnLeft(100,1);
-        rotateRight(50,1);
+        // turnRight(800,1); changes
+        // turnLeft(100,1); changes
+        // rotateRight(50,1); changes
         moveBackwards(1800,0.5);
         teamMarker();
-        rotateLeft(50,1);
-        moveForwards(1800,1);
+        // rotateLeft(50,1); changes
+        // moveForwards(1800,1); changes
     }
 
     public void rotateLeftSlow(int distance, double power){
