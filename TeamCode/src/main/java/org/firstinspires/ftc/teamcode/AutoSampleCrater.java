@@ -110,8 +110,8 @@ public class AutoSampleCrater extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             flipper1.setPosition(0.15);
             flipper2.setPosition(0.85);
-            liftServo1.setPosition(0.96);
-            liftServo2.setPosition(0.72);
+            // liftServo1.setPosition(0.96);
+            // liftServo2.setPosition(0.72);
 
             // Telemetry returned X-Value for when block is seen in center position
             if (detector.getXPosition() > 500) {

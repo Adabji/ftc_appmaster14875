@@ -96,8 +96,8 @@ public class AutoCyclesDepot extends LinearOpMode {
             telemetry.addData("Status", "waiting for start command...");
             flipper1.setPosition(0.15);
             flipper2.setPosition(0.85);
-            liftServo1.setPosition(0.96);
-            liftServo2.setPosition(0.72);
+            // liftServo1.setPosition(0.96);
+            // liftServo2.setPosition(0.72);
             lift1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             lift2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
