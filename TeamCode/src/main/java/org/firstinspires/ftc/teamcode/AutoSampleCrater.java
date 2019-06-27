@@ -218,7 +218,7 @@ public class AutoSampleCrater extends LinearOpMode {
     public void teamMarker() throws InterruptedException{
         sampleArm.setPosition(0.8);
         Thread.sleep(1000);
-        sampleArm.setPosition(0.3);
+        sampleArm.setPosition(0);
     }
 
     public void rotateLeft(int distance, double power){
