@@ -279,9 +279,10 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
         intake.setPower(-1);
-        extend(1,500);
+        Thread.sleep(500);
+        extend(1,450);
         lowerLift();
-        extend(1,-500);
+        extend(1,-450);
         stopper.setPosition(.85);
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
