@@ -109,7 +109,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 telemetry.addData("right", right);
                 telemetry.update();
             }
-            if (detector.getXPosition() > 125 && detector.getXPosition() < 225) {
+            if (detector.getXPosition() > 120 && detector.getXPosition() < 260) {
                 center = true;
                 right = false;
                 telemetry.addData("center", center);
@@ -134,11 +134,12 @@ public class AutoCyclesDepot extends LinearOpMode {
         }
         if (opModeIsActive()) {
             detector.disable();
-            liftServo1.setPosition(0.96);
+            liftServo1.setPosition(0.9);    // changed
             liftServo2.setPosition(0.72);
             sampleArm.setPosition(0.8);
             stopper.setPosition(0.4);
             lowerRobot();
+            Thread.sleep(500);
 
             //Code to run if block is seen in center position, if variable center is returned as true
             if (center) {
@@ -159,7 +160,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 rotateRight(100,1);
                 rotateLeft(100,1);
                 Thread.sleep(1000);
-                liftServo1.setPosition(0.96);
+                liftServo1.setPosition(0.9);    // changed
                 Thread.sleep(700);
                 liftServo2.setPosition(0.72);
                 Thread.sleep(200);
@@ -189,7 +190,7 @@ public class AutoCyclesDepot extends LinearOpMode {
             //Code to run if block is seen in left position, if variables and center are returned as false (implying that left is true)
             if (!right & !center) {
                 sampleLeft();
-                rotateLeft(210, 0.2);
+                rotateLeft(190, 0.2);
                 Thread.sleep(300);
                 moveForwardsIntake(600, 0.5);
                 intakeIn();
@@ -197,7 +198,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 stopper.setPosition(0.85);
                 moveBackwardsIntake(700, 1);
                 Thread.sleep(200);
-                rotateRight(210, 0.5);
+                rotateRight(190, 0.5);
                 turnLeft(200,0.8);
                 teleLift();
                 liftWithEncoders(1,2900);
@@ -208,7 +209,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 turnRight(100,1);
                 turnLeft(50,1);
                 Thread.sleep(1000);
-                liftServo1.setPosition(0.96);
+                liftServo1.setPosition(0.9);    // changed
                 Thread.sleep(700);
                 liftServo2.setPosition(0.72);
                 Thread.sleep(1000);
@@ -239,7 +240,7 @@ public class AutoCyclesDepot extends LinearOpMode {
             //when both left and center are negated as true conditions
             if (right) {
                 sampleRight();
-                rotateRight(210, 0.2);
+                rotateRight(190, 0.2);
                 Thread.sleep(300);
                 moveForwardsIntake(600, 0.5);
                 intake.setPower(1);
@@ -249,7 +250,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 stopper.setPosition(0.85);
                 moveBackwardsIntake(740, 1);
                 Thread.sleep(200);
-                rotateLeft(250, 0.5);
+                rotateLeft(230, 0.5);
                 teleLift();
                 liftWithEncoders(1,2900);
                 liftServo1.setPosition(0);
@@ -260,7 +261,7 @@ public class AutoCyclesDepot extends LinearOpMode {
                 rotateRight(100,1);
                 rotateLeft(100,1);
                 Thread.sleep(1000);
-                liftServo1.setPosition(0.96);
+                liftServo1.setPosition(0.9);    // changed
                 Thread.sleep(700);
                 liftServo2.setPosition(0.72);
                 Thread.sleep(400);
@@ -558,7 +559,7 @@ public class AutoCyclesDepot extends LinearOpMode {
         flipper2.setPosition(0.4);
         while (!intakeUp) {
             intake.setPower(1);
-            Thread.sleep(200);
+            Thread.sleep(1000);
             flipperUp();
             if (flipper1.getPosition() == 0.15 && flipper2.getPosition() == 0.85) {
                 intakeUp = true;

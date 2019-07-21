@@ -146,7 +146,7 @@ public class AutoSampleCrater extends LinearOpMode {
 
         if (opModeIsActive()) {
             detector.disable();
-            liftServo1.setPosition(0.96);
+            liftServo1.setPosition(0.9);    // changed
             liftServo2.setPosition(0.72);
             sampleArm.setPosition(0.8);
             stopper.setPosition(0.4);
@@ -299,7 +299,7 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleLeft() throws InterruptedException{
         moveForwards(400,0.5);
         Thread.sleep(500);
-        rotateLeft(300,0.5);
+        rotateLeft(270,0.5);
         flipper1.setPosition(.4);
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
@@ -311,7 +311,7 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
         stopper.setPosition(.85);
-        rotateRight(270,0.5);
+        rotateRight(240,0.5);
         Thread.sleep(200);
         /*moveForwards(780,0.3);
         Thread.sleep(200);
@@ -323,7 +323,7 @@ public class AutoSampleCrater extends LinearOpMode {
     public void sampleRight() throws InterruptedException{
         moveForwards(400,0.7);
         Thread.sleep(500);
-        rotateRight(210,0.7);
+        rotateRight(190,0.7);
         flipper1.setPosition(.4);
         flipper2.setPosition(.6);
         stopper.setPosition(.5);
@@ -335,7 +335,7 @@ public class AutoSampleCrater extends LinearOpMode {
         flipper1.setPosition(.15);
         flipper2.setPosition(.85);
         stopper.setPosition(.85);
-        rotateLeft(210,0.7);
+        rotateLeft(190,0.7);
         Thread.sleep(200);
         /*moveForwards(750,0.5);
         rotateLeft(200,.5);
@@ -372,8 +372,8 @@ public class AutoSampleCrater extends LinearOpMode {
         Thread.sleep(200);
         rotateLeft(360,0.5);
         Thread.sleep(200);
-        turnRight(800,1);
-        turnLeft(100,1);
+        turnRight(750,.5);
+        turnLeft(100,.51);
         rotateRight(50,1);
         moveBackwards(1800,0.5);
         teamMarker();
@@ -429,7 +429,7 @@ public class AutoSampleCrater extends LinearOpMode {
     }
 
     public void lowerLift() throws InterruptedException{
-        liftServo1.setPosition(0.96);
+        liftServo1.setPosition(0.9);    // changed
         Thread.sleep(10);
         liftServo2.setPosition(0.72);
         lift1.setPower(1);
@@ -496,7 +496,7 @@ public class AutoSampleCrater extends LinearOpMode {
     }
 
     public void lowerLiftScore() throws InterruptedException{
-        liftServo1.setPosition(0.96);
+        liftServo1.setPosition(0.9);    // changed
         Thread.sleep(700);
         liftServo2.setPosition(0.72);
         Thread.sleep(500);

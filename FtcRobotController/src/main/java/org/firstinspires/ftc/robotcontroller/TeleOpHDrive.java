@@ -98,7 +98,7 @@ public class TeleOpHDrive extends LinearOpMode {
             // gamepad1 stuff
 
             if (gamepad1.left_bumper && leftBumperTimer == -1) {
-                liftServo1.setPosition(1);
+                liftServo1.setPosition(0.9);
                 leftBumperTimer = System.currentTimeMillis();
             } else if (leftBumperTimer > 0 && System.currentTimeMillis() - leftBumperTimer > 600) {
                 liftServo2.setPosition(0.72);
